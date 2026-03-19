@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arena Olímpica — Banco de Avaliações</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0e1a;--surface:#111827;--surface2:#1a2236;--border:#1e2d45;
+    --accent:#f59e0b;--accent2:#3b82f6;--accent3:#10b981;
+    --text:#e2e8f0;--text-muted:#64748b;--text-dim:#94a3b8;--danger:#ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+  .screen{display:none;min-height:100vh}
+  .screen.active{display:flex;flex-direction:column}
+
+  #landing{align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .star{position:absolute;width:2px;height:2px;background:white;border-radius:50%;animation:twinkle var(--d) ease-in-out infinite;opacity:0}
+  @keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--o)}}
+  .landing-inner{position:relative;z-index:1;text-align:center;padding:40px 20px;max-width:680px;width:100%;animation:fadeUp .8s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .logo-ring{width:90px;height:90px;border-radius:50%;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:36px;box-shadow:0 0 40px rgba(245,158,11,.3);animation:pulse 3s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(245,158,11,.2)}50%{box-shadow:0 0 60px rgba(245,158,11,.5)}}
+  .landing-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,6vw,3.4rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:10px}
+  .landing-title span{color:var(--accent)}
+  .landing-sub{color:var(--text-dim);font-size:1.05rem;margin-bottom:52px;font-weight:300}
+  .entry-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:480px){.entry-cards{grid-template-columns:1fr}}
+  .entry-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 24px;cursor:pointer;transition:all .25s;text-align:left;position:relative;overflow:hidden}
+  .entry-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+  .entry-card.teacher::before{background:linear-gradient(135deg,rgba(59,130,246,.08),transparent)}
+  .entry-card.admin::before{background:linear-gradient(135deg,rgba(245,158,11,.08),transparent)}
+  .entry-card:hover{transform:translateY(-4px)}.entry-card:hover::before{opacity:1}
+  .entry-card.teacher:hover{border-color:var(--accent2);box-shadow:0 8px 40px rgba(59,130,246,.15)}
+  .entry-card.admin:hover{border-color:var(--accent);box-shadow:0 8px 40px rgba(245,158,11,.15)}
+  .card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+  .entry-card.teacher .card-icon{background:rgba(59,130,246,.15)}
+  .entry-card.admin .card-icon{background:rgba(245,158,11,.15)}
+  .card-label{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:6px}
+  .card-desc{font-size:.85rem;color:var(--text-muted);line-height:1.5}
+  .card-badge{position:absolute;top:16px;right:16px;font-size:.7rem;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+  .entry-card.teacher .card-badge{background:rgba(59,130,246,.15);color:var(--accent2)}
+  .entry-card.admin .card-badge{background:rgba(245,158,11,.15);color:var(--accent)}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;width:100%;max-width:420px;animation:scaleIn .2s ease both}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+  .modal h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:6px}
+  .modal p{color:var(--text-muted);font-size:.9rem;margin-bottom:24px}
+  .modal-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:.95rem;font-family:'DM Sans',sans-serif;margin-bottom:16px;transition:border-color .2s;outline:none}
+  .modal-input:focus{border-color:var(--accent)}
+  .modal-error{color:var(--danger);font-size:.82rem;margin-bottom:12px;display:none}
+  .modal-btns{display:flex;gap:10px}
+  .btn{flex:1;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+  .btn-primary{background:var(--accent);color:#0a0e1a}.btn-primary:hover{background:#fbbf24}
+  .btn-ghost{background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--text-muted);color:var(--text)}
+
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .topbar-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;display:flex;align-items:center;gap:10px}
+  .dot{color:var(--accent)}
+  .topbar-right{display:flex;align-items:center;gap:12px}
+  .badge-role{font-size:.72rem;padding:3px 10px;border-radius:20px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .badge-teacher{background:rgba(59,130,246,.15);color:var(--accent2)}
+  .badge-admin{background:rgba(245,158,11,.15);color:var(--accent)}
+  .btn-logout{background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text-muted);font-size:.82rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+  .btn-logout:hover{border-color:var(--text-muted);color:var(--text)}
+
+  .tabs{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+  .tab{padding:14px 18px;font-size:.88rem;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab:hover:not(.active){color:var(--text-dim)}
+
+  .content{flex:1;padding:32px 24px;max-width:1100px;width:100%;margin:0 auto}
+  .tab-panel{display:none}.tab-panel.active{display:block;animation:fadeUp .3s ease both}
+
+  .filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;align-items:end}
+  .filter-group label{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px;font-weight:600}
+  .filter-select,.filter-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+  .filter-input{background-image:none;padding-right:12px}
+  .filter-select:focus,.filter-input:focus{border-color:var(--accent2)}
+  .filter-select option{background:var(--surface)}
+
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .prova-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s;position:relative;overflow:hidden}
+  .prova-card:hover{border-color:#2a3a55;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+  .prova-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+  .prova-olimpiada-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:6px}
+  .prova-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:8px;line-height:1.3}
+  .prova-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .meta-pill{font-size:.75rem;padding:3px 9px;border-radius:20px;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}
+  .prova-card-actions{display:flex;gap:8px}
+  .btn-view{flex:1;padding:9px;border-radius:8px;font-size:.83rem;font-weight:500;border:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--accent2);color:white}
+  .btn-view:hover{background:#2563eb}
+  .btn-del{padding:9px 12px;border-radius:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--danger);cursor:pointer;font-size:.83rem;transition:all .2s;font-family:'DM Sans',sans-serif}
+  .btn-del:hover{background:rgba(239,68,68,.2)}
+
+  .empty-state{text-align:center;padding:80px 20px;color:var(--text-muted);grid-column:1/-1}
+  .empty-state .icon{font-size:3rem;margin-bottom:16px;opacity:.5}
+  .empty-state h3{font-family:'Syne',sans-serif;font-size:1.1rem;margin-bottom:6px;color:var(--text-dim)}
+  .empty-state p{font-size:.88rem}
+  .loading-state{text-align:center;padding:60px 20px;color:var(--text-muted);grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:16px}
+  .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .section-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700}
+  .count-badge{font-size:.8rem;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:3px 12px;border-radius:20px;margin-left:10px}
+
+  .form-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:620px}
+  .form-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:520px){.form-grid{grid-template-columns:1fr}}
+  .form-group{display:flex;flex-direction:column;gap:6px}
+  .form-group.full{grid-column:1/-1}
+  .form-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);font-weight:600}
+  .form-input,.form-select{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--text);font-size:.92rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+  .form-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
+  .form-select option{background:var(--surface)}
+  .form-input:focus,.form-select:focus{border-color:var(--accent)}
+  .form-submit{margin-top:24px;width:100%;padding:13px;background:var(--accent);color:#0a0e1a;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s;letter-spacing:.02em}
+  .form-submit:hover{background:#fbbf24}.form-submit:disabled{opacity:.5;cursor:not-allowed}
+
+  .olimpiadas-list{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+  .olimpiada-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s}
+  .olimpiada-item:hover{border-color:#2a3a55}
+  .olimpiada-info{display:flex;align-items:center;gap:14px}
+  .olimpiada-color{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+  .olimpiada-name{font-weight:600;font-size:.95rem}
+  .olimpiada-area{font-size:.8rem;color:var(--text-muted)}
+
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+  .stat-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);font-weight:600;margin-bottom:8px}
+  .stat-value{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800}
+
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--accent3);color:var(--accent3);padding:12px 20px;border-radius:10px;font-size:.88rem;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s ease;display:flex;align-items:center;gap:8px}
+  .toast.show{transform:translateY(0);opacity:1}.toast.error{border-color:var(--danger);color:var(--danger)}
+
+  .olimpiada-tag-0{background:rgba(245,158,11,.15);color:#f59e0b}
+  .olimpiada-tag-1{background:rgba(59,130,246,.15);color:#3b82f6}
+  .olimpiada-tag-2{background:rgba(16,185,129,.15);color:#10b981}
+  .olimpiada-tag-3{background:rgba(139,92,246,.15);color:#8b5cf6}
+  .olimpiada-tag-4{background:rgba(239,68,68,.15);color:#ef4444}
+  .olimpiada-tag-5{background:rgba(236,72,153,.15);color:#ec4899}
+  .olimpiada-tag-6{background:rgba(6,182,212,.15);color:#06b6d4}
+  .olimpiada-tag-7{background:rgba(249,115,22,.15);color:#f97316}
+  .color-dot-0{background:#f59e0b}.color-dot-1{background:#3b82f6}.color-dot-2{background:#10b981}
+  .color-dot-3{background:#8b5cf6}.color-dot-4{background:#ef4444}.color-dot-5{background:#ec4899}
+  .color-dot-6{background:#06b6d4}.color-dot-7{background:#f97316}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<!-- LANDING -->
+<div class="screen active" id="landing">
+  <div class="landing-inner">
+    <div class="logo-ring">🏆</div>
+    <h1 class="landing-title">Arena<span> Olímpica</span></h1>
+    <p class="landing-sub">Banco de avaliações de olimpíadas científicas</p>
+    <div class="entry-cards">
+      <div class="entry-card teacher" onclick="enterTeacher()">
+        <span class="card-badge">Acesso livre</span>
+        <div class="card-icon">👩‍🏫</div>
+        <div class="card-label">Professores</div>
+        <p class="card-desc">Consulte provas e gabaritos com filtros por olimpíada, fase, ano e nível.</p>
+      </div>
+      <div class="entry-card admin" onclick="openAdminModal()">
+        <span class="card-badge">🔒 Senha</span>
+        <div class="card-icon">⚙️</div>
+        <div class="card-label">Administradores</div>
+        <p class="card-desc">Gerencie olimpíadas, cadastre avaliações e controle todo o acervo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <h2>🔐 Acesso Administrativo</h2>
+    <p>Digite a senha para continuar</p>
+    <input type="password" class="modal-input" id="adminPass" placeholder="Senha" onkeydown="if(event.key==='Enter')checkAdmin()">
+    <p class="modal-error" id="adminError">Senha incorreta. Tente novamente.</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeAdminModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="checkAdmin()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER -->
+<div class="screen" id="teacherScreen">
+  <div class="topbar">
+    <div class="topbar-brand">🏆 <span>Arena<span class="dot"> Olímpica</span></span></div>
+    <div class="topbar-right">
+      <span class="badge-role badge-teacher">Professor</span>
+      <button class="btn-logout" onclick="logout()">← Sair</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section-header">
+      <h2 class="section-title">Banco de Avaliações <span class="count-badge" id="teacherCount">–</span></h2>
+    </div>
+    <div class="filter-bar">
+      <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="fSearch" placeholder="Pesquisar..." oninput="applyTeacherFilters()"></div>
+      <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="applyTeacherFilters()"><option value="">Todas</option></select></div>
+      <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+      <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Fundamental I</option><option>Fundamental II</option><option>Médio</option><option>Superior</option><option>Misto</option></select></div>
+    </div>
+    <div class="cards-grid" id="teacherGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando avaliações...</span></div></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="screen" id="adminScreen">
+  <div class="topbar">
+    <div class="topbar-brand">🏆 <span>Arena<span class="dot"> Olímpica</span></span></div>
+    <div class="topbar-right">
+      <span class="badge-role badge-admin">Administrador</span>
+      <button class="btn-logout" onclick="logout()">← Sair</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('tabDashboard',0)">📊 Dashboard</div>
+    <div class="tab" onclick="switchTab('tabProvas',1)">📋 Avaliações</div>
+    <div class="tab" onclick="switchTab('tabCadastrarProva',2)">➕ Cadastrar Prova</div>
+    <div class="tab" onclick="switchTab('tabOlimpiadas',3)">🏅 Olimpíadas</div>
+    <div class="tab" onclick="switchTab('tabCadastrarOlimpiada',4)">➕ Nova Olimpíada</div>
+  </div>
+  <div class="content">
+    <div class="tab-panel active" id="tabDashboard">
+      <div class="section-header"><h2 class="section-title">Dashboard</h2></div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total de Provas</div><div class="stat-value" style="color:var(--accent)" id="statProvas">–</div></div>
+        <div class="stat-card"><div class="stat-label">Olimpíadas</div><div class="stat-value" style="color:var(--accent2)" id="statOlimpiadas">–</div></div>
+        <div class="stat-card"><div class="stat-label">Anos cobertos</div><div class="stat-value" style="color:var(--accent3)" id="statAnos">–</div></div>
+        <div class="stat-card"><div class="stat-label">Com gabarito</div><div class="stat-value" style="color:#8b5cf6" id="statGabarito">–</div></div>
+      </div>
+      <div class="section-header"><h2 class="section-title" style="font-size:1rem">Últimas avaliações cadastradas</h2></div>
+      <div class="cards-grid" id="adminRecentGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div></div>
+    </div>
+    <div class="tab-panel" id="tabProvas">
+      <div class="section-header"><h2 class="section-title">Todas as Avaliações <span class="count-badge" id="adminCount">–</span></h2></div>
+      <div class="filter-bar">
+        <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="afSearch" placeholder="Pesquisar..." oninput="applyAdminFilters()"></div>
+        <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="afOlimpiada" onchange="applyAdminFilters()"><option value="">Todas</option></select></div>
+        <div class="filter-group"><label>Fase</label><select class="filter-select" id="afFase" onchange="applyAdminFilters()"><option value="">Todas</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+        <div class="filter-group"><label>Ano</label><select class="filter-select" id="afAno" onchange="applyAdminFilters()"><option value="">Todos</option></select></div>
+      </div>
+      <div class="cards-grid" id="adminGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div></div>
+    </div>
+    <div class="tab-panel" id="tabCadastrarProva">
+      <div class="section-header"><h2 class="section-title">Cadastrar Avaliação</h2></div>
+      <div class="form-card">
+        <p class="form-title">📝 Nova Avaliação</p>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select" id="inputOlimpiada"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="inputFase"><option value="">Selecione...</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+          <div class="form-group"><label class="form-label">Ano *</label><input type="number" class="form-input" id="inputAno" placeholder="Ex: 2024" min="2000" max="2099"></div>
+          <div class="form-group"><label class="form-label">Nível *</label><select class="form-select" id="inputNivel"><option value="">Selecione...</option><option>Fundamental I</option><option>Fundamental II</option><option>Médio</option><option>Superior</option><option>Misto</option></select></div>
+          <div class="form-group full"><label class="form-label">Título / Descrição</label><input type="text" class="form-input" id="inputTitulo" placeholder="Ex: Prova Nível 2 — 1ª Fase 2024"></div>
+          <div class="form-group full"><label class="form-label">Link da Prova (OneDrive) *</label><input type="url" class="form-input" id="inputLink" placeholder="https://1drv.ms/..."></div>
+          <div class="form-group full"><label class="form-label">Link do Gabarito (OneDrive)</label><input type="url" class="form-input" id="inputGabarito" placeholder="https://1drv.ms/... (opcional)"></div>
+        </div>
+        <button class="form-submit" id="btnCadastrarProva" onclick="cadastrarProva()">✦ Cadastrar Avaliação</button>
+      </div>
+    </div>
+    <div class="tab-panel" id="tabOlimpiadas">
+      <div class="section-header"><h2 class="section-title">Olimpíadas Cadastradas <span class="count-badge" id="oCount">–</span></h2></div>
+      <div class="olimpiadas-list" id="olimpiadasList"><div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div></div>
+    </div>
+    <div class="tab-panel" id="tabCadastrarOlimpiada">
+      <div class="section-header"><h2 class="section-title">Nova Olimpíada</h2></div>
+      <div class="form-card">
+        <p class="form-title">🏅 Cadastrar Olimpíada</p>
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Nome da Olimpíada *</label><input type="text" class="form-input" id="oNome" placeholder="Ex: OBMEP, OBI, OBFEP..."></div>
+          <div class="form-group full"><label class="form-label">Nome completo / Descrição</label><input type="text" class="form-input" id="oDesc" placeholder="Ex: Olimpíada Brasileira de Matemática das Escolas Públicas"></div>
+          <div class="form-group"><label class="form-label">Área de conhecimento</label><select class="form-select" id="oArea"><option>Matemática</option><option>Ciências</option><option>Física</option><option>Química</option><option>Biologia</option><option>Computação/TI</option><option>Astronomia</option><option>Robótica</option><option>Multidisciplinar</option><option>Outra</option></select></div>
+          <div class="form-group"><label class="form-label">Cor de destaque</label><select class="form-select" id="oColor"><option value="0">🟡 Dourado</option><option value="1">🔵 Azul</option><option value="2">🟢 Verde</option><option value="3">🟣 Roxo</option><option value="4">🔴 Vermelho</option><option value="5">🩷 Rosa</option><option value="6">🩵 Ciano</option><option value="7">🟠 Laranja</option></select></div>
+        </div>
+        <button class="form-submit" id="btnCadastrarOlimpiada" onclick="cadastrarOlimpiada()">✦ Cadastrar Olimpíada</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUz_KfCiGpg6bSxHyuuURbhtZY3gieRWA",
+  authDomain: "arena-olimpica.firebaseapp.com",
+  projectId: "arena-olimpica",
+  storageBucket: "arena-olimpica.firebasestorage.app",
+  messagingSenderId: "327202060363",
+  appId: "1:327202060363:web:4b02b7021ab6ed266735ce"
+};
+
+const ADMIN_PASS = 'Arena123';
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+let allProvas = [], allOlimpiadas = [];
+
+(()=>{
+  const c=document.getElementById('stars');
+  for(let i=0;i<120;i++){
+    const s=document.createElement('div');s.className='star';
+    s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--d',(2+Math.random()*4)+'s');
+    s.style.setProperty('--o',(.2+Math.random()*.6).toFixed(2));
+    s.style.animationDelay=(Math.random()*5)+'s';c.appendChild(s);
+  }
+})();
+
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+window.logout = ()=>showScreen('landing');
+window.openAdminModal = ()=>{ document.getElementById('adminModal').classList.add('open'); document.getElementById('adminPass').value=''; document.getElementById('adminError').style.display='none'; setTimeout(()=>document.getElementById('adminPass').focus(),100); };
+window.closeAdminModal = ()=>document.getElementById('adminModal').classList.remove('open');
+window.checkAdmin = ()=>{
+  if(document.getElementById('adminPass').value===ADMIN_PASS){ window.closeAdminModal(); showScreen('adminScreen'); loadAdminData(); }
+  else{ document.getElementById('adminError').style.display='block'; document.getElementById('adminPass').select(); }
+};
+document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===document.getElementById('adminModal')) window.closeAdminModal(); });
+window.enterTeacher = ()=>{ showScreen('teacherScreen'); loadTeacherData(); };
+
+window.switchTab = (id,idx)=>{
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+};
+
+async function loadOlimpiadas(){
+  const snap=await getDocs(query(collection(db,'olimpiadas'),orderBy('nome')));
+  allOlimpiadas=snap.docs.map(d=>({id:d.id,...d.data()}));
+  return allOlimpiadas;
+}
+async function loadProvas(){
+  const snap=await getDocs(query(collection(db,'provas'),orderBy('criadoEm','desc')));
+  allProvas=snap.docs.map(d=>({id:d.id,...d.data()}));
+  return allProvas;
+}
+async function loadTeacherData(){
+  document.getElementById('teacherGrid').innerHTML=loadingHTML();
+  await Promise.all([loadOlimpiadas(),loadProvas()]);
+  populateSelect('fOlimpiada','Todas');
+  populateAnoSelect('fAno');
+  applyTeacherFilters();
+}
+async function loadAdminData(){
+  document.getElementById('adminRecentGrid').innerHTML=loadingHTML();
+  document.getElementById('olimpiadasList').innerHTML=loadingHTML();
+  await Promise.all([loadOlimpiadas(),loadProvas()]);
+  populateSelect('inputOlimpiada','Selecione...');
+  populateSelect('fOlimpiada','Todas');
+  populateSelect('afOlimpiada','Todas');
+  populateAnoSelect('afAno');
+  renderOlimpiadasList(); renderStats(); renderRecentGrid(); applyAdminFilters();
+}
+
+window.cadastrarOlimpiada = async ()=>{
+  const nome=document.getElementById('oNome').value.trim();
+  const desc=document.getElementById('oDesc').value.trim();
+  const area=document.getElementById('oArea').value;
+  const color=parseInt(document.getElementById('oColor').value);
+  if(!nome){ showToast('Informe o nome da olimpíada','error'); return; }
+  const btn=document.getElementById('btnCadastrarOlimpiada');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    await addDoc(collection(db,'olimpiadas'),{nome,desc,area,color});
+    document.getElementById('oNome').value=''; document.getElementById('oDesc').value='';
+    showToast('Olimpíada cadastrada!'); await loadAdminData(); window.switchTab('tabOlimpiadas',3);
+  }catch(e){ showToast('Erro: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✦ Cadastrar Olimpíada';
+};
+window.deletarOlimpiada = async (id)=>{
+  if(!confirm('Remover esta olimpíada?')) return;
+  await deleteDoc(doc(db,'olimpiadas',id));
+  showToast('Olimpíada removida.'); await loadAdminData();
+};
+function renderOlimpiadasList(){
+  const list=document.getElementById('olimpiadasList');
+  document.getElementById('oCount').textContent=allOlimpiadas.length;
+  if(!allOlimpiadas.length){ list.innerHTML='<p style="color:var(--text-muted);padding:20px 0">Nenhuma olimpíada cadastrada ainda.</p>'; return; }
+  list.innerHTML=allOlimpiadas.map(o=>`
+    <div class="olimpiada-item">
+      <div class="olimpiada-info">
+        <div class="olimpiada-color color-dot-${o.color}"></div>
+        <div><div class="olimpiada-name">${o.nome}</div><div class="olimpiada-area">${o.area}${o.desc?' · '+o.desc:''}</div></div>
+      </div>
+      <button class="btn-del" onclick="deletarOlimpiada('${o.id}')">🗑</button>
+    </div>`).join('');
+}
+
+window.cadastrarProva = async ()=>{
+  const oid=document.getElementById('inputOlimpiada').value;
+  const fase=document.getElementById('inputFase').value;
+  const ano=document.getElementById('inputAno').value;
+  const nivel=document.getElementById('inputNivel').value;
+  const titulo=document.getElementById('inputTitulo').value.trim();
+  const link=document.getElementById('inputLink').value.trim();
+  const gabarito=document.getElementById('inputGabarito').value.trim();
+  if(!oid||!fase||!ano||!nivel||!link){ showToast('Preencha todos os campos obrigatórios (*)','error'); return; }
+  const ol=allOlimpiadas.find(o=>o.id===oid);
+  if(!ol){ showToast('Olimpíada não encontrada','error'); return; }
+  const btn=document.getElementById('btnCadastrarProva');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    await addDoc(collection(db,'provas'),{
+      olimpiadaId:oid, olimpiadaNome:ol.nome, olimpiadaColor:ol.color,
+      fase, ano:parseInt(ano), nivel,
+      titulo:titulo||`${ol.nome} — ${fase} ${ano}`,
+      link, gabarito, criadoEm:new Date().toISOString()
+    });
+    ['inputOlimpiada','inputFase','inputNivel'].forEach(id=>document.getElementById(id).value='');
+    ['inputAno','inputTitulo','inputLink','inputGabarito'].forEach(id=>document.getElementById(id).value='');
+    showToast('Avaliação cadastrada com sucesso!'); await loadAdminData(); window.switchTab('tabProvas',1);
+  }catch(e){ showToast('Erro: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✦ Cadastrar Avaliação';
+};
+window.deletarProva = async (id)=>{
+  if(!confirm('Remover esta avaliação?')) return;
+  await deleteDoc(doc(db,'provas',id));
+  showToast('Avaliação removida.'); await loadAdminData();
+};
+
+function provaCardHTML(p,isAdmin){
+  const del=isAdmin?`<button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:'';
+  const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋 Gabarito</a>`:'';
+  const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):'';
+  return `<div class="prova-card">
+    <div class="prova-card-header">
+      <span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span>
+      <span style="font-size:.75rem;color:var(--text-muted)">${data}</span>
+    </div>
+    <div class="prova-card-title">${p.titulo}</div>
+    <div class="prova-meta">
+      <span class="meta-pill">📅 ${p.ano}</span>
+      <span class="meta-pill">🏁 ${p.fase}</span>
+      <span class="meta-pill">📚 ${p.nivel}</span>
+    </div>
+    <div class="prova-card-actions">
+      <a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir Prova</a>${gab}${del}
+    </div>
+  </div>`;
+}
+function emptyState(msg){ return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${msg}</p></div>`; }
+function loadingHTML(){ return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`; }
+
+function renderStats(){
+  const anos=[...new Set(allProvas.map(p=>p.ano))];
+  document.getElementById('statProvas').textContent=allProvas.length;
+  document.getElementById('statOlimpiadas').textContent=allOlimpiadas.length;
+  document.getElementById('statAnos').textContent=anos.length;
+  document.getElementById('statGabarito').textContent=allProvas.filter(p=>p.gabarito).length;
+}
+function renderRecentGrid(){
+  const r=[...allProvas].sort((a,b)=>b.criadoEm>a.criadoEm?1:-1).slice(0,6);
+  document.getElementById('adminRecentGrid').innerHTML=r.length?r.map(p=>provaCardHTML(p,true)).join(''):emptyState('Nenhuma avaliação cadastrada. Use "Cadastrar Prova".');
+}
+function populateSelect(id,emptyLabel){
+  const sel=document.getElementById(id); if(!sel) return;
+  const val=sel.value;
+  sel.innerHTML=`<option value="">${emptyLabel}</option>`+allOlimpiadas.map(o=>`<option value="${o.id}">${o.nome}</option>`).join('');
+  sel.value=val;
+}
+function populateAnoSelect(id){
+  const anos=[...new Set(allProvas.map(p=>p.ano))].sort((a,b)=>b-a);
+  const sel=document.getElementById(id); if(!sel) return;
+  const val=sel.value;
+  sel.innerHTML='<option value="">Todos</option>'+anos.map(a=>`<option>${a}</option>`).join('');
+  sel.value=val;
+}
+
+window.applyTeacherFilters=()=>{
+  const search=document.getElementById('fSearch').value.toLowerCase();
+  const oid=document.getElementById('fOlimpiada').value;
+  const fase=document.getElementById('fFase').value;
+  const ano=document.getElementById('fAno').value;
+  const nivel=document.getElementById('fNivel').value;
+  const f=allProvas.filter(p=>{
+    if(oid&&p.olimpiadaId!==oid)return false;
+    if(fase&&p.fase!==fase)return false;
+    if(ano&&p.ano!==parseInt(ano))return false;
+    if(nivel&&p.nivel!==nivel)return false;
+    if(search&&!`${p.titulo} ${p.olimpiadaNome} ${p.fase}`.toLowerCase().includes(search))return false;
+    return true;
+  }).sort((a,b)=>b.ano-a.ano);
+  document.getElementById('teacherCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`;
+  document.getElementById('teacherGrid').innerHTML=f.length?f.map(p=>provaCardHTML(p,false)).join(''):emptyState('Tente ajustar os filtros.');
+};
+window.applyAdminFilters=()=>{
+  const search=document.getElementById('afSearch').value.toLowerCase();
+  const oid=document.getElementById('afOlimpiada').value;
+  const fase=document.getElementById('afFase').value;
+  const ano=document.getElementById('afAno').value;
+  const f=allProvas.filter(p=>{
+    if(oid&&p.olimpiadaId!==oid)return false;
+    if(fase&&p.fase!==fase)return false;
+    if(ano&&p.ano!==parseInt(ano))return false;
+    if(search&&!`${p.titulo} ${p.olimpiadaNome}`.toLowerCase().includes(search))return false;
+    return true;
+  }).sort((a,b)=>b.criadoEm>a.criadoEm?1:-1);
+  document.getElementById('adminCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`;
+  document.getElementById('adminGrid').innerHTML=f.length?f.map(p=>provaCardHTML(p,true)).join(''):emptyState('Nenhuma avaliação corresponde.');
+};
+
+let toastTimer;
+function showToast(msg,type){
+  const el=document.getElementById('toast');
+  el.innerHTML=(type==='error'?'✕ ':'✓ ')+msg;
+  el.className='toast show'+(type==='error'?' error':'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+}
+window.showToast=showToast;
+</script>
+</body>
+</html>
