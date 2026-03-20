@@ -305,6 +305,56 @@
   </div>
 </div>
 
+
+<!-- MODAL EDITAR PROVA -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal" style="max-width:560px">
+    <h2>✏️ Editar Avaliação</h2>
+    <p>Altere os campos desejados e salve</p>
+    <input type="hidden" id="editId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label class="form-label">Olimpíada *</label>
+        <select class="form-select modal-input" id="editOlimpiada" style="margin-bottom:0"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fase *</label>
+        <select class="form-select modal-input" id="editFase" style="margin-bottom:0">
+          <option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option>
+          <option>Final</option><option>Regional</option><option>Nacional</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ano *</label>
+        <input type="number" class="modal-input" id="editAno" style="margin-bottom:0" min="2000" max="2099">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nível *</label>
+        <select class="form-select modal-input" id="editNivel" style="margin-bottom:0">
+          <option>Fundamental I</option><option>Fundamental II</option>
+          <option>Médio</option><option>Superior</option><option>Misto</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Título</label>
+        <input type="text" class="modal-input" id="editTitulo" style="margin-bottom:0" placeholder="Título da prova">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Link da Prova *</label>
+        <input type="url" class="modal-input" id="editLink" style="margin-bottom:0" placeholder="https://1drv.ms/...">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Link do Gabarito</label>
+        <input type="url" class="modal-input" id="editGabarito" style="margin-bottom:0" placeholder="https://1drv.ms/... (opcional)">
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeEditModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarEdicao" onclick="salvarEdicao()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
 <!-- TEACHER -->
 <div class="screen" id="teacherScreen">
   <div class="topbar">
@@ -427,7 +477,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy }
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -499,6 +549,7 @@ window.checkAdmin=()=>{
 };
 document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===document.getElementById('adminModal')) window.closeAdminModal(); });
 document.getElementById('importModal').addEventListener('click',e=>{ if(e.target===document.getElementById('importModal')) window.closeImportModal(); });
+document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) window.closeEditModal(); });
 window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
 window.switchTab=(id,idx)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -516,6 +567,50 @@ async function loadAdminData(){ document.getElementById('adminRecentGrid').inner
 // ── CRUD Olimpiadas ────────────────────────
 window.cadastrarOlimpiada=async()=>{ const nome=document.getElementById('oNome').value.trim(); const desc=document.getElementById('oDesc').value.trim(); const area=document.getElementById('oArea').value; const color=parseInt(document.getElementById('oColor').value); if(!nome){showToast('Informe o nome','error');return;} const btn=document.getElementById('btnCadastrarOlimpiada'); btn.disabled=true;btn.textContent='Salvando...'; try{ await addDoc(collection(db,'olimpiadas'),{nome,desc,area,color}); document.getElementById('oNome').value='';document.getElementById('oDesc').value=''; showToast('Olimpíada cadastrada!'); await loadAdminData(); window.switchTab('tabOlimpiadas',4); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Cadastrar Olimpíada'; };
 window.deletarOlimpiada=async(id)=>{ if(!confirm('Remover?'))return; await deleteDoc(doc(db,'olimpiadas',id)); showToast('Removida.'); await loadAdminData(); };
+
+// ── Edit Prova ─────────────────────────────
+window.abrirEdicao = (p)=>{
+  document.getElementById('editId').value = p.id;
+  document.getElementById('editAno').value = p.ano;
+  document.getElementById('editFase').value = p.fase;
+  document.getElementById('editNivel').value = p.nivel;
+  document.getElementById('editTitulo').value = p.titulo;
+  document.getElementById('editLink').value = p.link;
+  document.getElementById('editGabarito').value = p.gabarito||'';
+  // populate olimpiada select
+  const sel = document.getElementById('editOlimpiada');
+  sel.innerHTML = allOlimpiadas.map(o=>`<option value="${o.id}" ${o.id===p.olimpiadaId?'selected':''}>${o.nome}</option>`).join('');
+  document.getElementById('editModal').classList.add('open');
+};
+window.closeEditModal = ()=>document.getElementById('editModal').classList.remove('open');
+window.salvarEdicao = async()=>{
+  const id = document.getElementById('editId').value;
+  const oid = document.getElementById('editOlimpiada').value;
+  const fase = document.getElementById('editFase').value;
+  const ano = parseInt(document.getElementById('editAno').value);
+  const nivel = document.getElementById('editNivel').value;
+  const titulo = document.getElementById('editTitulo').value.trim();
+  const link = document.getElementById('editLink').value.trim();
+  const gabarito = document.getElementById('editGabarito').value.trim();
+  if(!oid||!fase||!ano||!nivel||!link){ showToast('Preencha todos os campos obrigatórios','error'); return; }
+  const ol = allOlimpiadas.find(o=>o.id===oid);
+  if(!ol){ showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnSalvarEdicao');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    await updateDoc(doc(db,'provas',id),{
+      olimpiadaId:oid, olimpiadaNome:ol.nome, olimpiadaColor:ol.color,
+      fase, ano, nivel,
+      titulo: titulo||`${ol.nome} — ${fase} ${ano}`,
+      link, gabarito
+    });
+    window.closeEditModal();
+    showToast('Avaliação atualizada com sucesso!');
+    await loadAdminData();
+  }catch(e){ showToast('Erro: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✦ Salvar alterações';
+};
+
 function renderOlimpiadasList(){ const list=document.getElementById('olimpiadasList'); document.getElementById('oCount').textContent=allOlimpiadas.length; if(!allOlimpiadas.length){list.innerHTML='<p style="color:var(--text-muted);padding:20px 0">Nenhuma olimpíada cadastrada.</p>';return;} list.innerHTML=allOlimpiadas.map(o=>`<div class="olimpiada-item"><div class="olimpiada-info"><div class="olimpiada-color color-dot-${o.color}"></div><div><div class="olimpiada-name">${o.nome}</div><div class="olimpiada-area">${o.area}${o.desc?' · '+o.desc:''}</div></div></div><button class="btn-del" onclick="deletarOlimpiada('${o.id}')">🗑</button></div>`).join(''); }
 
 // ── CRUD Provas ────────────────────────────
@@ -534,7 +629,7 @@ window.confirmImport=async()=>{ const validas=importRows.filter(r=>r.status==='o
 
 // ── Render ─────────────────────────────────
 function provaRowHTML(p){ const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-open gab">📋 Gabarito</a>`:''; return `<div class="prova-row"><div class="prova-row-top"><span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span class="prova-row-title">${p.titulo}</span></div><div class="prova-row-bottom"><div class="prova-row-meta"><span class="prova-row-pill">📅 ${p.ano}</span><span class="prova-row-pill">🏁 ${p.fase}</span><span class="prova-row-pill">📚 ${p.nivel}</span></div><div class="prova-row-actions"><a href="${p.link}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}</div></div></div>`; }
-function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
+function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" onclick="abrirEdicao(${JSON.stringify(p).replace(/`/g,'&#96;').replace(/'/g,'&#39;')})" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
 function emptyState(msg){ return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${msg}</p></div>`; }
 function loadingHTML(){ return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`; }
 function renderStats(){ const anos=[...new Set(allProvas.map(p=>p.ano))]; document.getElementById('statProvas').textContent=allProvas.length; document.getElementById('statOlimpiadas').textContent=allOlimpiadas.length; document.getElementById('statAnos').textContent=anos.length; document.getElementById('statGabarito').textContent=allProvas.filter(p=>p.gabarito).length; }
