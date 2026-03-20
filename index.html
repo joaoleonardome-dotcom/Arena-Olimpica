@@ -297,6 +297,30 @@
   .color-dot-0{background:#f59e0b}.color-dot-1{background:#3b82f6}.color-dot-2{background:#10b981}
   .color-dot-3{background:#8b5cf6}.color-dot-4{background:#ef4444}.color-dot-5{background:#ec4899}
   .color-dot-6{background:#06b6d4}.color-dot-7{background:#f97316}
+
+  /* ── SETTINGS ── */
+  .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .settings-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow)}
+  .settings-panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1.5px solid var(--border)}
+  .settings-panel-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--text)}
+  .settings-panel-sub{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+  .settings-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:40px}
+  .settings-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg2);border-radius:9px;font-size:.86rem;color:var(--text);border:1.5px solid transparent;transition:border-color .15s}
+  .settings-item:hover{border-color:var(--border)}
+  .settings-item-del{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.9rem;padding:2px 6px;border-radius:5px;transition:all .15s;line-height:1}
+  .settings-item-del:hover{background:var(--dangerl);color:var(--danger)}
+  .settings-add{display:flex;gap:8px;align-items:center}
+  .settings-add-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;color:var(--text);font-size:.86rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s}
+  .settings-add-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
+  .settings-add-btn{padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;font-family:'DM Sans',sans-serif}
+  .settings-add-btn:hover{background:var(--accent-dark)}
+  .settings-empty{font-size:.82rem;color:var(--text-muted);text-align:center;padding:12px 0;font-style:italic}
+  .settings-pass-group{display:flex;flex-direction:column;gap:8px}
+  .settings-pass-input{background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:9px 13px;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+  .settings-pass-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
+  .settings-pass-btn{margin-top:4px;padding:10px;background:var(--accent);color:white;border:none;border-radius:9px;font-family:'Syne',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 1px 4px rgba(13,148,136,.2)}
+  .settings-pass-btn:hover{background:var(--accent-dark);transform:translateY(-1px)}
+
 </style>
 </head>
 <body>
@@ -419,6 +443,45 @@
   </div>
 </div>
 
+
+<!-- MODAL EDITAR OLIMPÍADA -->
+<div class="modal-overlay" id="editOlModal">
+  <div class="modal">
+    <h2>✏️ Editar Olimpíada</h2>
+    <p>Altere os campos e salve</p>
+    <input type="hidden" id="editOlId">
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Nome *</label>
+      <input type="text" class="modal-input" id="editOlNome" style="margin-bottom:0" placeholder="Ex: OBMEP">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Nome completo / Descrição</label>
+      <input type="text" class="modal-input" id="editOlDesc" style="margin-bottom:0" placeholder="Nome completo da olimpíada">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Área de conhecimento</label>
+      <select class="form-select modal-input" id="editOlArea" style="margin-bottom:0">
+        <option>Matemática</option><option>Ciências</option><option>Física</option>
+        <option>Química</option><option>Biologia</option><option>Computação/TI</option>
+        <option>Astronomia</option><option>Robótica</option><option>Multidisciplinar</option><option>Outra</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label class="form-label">Cor de destaque</label>
+      <select class="form-select modal-input" id="editOlColor" style="margin-bottom:0">
+        <option value="0">🟡 Dourado</option><option value="1">🔵 Azul</option>
+        <option value="2">🟢 Verde</option><option value="3">🟣 Roxo</option>
+        <option value="4">🔴 Vermelho</option><option value="5">🩷 Rosa</option>
+        <option value="6">🩵 Ciano</option><option value="7">🟠 Laranja</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeEditOlModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarEdicaoOl" onclick="salvarEdicaoOl()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
 <!-- TEACHER -->
 <div class="screen" id="teacherScreen">
   <div class="topbar">
@@ -461,6 +524,7 @@
     <div class="tab" onclick="switchTab('tabImportar',3)">📥 Importar</div>
     <div class="tab" onclick="switchTab('tabOlimpiadas',4)">🏅 Olimpíadas</div>
     <div class="tab" onclick="switchTab('tabCadastrarOlimpiada',5)">➕ Olimpíada</div>
+    <div class="tab" onclick="switchTab('tabConfiguracoes',6)">⚙️ Configurações</div>
   </div>
   <div class="content">
     <div class="tab-panel active" id="tabDashboard">
@@ -532,6 +596,75 @@
       </div>
     </div>
   </div>
+
+    <div class="tab-panel" id="tabConfiguracoes">
+      <div class="section-header"><h2 class="section-title">Configurações do Sistema</h2></div>
+      <div class="settings-grid">
+
+        <!-- ÁREAS -->
+        <div class="settings-panel">
+          <div class="settings-panel-header">
+            <div>
+              <div class="settings-panel-title">📚 Áreas de conhecimento</div>
+              <div class="settings-panel-sub">Usadas no cadastro de olimpíadas</div>
+            </div>
+          </div>
+          <div class="settings-list" id="listAreas"></div>
+          <div class="settings-add">
+            <input class="settings-add-input" id="inputNovaArea" placeholder="Nova área..." onkeydown="if(event.key==='Enter')addConfigItem('areas','inputNovaArea','listAreas')">
+            <button class="settings-add-btn" onclick="addConfigItem('areas','inputNovaArea','listAreas')">+ Adicionar</button>
+          </div>
+        </div>
+
+        <!-- NÍVEIS -->
+        <div class="settings-panel">
+          <div class="settings-panel-header">
+            <div>
+              <div class="settings-panel-title">🎯 Níveis</div>
+              <div class="settings-panel-sub">Usados no cadastro de provas</div>
+            </div>
+          </div>
+          <div class="settings-list" id="listNiveis"></div>
+          <div class="settings-add">
+            <input class="settings-add-input" id="inputNovoNivel" placeholder="Novo nível..." onkeydown="if(event.key==='Enter')addConfigItem('niveis','inputNovoNivel','listNiveis')">
+            <button class="settings-add-btn" onclick="addConfigItem('niveis','inputNovoNivel','listNiveis')">+ Adicionar</button>
+          </div>
+        </div>
+
+        <!-- FASES -->
+        <div class="settings-panel">
+          <div class="settings-panel-header">
+            <div>
+              <div class="settings-panel-title">🏁 Fases</div>
+              <div class="settings-panel-sub">Usadas no cadastro de provas</div>
+            </div>
+          </div>
+          <div class="settings-list" id="listFases"></div>
+          <div class="settings-add">
+            <input class="settings-add-input" id="inputNovaFase" placeholder="Nova fase..." onkeydown="if(event.key==='Enter')addConfigItem('fases','inputNovaFase','listFases')">
+            <button class="settings-add-btn" onclick="addConfigItem('fases','inputNovaFase','listFases')">+ Adicionar</button>
+          </div>
+        </div>
+
+        <!-- SENHA -->
+        <div class="settings-panel">
+          <div class="settings-panel-header">
+            <div>
+              <div class="settings-panel-title">🔐 Senha do administrador</div>
+              <div class="settings-panel-sub">Altere quando necessário</div>
+            </div>
+          </div>
+          <div class="settings-pass-group">
+            <input type="password" class="settings-pass-input" id="senhaAtual" placeholder="Senha atual">
+            <input type="password" class="settings-pass-input" id="senhaNova" placeholder="Nova senha">
+            <input type="password" class="settings-pass-input" id="senhaConfirm" placeholder="Confirmar nova senha">
+            <button class="settings-pass-btn" onclick="alterarSenha()">✦ Alterar senha</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -614,19 +747,21 @@ window.checkAdmin=()=>{
 document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===document.getElementById('adminModal')) window.closeAdminModal(); });
 document.getElementById('importModal').addEventListener('click',e=>{ if(e.target===document.getElementById('importModal')) window.closeImportModal(); });
 document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) window.closeEditModal(); });
+document.getElementById('editOlModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editOlModal')) window.closeEditOlModal(); });
 window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
 window.switchTab=(id,idx)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
+  if(id==='tabConfiguracoes') renderConfigLists();
 };
 
 // ── Firebase ───────────────────────────────
 async function loadOlimpiadas(){ const s=await getDocs(query(collection(db,'olimpiadas'),orderBy('nome'))); allOlimpiadas=s.docs.map(d=>({id:d.id,...d.data()})); }
 async function loadProvas(){ const s=await getDocs(query(collection(db,'provas'),orderBy('criadoEm','desc'))); allProvas=s.docs.map(d=>({id:d.id,...d.data()})); }
-async function loadTeacherData(){ document.getElementById('teacherGrid').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas()]); populateSelect('fOlimpiada','Todas'); populateAnoSelect('fAno'); applyTeacherFilters(); }
-async function loadAdminData(){ document.getElementById('adminRecentGrid').innerHTML=loadingHTML(); document.getElementById('olimpiadasList').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas()]); populateSelect('inputOlimpiada','Selecione...'); populateSelect('afOlimpiada','Todas'); populateAnoSelect('afAno'); renderOlimpiadasList(); renderStats(); renderRecentGrid(); applyAdminFilters(); }
+async function loadTeacherData(){ document.getElementById('teacherGrid').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas(),loadConfig()]); populateSelect('fOlimpiada','Todas'); populateAnoSelect('fAno'); refreshDynamicSelects(); applyTeacherFilters(); }
+async function loadAdminData(){ document.getElementById('adminRecentGrid').innerHTML=loadingHTML(); document.getElementById('olimpiadasList').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas(),loadConfig()]); populateSelect('inputOlimpiada','Selecione...'); populateSelect('afOlimpiada','Todas'); populateAnoSelect('afAno'); refreshDynamicSelects(); renderOlimpiadasList(); renderStats(); renderRecentGrid(); applyAdminFilters(); }
 
 // ── CRUD Olimpiadas ────────────────────────
 window.cadastrarOlimpiada=async()=>{ const nome=document.getElementById('oNome').value.trim(); const desc=document.getElementById('oDesc').value.trim(); const area=document.getElementById('oArea').value; const color=parseInt(document.getElementById('oColor').value); if(!nome){showToast('Informe o nome','error');return;} const btn=document.getElementById('btnCadastrarOlimpiada'); btn.disabled=true;btn.textContent='Salvando...'; try{ await addDoc(collection(db,'olimpiadas'),{nome,desc,area,color}); document.getElementById('oNome').value='';document.getElementById('oDesc').value=''; showToast('Olimpíada cadastrada!'); await loadAdminData(); window.switchTab('tabOlimpiadas',4); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Cadastrar Olimpíada'; };
@@ -681,7 +816,182 @@ window.salvarEdicao = async()=>{
   btn.disabled=false; btn.textContent='✦ Salvar alterações';
 };
 
-function renderOlimpiadasList(){ const list=document.getElementById('olimpiadasList'); document.getElementById('oCount').textContent=allOlimpiadas.length; if(!allOlimpiadas.length){list.innerHTML='<p style="color:var(--text-muted);padding:20px 0">Nenhuma olimpíada cadastrada.</p>';return;} list.innerHTML=allOlimpiadas.map(o=>`<div class="olimpiada-item"><div class="olimpiada-info"><div class="olimpiada-color color-dot-${o.color}"></div><div><div class="olimpiada-name">${o.nome}</div><div class="olimpiada-area">${o.area}${o.desc?' · '+o.desc:''}</div></div></div><button class="btn-del" onclick="deletarOlimpiada('${o.id}')">🗑</button></div>`).join(''); }
+
+
+// ── CONFIGURAÇÕES ──────────────────────────
+// Defaults que são gravados no Firebase na primeira vez
+const CONFIG_DEFAULTS = {
+  areas:  ['Matemática','Ciências','Física','Química','Biologia','Computação/TI','Astronomia','Robótica','Multidisciplinar','Outra'],
+  niveis: ['Nível 1','Nível 2','Nível 3','Nível Universitário','Nível P','Nível E','Nível B','Nível C','Nível J','Nível S'],
+  fases:  ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'],
+  senha:  'Arena123'
+};
+
+let configCache = null;
+
+async function loadConfig(){
+  try {
+    const snap = await getDocs(collection(db,'config'));
+    if(snap.empty){
+      // Primeira vez: grava os defaults
+      await addDoc(collection(db,'config'), CONFIG_DEFAULTS);
+      configCache = {...CONFIG_DEFAULTS};
+    } else {
+      configCache = {id: snap.docs[0].id, ...snap.docs[0].data()};
+    }
+  } catch(e) {
+    configCache = {...CONFIG_DEFAULTS};
+  }
+  return configCache;
+}
+
+async function saveConfig(updates){
+  const cfg = await loadConfig();
+  const merged = {...cfg, ...updates};
+  if(cfg.id){
+    await updateDoc(doc(db,'config',cfg.id), updates);
+  }
+  configCache = merged;
+  return merged;
+}
+
+async function renderConfigLists(){
+  const cfg = await loadConfig();
+
+  const renderList = (listId, key) => {
+    const el = document.getElementById(listId);
+    if(!el) return;
+    const items = cfg[key] || [];
+    if(!items.length){ el.innerHTML = '<div class="settings-empty">Nenhum item cadastrado</div>'; return; }
+    el.innerHTML = items.map((item,i) => `
+      <div class="settings-item">
+        <span>${item}</span>
+        <button class="settings-item-del" onclick="removeConfigItem('${key}',${i},'${listId}')" title="Remover">✕</button>
+      </div>`).join('');
+  };
+
+  renderList('listAreas','areas');
+  renderList('listNiveis','niveis');
+  renderList('listFases','fases');
+  refreshDynamicSelects();
+}
+
+window.addConfigItem = async (key, inputId, listId) => {
+  const inp = document.getElementById(inputId);
+  const val = inp.value.trim();
+  if(!val){ showToast('Digite um valor','error'); return; }
+  const cfg = await loadConfig();
+  const arr = [...(cfg[key]||[])];
+  if(arr.includes(val)){ showToast('Já existe!','error'); return; }
+  arr.push(val);
+  await saveConfig({[key]: arr});
+  inp.value = '';
+  showToast('Adicionado com sucesso!');
+  renderConfigLists();
+};
+
+window.removeConfigItem = async (key, idx, listId) => {
+  if(!confirm('Remover este item?')) return;
+  const cfg = await loadConfig();
+  const arr = [...(cfg[key]||[])];
+  arr.splice(idx,1);
+  await saveConfig({[key]: arr});
+  showToast('Removido.');
+  renderConfigLists();
+};
+
+window.alterarSenha = async () => {
+  const atual = document.getElementById('senhaAtual').value;
+  const nova  = document.getElementById('senhaNova').value.trim();
+  const conf  = document.getElementById('senhaConfirm').value.trim();
+  const cfg = await loadConfig();
+  const senhaCorreta = cfg.senha || CONFIG_DEFAULTS.senha;
+  if(atual !== senhaCorreta){ showToast('Senha atual incorreta','error'); return; }
+  if(!nova){ showToast('Digite a nova senha','error'); return; }
+  if(nova !== conf){ showToast('As senhas não coincidem','error'); return; }
+  if(nova.length < 6){ showToast('A senha deve ter ao menos 6 caracteres','error'); return; }
+  await saveConfig({senha: nova});
+  document.getElementById('senhaAtual').value='';
+  document.getElementById('senhaNova').value='';
+  document.getElementById('senhaConfirm').value='';
+  showToast('Senha alterada com sucesso!');
+};
+
+function refreshDynamicSelects(){
+  const cfg = configCache || CONFIG_DEFAULTS;
+
+  // Áreas — cadastro e edição de olimpíadas
+  const areaOpts = (cfg.areas||[]).map(a=>`<option>${a}</option>`).join('');
+  ['oArea','editOlArea'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    const val = el.value;
+    el.innerHTML = areaOpts;
+    el.value = val;
+  });
+
+  // Níveis — cadastro, edição de provas, filtro professor, filtro admin
+  const nivelOptsForm = '<option value="">Selecione...</option>' + (cfg.niveis||[]).map(n=>`<option>${n}</option>`).join('');
+  const nivelOptsFilter = '<option value="">Todos</option>' + (cfg.niveis||[]).map(n=>`<option>${n}</option>`).join('');
+  const nivelOptsEdit = (cfg.niveis||[]).map(n=>`<option>${n}</option>`).join('');
+  const el_inputNivel = document.getElementById('inputNivel');
+  if(el_inputNivel){ const v=el_inputNivel.value; el_inputNivel.innerHTML=nivelOptsForm; el_inputNivel.value=v; }
+  const el_editNivel = document.getElementById('editNivel');
+  if(el_editNivel){ const v=el_editNivel.value; el_editNivel.innerHTML=nivelOptsEdit; el_editNivel.value=v; }
+  const el_fNivel = document.getElementById('fNivel');
+  if(el_fNivel){ const v=el_fNivel.value; el_fNivel.innerHTML=nivelOptsFilter; el_fNivel.value=v; }
+
+  // Fases — cadastro, edição de provas, filtros
+  const faseOptsForm = '<option value="">Selecione...</option>' + (cfg.fases||[]).map(f=>`<option>${f}</option>`).join('');
+  const faseOptsFilter = '<option value="">Todas</option>' + (cfg.fases||[]).map(f=>`<option>${f}</option>`).join('');
+  const faseOptsEdit = (cfg.fases||[]).map(f=>`<option>${f}</option>`).join('');
+  ['inputFase'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; const v=el.value; el.innerHTML=faseOptsForm; el.value=v; });
+  ['editFase'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; const v=el.value; el.innerHTML=faseOptsEdit; el.value=v; });
+  ['fFase','afFase'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; const v=el.value; el.innerHTML=faseOptsFilter; el.value=v; });
+}
+
+// Override checkAdmin to use dynamic password
+const _origCheckAdmin = window.checkAdmin;
+window.checkAdmin = async () => {
+  const cfg = await loadConfig();
+  const senhaCorreta = cfg.senha || CONFIG_DEFAULTS.senha;
+  if(document.getElementById('adminPass').value === senhaCorreta){
+    window.closeAdminModal(); showScreen('adminScreen'); loadAdminData();
+  } else {
+    document.getElementById('adminError').style.display='block';
+    document.getElementById('adminPass').select();
+  }
+};
+
+
+// ── Edit Olimpíada ──────────────────────────
+window.abrirEdicaoOl = (o)=>{
+  document.getElementById('editOlId').value = o.id;
+  document.getElementById('editOlNome').value = o.nome;
+  document.getElementById('editOlDesc').value = o.desc||'';
+  document.getElementById('editOlArea').value = o.area;
+  document.getElementById('editOlColor').value = o.color;
+  document.getElementById('editOlModal').classList.add('open');
+};
+window.closeEditOlModal = ()=>document.getElementById('editOlModal').classList.remove('open');
+window.salvarEdicaoOl = async()=>{
+  const id = document.getElementById('editOlId').value;
+  const nome = document.getElementById('editOlNome').value.trim();
+  const desc = document.getElementById('editOlDesc').value.trim();
+  const area = document.getElementById('editOlArea').value;
+  const color = parseInt(document.getElementById('editOlColor').value);
+  if(!nome){ showToast('Informe o nome da olimpíada','error'); return; }
+  const btn = document.getElementById('btnSalvarEdicaoOl');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    await updateDoc(doc(db,'olimpiadas',id),{nome,desc,area,color});
+    window.closeEditOlModal();
+    showToast('Olimpíada atualizada com sucesso!');
+    await loadAdminData();
+  }catch(e){ showToast('Erro: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✦ Salvar alterações';
+};
+
+function renderOlimpiadasList(){ const list=document.getElementById('olimpiadasList'); document.getElementById('oCount').textContent=allOlimpiadas.length; if(!allOlimpiadas.length){list.innerHTML='<p style="color:var(--text-muted);padding:20px 0">Nenhuma olimpíada cadastrada.</p>';return;} list.innerHTML=allOlimpiadas.map(o=>`<div class="olimpiada-item"><div class="olimpiada-info"><div class="olimpiada-color color-dot-${o.color}"></div><div><div class="olimpiada-name">${o.nome}</div><div class="olimpiada-area">${o.area}${o.desc?' · '+o.desc:''}</div></div></div><button class="btn-del" data-ol='${JSON.stringify(o).replace(/'/g,"&apos;")}' onclick="abrirEdicaoOl(JSON.parse(this.dataset.ol))" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarOlimpiada('${o.id}')">🗑</button></div>`).join(''); }
 
 // ── CRUD Provas ────────────────────────────
 window.cadastrarProva=async()=>{ const oid=document.getElementById('inputOlimpiada').value; const fase=document.getElementById('inputFase').value; const ano=document.getElementById('inputAno').value; const nivel=document.getElementById('inputNivel').value; const titulo=document.getElementById('inputTitulo').value.trim(); const link=document.getElementById('inputLink').value.trim(); const gabarito=document.getElementById('inputGabarito').value.trim(); if(!oid||!fase||!ano||!nivel||!link){showToast('Preencha os campos obrigatórios (*)','error');return;} const ol=allOlimpiadas.find(o=>o.id===oid); if(!ol){showToast('Olimpíada não encontrada','error');return;} const btn=document.getElementById('btnCadastrarProva'); btn.disabled=true;btn.textContent='Salvando...'; try{ await addDoc(collection(db,'provas'),{olimpiadaId:oid,olimpiadaNome:ol.nome,olimpiadaColor:ol.color,fase,ano:parseInt(ano),nivel,titulo:titulo||`${ol.nome} — ${fase} ${ano}`,link,gabarito,criadoEm:new Date().toISOString()}); ['inputOlimpiada','inputFase','inputNivel'].forEach(id=>document.getElementById(id).value=''); ['inputAno','inputTitulo','inputLink','inputGabarito'].forEach(id=>document.getElementById(id).value=''); showToast('Avaliação cadastrada!'); await loadAdminData(); window.switchTab('tabProvas',1); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Cadastrar Avaliação'; };
