@@ -1,4 +1,4 @@
-const CACHE = 'arena-olimpica-v4';
+const CACHE = 'arena-olimpica-v5';
 const STATIC = ['./icon-192.png', './icon-512.png', './manifest.json'];
 
 // Instala e cacheia só os ícones/manifest (não o HTML)
