@@ -569,6 +569,12 @@ window.cadastrarOlimpiada=async()=>{ const nome=document.getElementById('oNome')
 window.deletarOlimpiada=async(id)=>{ if(!confirm('Remover?'))return; await deleteDoc(doc(db,'olimpiadas',id)); showToast('Removida.'); await loadAdminData(); };
 
 // ── Edit Prova ─────────────────────────────
+window.abrirEdicaoPorId = (btn)=>{
+  const id = btn.getAttribute('data-id');
+  const p = allProvas.find(x => x.id === id);
+  if(!p){ showToast('Prova não encontrada','error'); return; }
+  window.abrirEdicao(p);
+};
 window.abrirEdicao = (p)=>{
   document.getElementById('editId').value = p.id;
   document.getElementById('editAno').value = p.ano;
@@ -629,7 +635,7 @@ window.confirmImport=async()=>{ const validas=importRows.filter(r=>r.status==='o
 
 // ── Render ─────────────────────────────────
 function provaRowHTML(p){ const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-open gab">📋 Gabarito</a>`:''; return `<div class="prova-row"><div class="prova-row-top"><span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span class="prova-row-title">${p.titulo}</span></div><div class="prova-row-bottom"><div class="prova-row-meta"><span class="prova-row-pill">📅 ${p.ano}</span><span class="prova-row-pill">🏁 ${p.fase}</span><span class="prova-row-pill">📚 ${p.nivel}</span></div><div class="prova-row-actions"><a href="${p.link}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}</div></div></div>`; }
-function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" onclick="abrirEdicao(${JSON.stringify(p).replace(/`/g,'&#96;').replace(/'/g,'&#39;')})" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
+function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" data-id="${p.id}" onclick="abrirEdicaoPorId(this)" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
 function emptyState(msg){ return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${msg}</p></div>`; }
 function loadingHTML(){ return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`; }
 function renderStats(){ const anos=[...new Set(allProvas.map(p=>p.ano))]; document.getElementById('statProvas').textContent=allProvas.length; document.getElementById('statOlimpiadas').textContent=allOlimpiadas.length; document.getElementById('statAnos').textContent=anos.length; document.getElementById('statGabarito').textContent=allProvas.filter(p=>p.gabarito).length; }
