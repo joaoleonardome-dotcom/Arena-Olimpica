@@ -264,7 +264,7 @@
       <div class="entry-card teacher" onclick="enterTeacher()">
         <span class="card-badge">Acesso livre</span>
         <div class="card-icon">👩‍🏫</div>
-        <div class="card-label">Professores</div>
+        <div class="card-label">Professores e Alunos</div>
         <p class="card-desc">Consulte provas e gabaritos com filtros por olimpíada, fase, ano e nível.</p>
       </div>
       <div class="entry-card admin" onclick="openAdminModal()">
@@ -331,8 +331,7 @@
       <div class="form-group">
         <label class="form-label">Nível *</label>
         <select class="form-select modal-input" id="editNivel" style="margin-bottom:0">
-          <option>Fundamental I</option><option>Fundamental II</option>
-          <option>Médio</option><option>Superior</option><option>Misto</option>
+          <option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option>
         </select>
       </div>
       <div class="form-group" style="grid-column:1/-1">
@@ -374,7 +373,7 @@
       <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="applyTeacherFilters()"><option value="">Todas</option></select></div>
       <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
       <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
-      <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Fundamental I</option><option>Fundamental II</option><option>Médio</option><option>Superior</option><option>Misto</option></select></div>
+      <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
     </div>
     <div class="provas-list" id="teacherGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando avaliações...</span></div></div>
   </div>
@@ -428,7 +427,7 @@
           <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select" id="inputOlimpiada"><option value="">Selecione...</option></select></div>
           <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="inputFase"><option value="">Selecione...</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
           <div class="form-group"><label class="form-label">Ano *</label><input type="number" class="form-input" id="inputAno" placeholder="Ex: 2024" min="2000" max="2099"></div>
-          <div class="form-group"><label class="form-label">Nível *</label><select class="form-select" id="inputNivel"><option value="">Selecione...</option><option>Fundamental I</option><option>Fundamental II</option><option>Médio</option><option>Superior</option><option>Misto</option></select></div>
+          <div class="form-group"><label class="form-label">Nível *</label><select class="form-select" id="inputNivel"><option value="">Selecione...</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
           <div class="form-group full"><label class="form-label">Título / Descrição</label><input type="text" class="form-input" id="inputTitulo" placeholder="Ex: Prova Nível 2 — 1ª Fase 2024"></div>
           <div class="form-group full"><label class="form-label">Link da Prova (OneDrive) *</label><input type="url" class="form-input" id="inputLink" placeholder="https://1drv.ms/..."></div>
           <div class="form-group full"><label class="form-label">Link do Gabarito (OneDrive)</label><input type="url" class="form-input" id="inputGabarito" placeholder="https://1drv.ms/... (opcional)"></div>
