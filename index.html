@@ -320,7 +320,7 @@
       <div class="form-group">
         <label class="form-label">Fase *</label>
         <select class="form-select modal-input" id="editFase" style="margin-bottom:0">
-          <option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option>
+          <option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option>
           <option>Final</option><option>Regional</option><option>Nacional</option>
         </select>
       </div>
@@ -371,7 +371,7 @@
     <div class="filter-bar">
       <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="fSearch" placeholder="Pesquisar..." oninput="applyTeacherFilters()"></div>
       <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="applyTeacherFilters()"><option value="">Todas</option></select></div>
-      <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+      <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
       <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
       <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
     </div>
@@ -414,7 +414,7 @@
       <div class="filter-bar">
         <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="afSearch" placeholder="Pesquisar..." oninput="applyAdminFilters()"></div>
         <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="afOlimpiada" onchange="applyAdminFilters()"><option value="">Todas</option></select></div>
-        <div class="filter-group"><label>Fase</label><select class="filter-select" id="afFase" onchange="applyAdminFilters()"><option value="">Todas</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+        <div class="filter-group"><label>Fase</label><select class="filter-select" id="afFase" onchange="applyAdminFilters()"><option value="">Todas</option><option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
         <div class="filter-group"><label>Ano</label><select class="filter-select" id="afAno" onchange="applyAdminFilters()"><option value="">Todos</option></select></div>
       </div>
       <div class="cards-grid" id="adminGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div></div>
@@ -425,7 +425,7 @@
         <p class="form-title">📝 Nova Avaliação</p>
         <div class="form-grid">
           <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select" id="inputOlimpiada"><option value="">Selecione...</option></select></div>
-          <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="inputFase"><option value="">Selecione...</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
+          <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="inputFase"><option value="">Selecione...</option><option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
           <div class="form-group"><label class="form-label">Ano *</label><input type="number" class="form-input" id="inputAno" placeholder="Ex: 2024" min="2000" max="2099"></div>
           <div class="form-group"><label class="form-label">Nível *</label><select class="form-select" id="inputNivel"><option value="">Selecione...</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
           <div class="form-group full"><label class="form-label">Título / Descrição</label><input type="text" class="form-input" id="inputTitulo" placeholder="Ex: Prova Nível 2 — 1ª Fase 2024"></div>
