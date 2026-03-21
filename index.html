@@ -119,6 +119,8 @@
   /* Arrow indicator */
   .card-arrow{position:absolute;bottom:20px;right:20px;width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--text-muted);transition:all .2s}
   .entry-card:hover .card-arrow{background:var(--accent);color:white;transform:translateX(2px)}
+  .card-counter{display:flex;align-items:center;gap:6px;padding-top:12px;margin-top:12px;border-top:1px solid var(--border);font-size:.76rem;color:var(--text-muted)}
+  .card-counter strong{color:var(--text-dim);font-weight:600}
 
   /* Theme toggle */
   .theme-toggle{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:6px 12px;cursor:pointer;font-size:.82rem;transition:all .2s;color:var(--text-dim);box-shadow:var(--shadow);font-family:'DM Sans',sans-serif}
@@ -180,6 +182,8 @@
   .prova-row-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
   .prova-row-pill{font-size:.69rem;padding:3px 8px;border-radius:20px;background:var(--bg2);color:var(--text-muted);border:1px solid var(--border);white-space:nowrap;font-weight:500}
   .prova-row-actions{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0}
+  .badge-novo{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;flex-shrink:0;animation:badgePulse 2s ease-in-out infinite}
+  @keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
   .btn-open{padding:7px 15px;border-radius:9px;font-size:.77rem;font-weight:600;border:none;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:white;white-space:nowrap;box-shadow:0 1px 3px rgba(13,148,136,.25)}
   .btn-open:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 3px 8px rgba(13,148,136,.3)}
   .btn-open.gab{background:var(--accent3);box-shadow:0 1px 3px rgba(5,150,105,.25)}.btn-open.gab:hover{background:#047857;box-shadow:0 3px 8px rgba(5,150,105,.3)}
@@ -355,6 +359,7 @@
         <div class="card-icon">👩‍🏫</div>
         <div class="card-label">Professores e Alunos</div>
         <p class="card-desc">Consulte provas e gabaritos com filtros por olimpíada, fase, ano e nível.</p>
+        <div class="card-counter" id="landingCounter"><strong>–</strong> provas em <strong>–</strong> olimpíadas</div>
         <div class="card-arrow">→</div>
       </div>
       <div class="entry-card admin" onclick="openAdminModal()">
@@ -372,7 +377,7 @@
 <div class="modal-overlay" id="adminModal">
   <div class="modal">
     <h2>🔐 Acesso Administrativo</h2>
-    <p>Digite a senha para continuar</p>
+    <p id="adminModalSub">Digite a senha para continuar</p>
     <input type="password" class="modal-input" id="adminPass" placeholder="Senha" onkeydown="if(event.key==='Enter')checkAdmin()">
     <p class="modal-error" id="adminError">Senha incorreta. Tente novamente.</p>
     <div class="modal-btns">
@@ -688,7 +693,7 @@ const firebaseConfig = {
   appId: "1:327202060363:web:4b02b7021ab6ed266735ce"
 };
 
-const ADMIN_PASS = 'Arena123';
+// Senha gerenciada exclusivamente pelo Firestore
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 let allProvas=[], allOlimpiadas=[], importRows=[], deferredPrompt=null;
@@ -742,15 +747,27 @@ function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.class
 window.logout=()=>showScreen('landing');
 window.openAdminModal=()=>{ document.getElementById('adminModal').classList.add('open'); document.getElementById('adminPass').value=''; document.getElementById('adminError').style.display='none'; setTimeout(()=>document.getElementById('adminPass').focus(),100); };
 window.closeAdminModal=()=>document.getElementById('adminModal').classList.remove('open');
-window.checkAdmin=()=>{
-  if(document.getElementById('adminPass').value===ADMIN_PASS){ window.closeAdminModal(); showScreen('adminScreen'); loadAdminData(); }
-  else{ document.getElementById('adminError').style.display='block'; document.getElementById('adminPass').select(); }
-};
+// checkAdmin definido abaixo via Firestore
 document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===document.getElementById('adminModal')) window.closeAdminModal(); });
 document.getElementById('importModal').addEventListener('click',e=>{ if(e.target===document.getElementById('importModal')) window.closeImportModal(); });
 document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) window.closeEditModal(); });
 document.getElementById('editOlModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editOlModal')) window.closeEditOlModal(); });
 window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
+
+// Carrega contador da landing page
+async function loadLandingCounter(){
+  try {
+    const [snapProvas, snapOl] = await Promise.all([
+      getDocs(collection(db,'provas')),
+      getDocs(collection(db,'olimpiadas'))
+    ]);
+    const total = snapProvas.size;
+    const ol    = snapOl.size;
+    const el = document.getElementById('landingCounter');
+    if(el) el.innerHTML = `<strong>${total}</strong> prova${total!==1?'s':''} em <strong>${ol}</strong> olimpíada${ol!==1?'s':''}`;
+  } catch(e){ /* silencioso */ }
+}
+loadLandingCounter();
 window.switchTab=(id,idx)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -826,7 +843,7 @@ const CONFIG_DEFAULTS = {
   areas:  ['Matemática','Ciências','Física','Química','Biologia','Computação/TI','Astronomia','Robótica','Multidisciplinar','Outra'],
   niveis: ['Nível 1','Nível 2','Nível 3','Nível Universitário','Nível P','Nível E','Nível B','Nível C','Nível J','Nível S'],
   fases:  ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'],
-  senha:  'Arena123'
+  senha:  '' // definida pelo administrador via painel
 };
 
 let configCache = null;
@@ -836,13 +853,14 @@ async function loadConfig(){
     const snap = await getDocs(collection(db,'config'));
     if(snap.empty){
       // Primeira vez: grava os defaults
-      await addDoc(collection(db,'config'), CONFIG_DEFAULTS);
-      configCache = {...CONFIG_DEFAULTS};
+      const firstConfig = {areas:CONFIG_DEFAULTS.areas, niveis:CONFIG_DEFAULTS.niveis, fases:CONFIG_DEFAULTS.fases, senha:''};
+      await addDoc(collection(db,'config'), firstConfig);
+      configCache = {...firstConfig};
     } else {
       configCache = {id: snap.docs[0].id, ...snap.docs[0].data()};
     }
   } catch(e) {
-    configCache = {...CONFIG_DEFAULTS};
+    configCache = {areas:CONFIG_DEFAULTS.areas, niveis:CONFIG_DEFAULTS.niveis, fases:CONFIG_DEFAULTS.fases, senha:''};
   }
   return configCache;
 }
@@ -907,7 +925,7 @@ window.alterarSenha = async () => {
   const nova  = document.getElementById('senhaNova').value.trim();
   const conf  = document.getElementById('senhaConfirm').value.trim();
   const cfg = await loadConfig();
-  const senhaCorreta = cfg.senha || CONFIG_DEFAULTS.senha;
+  const senhaCorreta = cfg.senha || '';
   if(atual !== senhaCorreta){ showToast('Senha atual incorreta','error'); return; }
   if(!nova){ showToast('Digite a nova senha','error'); return; }
   if(nova !== conf){ showToast('As senhas não coincidem','error'); return; }
@@ -951,14 +969,21 @@ function refreshDynamicSelects(){
   ['fFase','afFase'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; const v=el.value; el.innerHTML=faseOptsFilter; el.value=v; });
 }
 
-// Override checkAdmin to use dynamic password
-const _origCheckAdmin = window.checkAdmin;
+// Autenticação via Firestore — senha não exposta no código
 window.checkAdmin = async () => {
   const cfg = await loadConfig();
-  const senhaCorreta = cfg.senha || CONFIG_DEFAULTS.senha;
+  const senhaCorreta = cfg.senha || '';
+  if(!senhaCorreta){
+    document.getElementById('adminError').textContent = 'Nenhuma senha configurada. Acesse o Firestore para definir.';
+    document.getElementById('adminError').style.display='block';
+    return;
+  }
   if(document.getElementById('adminPass').value === senhaCorreta){
-    window.closeAdminModal(); showScreen('adminScreen'); loadAdminData();
+    window.closeAdminModal();
+    showScreen('adminScreen');
+    loadAdminData();
   } else {
+    document.getElementById('adminError').textContent = 'Senha incorreta. Tente novamente.';
     document.getElementById('adminError').style.display='block';
     document.getElementById('adminPass').select();
   }
@@ -1010,7 +1035,7 @@ window.closeImportModal=()=>document.getElementById('importModal').classList.rem
 window.confirmImport=async()=>{ const validas=importRows.filter(r=>r.status==='ok'); const btn=document.getElementById('btnConfirmImport'); btn.disabled=true;btn.textContent='Importando...'; try{ for(const r of validas){ await addDoc(collection(db,'provas'),{olimpiadaId:r.ol.id,olimpiadaNome:r.ol.nome,olimpiadaColor:r.ol.color,fase:r.fase,ano:r.ano,nivel:r.nivel,titulo:r.titulo||`${r.ol.nome} — ${r.fase} ${r.ano}`,link:r.link,gabarito:r.gabarito||'',criadoEm:new Date().toISOString()}); } showToast(`${validas.length} avaliações importadas!`); window.closeImportModal(); await loadAdminData(); window.switchTab('tabProvas',1); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Importar válidos'; };
 
 // ── Render ─────────────────────────────────
-function provaRowHTML(p){ const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-open gab">📋 Gabarito</a>`:''; return `<div class="prova-row"><div class="prova-row-top"><span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span class="prova-row-title">${p.titulo}</span></div><div class="prova-row-bottom"><div class="prova-row-meta"><span class="prova-row-pill">📅 ${p.ano}</span><span class="prova-row-pill">🏁 ${p.fase}</span><span class="prova-row-pill">📚 ${p.nivel}</span></div><div class="prova-row-actions"><a href="${p.link}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}</div></div></div>`; }
+function provaRowHTML(p){ const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-open gab">📋 Gabarito</a>`:''; const isNovo=p.ano>=2026; const badgeNovo=isNovo?'<span class="badge-novo">✦ Novo</span>':''; return `<div class="prova-row"><div class="prova-row-top"><span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span class="prova-row-title">${p.titulo}</span>${badgeNovo}</div><div class="prova-row-bottom"><div class="prova-row-meta"><span class="prova-row-pill">📅 ${p.ano}</span><span class="prova-row-pill">🏁 ${p.fase}</span><span class="prova-row-pill">📚 ${p.nivel}</span></div><div class="prova-row-actions"><a href="${p.link}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}</div></div></div>`; }
 function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" data-id="${p.id}" onclick="abrirEdicaoPorId(this)" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
 function emptyState(msg){ return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${msg}</p></div>`; }
 function loadingHTML(){ return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`; }
