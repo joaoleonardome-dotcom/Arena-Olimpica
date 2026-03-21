@@ -500,7 +500,7 @@
     </div>
     <div class="filter-bar">
       <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="fSearch" placeholder="Pesquisar..." oninput="applyTeacherFilters()"></div>
-      <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="applyTeacherFilters()"><option value="">Todas</option></select></div>
+      <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="onOlimpiadaChange()"><option value="">Todas</option></select></div>
       <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
       <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
       <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
@@ -1020,7 +1020,59 @@ function populateSelect(id,lbl){ const sel=document.getElementById(id);if(!sel)r
 function populateAnoSelect(id){ const anos=[...new Set(allProvas.map(p=>p.ano))].sort((a,b)=>b-a); const sel=document.getElementById(id);if(!sel)return; const val=sel.value; sel.innerHTML='<option value="">Todos</option>'+anos.map(a=>`<option>${a}</option>`).join(''); sel.value=val; }
 
 // ── Filters ────────────────────────────────
-window.applyTeacherFilters=()=>{ const s=document.getElementById('fSearch').value.toLowerCase(); const oid=document.getElementById('fOlimpiada').value; const fase=document.getElementById('fFase').value; const ano=document.getElementById('fAno').value; const nivel=document.getElementById('fNivel').value; const f=allProvas.filter(p=>{ if(oid&&p.olimpiadaId!==oid)return false; if(fase&&p.fase!==fase)return false; if(ano&&p.ano!==parseInt(ano))return false; if(nivel&&p.nivel!==nivel)return false; if(s&&!`${p.titulo} ${p.olimpiadaNome} ${p.fase}`.toLowerCase().includes(s))return false; return true; }).sort((a,b)=>b.ano-a.ano); document.getElementById('teacherCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`; document.getElementById('teacherGrid').innerHTML=f.length?f.map(p=>provaRowHTML(p)).join(''):emptyState('Tente ajustar os filtros.'); };
+window.onOlimpiadaChange=()=>{
+  // Reseta os outros filtros ao trocar de olimpíada
+  document.getElementById('fFase').value  = '';
+  document.getElementById('fAno').value   = '';
+  document.getElementById('fNivel').value = '';
+  applyTeacherFilters();
+};
+
+window.applyTeacherFilters=()=>{
+  const s     = document.getElementById('fSearch').value.toLowerCase();
+  const oid   = document.getElementById('fOlimpiada').value;
+  const fase  = document.getElementById('fFase').value;
+  const ano   = document.getElementById('fAno').value;
+  const nivel = document.getElementById('fNivel').value;
+
+  // Provas da olimpíada selecionada (ou todas)
+  const provasDaOlimpiada = oid ? allProvas.filter(p=>p.olimpiadaId===oid) : allProvas;
+
+  // Atualiza filtros dependentes com base na olimpíada selecionada
+  const fases  = [...new Set(provasDaOlimpiada.map(p=>p.fase))].sort();
+  const anos   = [...new Set(provasDaOlimpiada.map(p=>p.ano))].sort((a,b)=>b-a);
+  const niveis = [...new Set(provasDaOlimpiada.map(p=>p.nivel))].sort();
+
+  const selFase  = document.getElementById('fFase');
+  const selAno   = document.getElementById('fAno');
+  const selNivel = document.getElementById('fNivel');
+
+  const vFase  = selFase.value;
+  const vAno   = selAno.value;
+  const vNivel = selNivel.value;
+
+  selFase.innerHTML  = '<option value="">Todas</option>'  + fases.map(f=>`<option>${f}</option>`).join('');
+  selAno.innerHTML   = '<option value="">Todos</option>'  + anos.map(a=>`<option>${a}</option>`).join('');
+  selNivel.innerHTML = '<option value="">Todos</option>'  + niveis.map(n=>`<option>${n}</option>`).join('');
+
+  // Mantém seleção se ainda válida
+  if(fases.includes(vFase))   selFase.value  = vFase;
+  if(anos.map(String).includes(vAno)) selAno.value = vAno;
+  if(niveis.includes(vNivel)) selNivel.value = vNivel;
+
+  // Filtra provas com todos os critérios
+  const f = allProvas.filter(p=>{
+    if(oid   && p.olimpiadaId!==oid)           return false;
+    if(selFase.value  && p.fase!==selFase.value)           return false;
+    if(selAno.value   && p.ano!==parseInt(selAno.value))   return false;
+    if(selNivel.value && p.nivel!==selNivel.value)         return false;
+    if(s && !`${p.titulo} ${p.olimpiadaNome} ${p.fase}`.toLowerCase().includes(s)) return false;
+    return true;
+  }).sort((a,b)=>b.ano-a.ano);
+
+  document.getElementById('teacherCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`;
+  document.getElementById('teacherGrid').innerHTML=f.length?f.map(p=>provaRowHTML(p)).join(''):emptyState('Tente ajustar os filtros.');
+};
 window.applyAdminFilters=()=>{ const s=document.getElementById('afSearch').value.toLowerCase(); const oid=document.getElementById('afOlimpiada').value; const fase=document.getElementById('afFase').value; const ano=document.getElementById('afAno').value; const f=allProvas.filter(p=>{ if(oid&&p.olimpiadaId!==oid)return false; if(fase&&p.fase!==fase)return false; if(ano&&p.ano!==parseInt(ano))return false; if(s&&!`${p.titulo} ${p.olimpiadaNome}`.toLowerCase().includes(s))return false; return true; }).sort((a,b)=>b.criadoEm>a.criadoEm?1:-1); document.getElementById('adminCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`; document.getElementById('adminGrid').innerHTML=f.length?f.map(p=>provaCardHTML(p,true)).join(''):emptyState('Nenhuma avaliação corresponde.'); };
 
 // ── Toast ──────────────────────────────────
