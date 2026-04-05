@@ -302,7 +302,70 @@
   .color-dot-3{background:#8b5cf6}.color-dot-4{background:#ef4444}.color-dot-5{background:#ec4899}
   .color-dot-6{background:#06b6d4}.color-dot-7{background:#f97316}
 
-  /* ── SETTINGS ── */
+  /* ── TEACHER LAYOUT COM DATAS ── */
+  .teacher-layout{display:grid;grid-template-columns:1fr 2fr 1fr;gap:20px;align-items:start}
+  @media(max-width:1100px){.teacher-layout{grid-template-columns:1fr 1fr}}
+  @media(max-width:700px){.teacher-layout{grid-template-columns:1fr}}
+  .teacher-main{min-width:0}
+  .datas-sidebar{display:flex;flex-direction:column;gap:14px}
+
+  /* Caixa lateral de datas */
+  .datas-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow)}
+  .datas-box-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .datas-box-title span{font-size:.72rem;background:var(--accentl);color:var(--accent);padding:2px 9px;border-radius:20px;font-weight:700}
+  .datas-box select.filter-select{margin-bottom:12px;width:100%}
+
+  /* Item de data na sidebar */
+  .data-item{padding:11px 13px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg2);margin-bottom:8px;transition:border-color .15s}
+  .data-item:last-child{margin-bottom:0}
+  .data-item:hover{border-color:var(--border2)}
+  .data-item-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+  .data-item-olimpiada{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border-radius:5px;flex-shrink:0}
+  .data-item-fase{font-size:.72rem;color:var(--text-muted);font-weight:500}
+  .data-item-data{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:var(--accent);white-space:nowrap}
+  .data-item-body{font-size:.8rem;color:var(--text-muted);line-height:1.5}
+  .data-item-local{font-size:.77rem;color:var(--text-dim);margin-top:3px;display:flex;align-items:center;gap:4px}
+  .data-item-info{font-size:.76rem;color:var(--text-muted);margin-top:5px;padding-top:5px;border-top:1px solid var(--border);line-height:1.5;font-style:italic}
+
+  /* Countdown badge */
+  .data-countdown{display:inline-flex;align-items:center;gap:4px;font-size:.69rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:5px}
+  .data-countdown.urgente{background:var(--dangerl);color:var(--danger)}
+  .data-countdown.proximo{background:#fef3c7;color:#92400e}
+  [data-theme="dark"] .data-countdown.proximo{background:rgba(245,158,11,.2);color:#fcd34d}
+  .data-countdown.normal{background:var(--accentl);color:var(--accent)}
+  .data-countdown.passado{background:var(--bg2);color:var(--text-muted)}
+
+  /* ── ADMIN DATAS LIST ── */
+  .datas-admin-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .data-admin-row{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:flex-start;gap:16px;box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s}
+  .data-admin-row:hover{border-color:var(--border2);box-shadow:var(--shadow-md)}
+  .data-admin-date-block{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--accentl);border-radius:var(--radius);padding:10px 14px;min-width:64px;text-align:center;flex-shrink:0}
+  .data-admin-date-day{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--accent);line-height:1}
+  .data-admin-date-month{font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--accent);letter-spacing:.08em;margin-top:2px}
+  .data-admin-date-year{font-size:.65rem;color:var(--text-muted);margin-top:1px}
+  .data-admin-body{flex:1;min-width:0}
+  .data-admin-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+  .data-admin-titulo{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--text)}
+  .data-admin-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+  .data-admin-pill{font-size:.69rem;padding:2px 8px;border-radius:20px;background:var(--bg2);color:var(--text-muted);border:1px solid var(--border);font-weight:500}
+  .data-admin-local{font-size:.79rem;color:var(--text-dim);display:flex;align-items:center;gap:4px}
+  .data-admin-info{font-size:.77rem;color:var(--text-muted);margin-top:4px;font-style:italic;line-height:1.5}
+  .data-admin-actions{display:flex;gap:7px;flex-shrink:0;align-self:center}
+
+  /* ── LIMPAR FILTROS ── */
+  .btn-limpar{background:var(--bg2);border:1.5px solid var(--border2);border-radius:9px;padding:8px 14px;color:var(--text-muted);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;white-space:nowrap;display:none}
+  .btn-limpar.visible{display:inline-flex;align-items:center;gap:5px}
+  .btn-limpar:hover{border-color:var(--danger);color:var(--danger);background:var(--dangerl)}
+
+  /* ── SKELETON LOADING ── */
+  @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+  .skeleton{border-radius:var(--radius);overflow:hidden}
+  [data-theme="light"] .skeleton-inner{background:linear-gradient(90deg,#ede9e1 25%,#f7f4ef 50%,#ede9e1 75%);background-size:800px 100%;animation:shimmer 1.4s infinite}
+  [data-theme="dark"] .skeleton-inner{background:linear-gradient(90deg,#1e3635 25%,#243f3e 50%,#1e3635 75%);background-size:800px 100%;animation:shimmer 1.4s infinite}
+  .skeleton-row{height:72px;margin-bottom:8px;border-radius:var(--radius)}
+  .skeleton-card{height:160px;border-radius:var(--radius-lg)}
+
+
   .settings-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:start}
   @media(max-width:1100px){.settings-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.settings-grid{grid-template-columns:1fr}}
@@ -374,9 +437,9 @@
 </div>
 
 <!-- MODAL ADMIN -->
-<div class="modal-overlay" id="adminModal">
+<div class="modal-overlay" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
   <div class="modal">
-    <h2>🔐 Acesso Administrativo</h2>
+    <h2 id="adminModalTitle">🔐 Acesso Administrativo</h2>
     <p id="adminModalSub">Digite a senha para continuar</p>
     <input type="password" class="modal-input" id="adminPass" placeholder="Senha" onkeydown="if(event.key==='Enter')checkAdmin()">
     <p class="modal-error" id="adminError">Senha incorreta. Tente novamente.</p>
@@ -388,9 +451,9 @@
 </div>
 
 <!-- MODAL IMPORT PREVIEW -->
-<div class="modal-overlay" id="importModal">
+<div class="modal-overlay" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
   <div class="modal" style="max-width:760px;max-height:90vh;overflow-y:auto">
-    <h2>📥 Prévia da Importação</h2>
+    <h2 id="importModalTitle">📥 Prévia da Importação</h2>
     <p>Revise os dados antes de confirmar</p>
     <div class="import-summary" id="importSummary"></div>
     <div style="overflow-x:auto"><table class="preview-table" id="previewTable"></table></div>
@@ -403,9 +466,9 @@
 
 
 <!-- MODAL EDITAR PROVA -->
-<div class="modal-overlay" id="editModal">
+<div class="modal-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
   <div class="modal" style="max-width:560px">
-    <h2>✏️ Editar Avaliação</h2>
+    <h2 id="editModalTitle">✏️ Editar Avaliação</h2>
     <p>Altere os campos desejados e salve</p>
     <input type="hidden" id="editId">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -452,9 +515,9 @@
 
 
 <!-- MODAL EDITAR OLIMPÍADA -->
-<div class="modal-overlay" id="editOlModal">
+<div class="modal-overlay" id="editOlModal" role="dialog" aria-modal="true" aria-labelledby="editOlModalTitle">
   <div class="modal">
-    <h2>✏️ Editar Olimpíada</h2>
+    <h2 id="editOlModalTitle">✏️ Editar Olimpíada</h2>
     <p>Altere os campos e salve</p>
     <input type="hidden" id="editOlId">
     <div class="form-group" style="margin-bottom:12px">
@@ -499,18 +562,45 @@
       <button class="btn-logout" onclick="logout()">← Sair</button>
     </div>
   </div>
-  <div class="content">
-    <div class="section-header">
-      <h2 class="section-title">Banco de Avaliações <span class="count-badge" id="teacherCount">–</span></h2>
+  <div class="content" style="max-width:1400px">
+    <div class="teacher-layout">
+
+      <!-- COLUNA ESQUERDA: Buscar por olimpíada -->
+      <div class="datas-sidebar">
+        <div class="datas-box">
+          <div class="datas-box-title">📅 Datas por olimpíada</div>
+          <select class="filter-select" id="tDatasOlimpiada" onchange="renderDatasOlimpiada()" style="margin-bottom:12px;width:100%">
+            <option value="">Selecione uma olimpíada...</option>
+          </select>
+          <div id="datasOlimpiadaList"><p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Selecione uma olimpíada para ver as datas cadastradas.</p></div>
+        </div>
+      </div>
+
+      <!-- COLUNA CENTRAL: Banco de avaliações -->
+      <div class="teacher-main">
+        <div class="section-header">
+          <h2 class="section-title">Banco de Avaliações <span class="count-badge" id="teacherCount">–</span></h2>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="fSearch" placeholder="Pesquisar..."></div>
+          <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="onOlimpiadaChange()"><option value="">Todas</option></select></div>
+          <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option></select></div>
+          <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
+          <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
+          <div class="filter-group" style="display:flex;align-items:flex-end"><button class="btn-limpar" id="btnLimparFiltros" onclick="limparFiltros()" title="Limpar todos os filtros">✕ Limpar</button></div>
+        </div>
+        <div class="provas-list" id="teacherGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando avaliações...</span></div></div>
+      </div>
+
+      <!-- COLUNA DIREITA: Próximas olimpíadas -->
+      <div class="datas-sidebar">
+        <div class="datas-box">
+          <div class="datas-box-title">🗓️ Próximas datas <span id="proximasCount"></span></div>
+          <div id="proximasDatasList"><div class="loading-state" style="padding:20px 0"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
     </div>
-    <div class="filter-bar">
-      <div class="filter-group"><label>Buscar</label><input type="text" class="filter-input" id="fSearch" placeholder="Pesquisar..." oninput="applyTeacherFilters()"></div>
-      <div class="filter-group"><label>Olimpíada</label><select class="filter-select" id="fOlimpiada" onchange="onOlimpiadaChange()"><option value="">Todas</option></select></div>
-      <div class="filter-group"><label>Fase</label><select class="filter-select" id="fFase" onchange="applyTeacherFilters()"><option value="">Todas</option><option>Única</option><option>1ª Fase</option><option>2ª Fase</option><option>3ª Fase</option><option>Final</option><option>Regional</option><option>Nacional</option></select></div>
-      <div class="filter-group"><label>Ano</label><select class="filter-select" id="fAno" onchange="applyTeacherFilters()"><option value="">Todos</option></select></div>
-      <div class="filter-group"><label>Nível</label><select class="filter-select" id="fNivel" onchange="applyTeacherFilters()"><option value="">Todos</option><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Nível Universitário</option><option>Nível P</option><option>Nível E</option><option>Nível B</option><option>Nível C</option><option>Nível J</option><option>Nível S</option></select></div>
-    </div>
-    <div class="provas-list" id="teacherGrid"><div class="loading-state"><div class="spinner"></div><span>Carregando avaliações...</span></div></div>
   </div>
 </div>
 
@@ -531,7 +621,9 @@
     <div class="tab" onclick="switchTab('tabImportar',3)">📥 Importar</div>
     <div class="tab" onclick="switchTab('tabOlimpiadas',4)">🏅 Olimpíadas</div>
     <div class="tab" onclick="switchTab('tabCadastrarOlimpiada',5)">➕ Olimpíada</div>
-    <div class="tab" onclick="switchTab('tabConfiguracoes',6)">⚙️ Configurações</div>
+    <div class="tab" onclick="switchTab('tabDatas',6)">📅 Datas</div>
+    <div class="tab" onclick="switchTab('tabCadastrarData',7)">➕ Datas</div>
+    <div class="tab" onclick="switchTab('tabConfiguracoes',8)">⚙️ Configurações</div>
   </div>
   <div class="content">
     <div class="tab-panel active" id="tabDashboard">
@@ -600,6 +692,34 @@
           <div class="form-group"><label class="form-label">Cor</label><select class="form-select" id="oColor"><option value="0">🟡 Dourado</option><option value="1">🔵 Azul</option><option value="2">🟢 Verde</option><option value="3">🟣 Roxo</option><option value="4">🔴 Vermelho</option><option value="5">🩷 Rosa</option><option value="6">🩵 Ciano</option><option value="7">🟠 Laranja</option></select></div>
         </div>
         <button class="form-submit" id="btnCadastrarOlimpiada" onclick="cadastrarOlimpiada()">✦ Cadastrar Olimpíada</button>
+      </div>
+    </div>
+
+    <!-- ABA: DATAS CADASTRADAS -->
+    <div class="tab-panel" id="tabDatas">
+      <div class="section-header">
+        <h2 class="section-title">Datas de Provas <span class="count-badge" id="datasCount">–</span></h2>
+        <button class="btn-limpar visible" onclick="switchTab('tabCadastrarData',7)" style="border-color:var(--accent);color:var(--accent)">➕ Nova data</button>
+      </div>
+      <div class="datas-admin-list" id="datasAdminList">
+        <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
+      </div>
+    </div>
+
+    <!-- ABA: CADASTRAR DATA -->
+    <div class="tab-panel" id="tabCadastrarData">
+      <div class="section-header"><h2 class="section-title">Cadastrar Data de Prova</h2></div>
+      <div class="form-card">
+        <p class="form-title">📅 Nova Data</p>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select" id="dtOlimpiada"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="dtFase"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label class="form-label">Data da prova *</label><input type="date" class="form-input" id="dtData"></div>
+          <div class="form-group"><label class="form-label">Horário (opcional)</label><input type="time" class="form-input" id="dtHorario" placeholder="Ex: 09:00"></div>
+          <div class="form-group full"><label class="form-label">Local da prova</label><input type="text" class="form-input" id="dtLocal" placeholder="Ex: Escola estadual, UFMG, Online..."></div>
+          <div class="form-group full"><label class="form-label">Informações gerais</label><textarea class="form-input" id="dtInfo" rows="3" placeholder="Inscrições, link de inscrição, materiais permitidos, observações..." style="resize:vertical;font-family:'DM Sans',sans-serif"></textarea></div>
+        </div>
+        <button class="form-submit" id="btnCadastrarData" onclick="cadastrarData()">✦ Cadastrar Data</button>
       </div>
     </div>
 
@@ -674,6 +794,39 @@
   </div><!-- /content -->
 </div><!-- /adminScreen -->
 
+<!-- MODAL EDITAR DATA -->
+<div class="modal-overlay" id="editDataModal" role="dialog" aria-modal="true" aria-labelledby="editDataModalTitle">
+  <div class="modal" style="max-width:560px">
+    <h2 id="editDataModalTitle">✏️ Editar Data</h2>
+    <p>Altere os campos e salve</p>
+    <input type="hidden" id="editDataId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select modal-input" id="editDtOlimpiada" style="margin-bottom:0"></select></div>
+      <div class="form-group"><label class="form-label">Fase *</label><select class="form-select modal-input" id="editDtFase" style="margin-bottom:0"></select></div>
+      <div class="form-group"><label class="form-label">Data *</label><input type="date" class="modal-input" id="editDtData" style="margin-bottom:0"></div>
+      <div class="form-group"><label class="form-label">Horário</label><input type="time" class="modal-input" id="editDtHorario" style="margin-bottom:0"></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Local</label><input type="text" class="modal-input" id="editDtLocal" style="margin-bottom:0" placeholder="Ex: Escola estadual, UFMG..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Informações gerais</label><textarea class="modal-input" id="editDtInfo" rows="3" style="margin-bottom:0;resize:vertical;font-family:'DM Sans',sans-serif" placeholder="Observações, links, materiais..."></textarea></div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeEditDataModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarData" onclick="salvarEdicaoData()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO -->
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+  <div class="modal" style="max-width:360px">
+    <h2 id="confirmModalTitle">⚠️ Confirmar ação</h2>
+    <p id="confirmMsg" style="margin-bottom:24px">Tem certeza?</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="fecharConfirmModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnConfirmarAcao" style="background:var(--danger)">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -697,6 +850,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 let allProvas=[], allOlimpiadas=[], importRows=[], deferredPrompt=null;
+
+// ── Utilitários ────────────────────────────
+// Escapa HTML para evitar XSS ao inserir dados do Firestore via innerHTML
+function esc(str) {
+  if (!str && str !== 0) return '';
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
+// Valida URL antes de salvar
+function isUrl(s) {
+  if (!s) return true; // campo opcional vazio é ok
+  try { new URL(s); return true; } catch { return false; }
+}
+
+// Debounce — evita recalcular filtros a cada tecla
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// Paginação da lista de professores
+const PAGE_SIZE = 25;
+let currentPage = 0;
+let filteredProvas = [];
 
 // ── PWA ────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e => {
@@ -752,10 +931,32 @@ document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target=
 document.getElementById('importModal').addEventListener('click',e=>{ if(e.target===document.getElementById('importModal')) window.closeImportModal(); });
 document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) window.closeEditModal(); });
 document.getElementById('editOlModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editOlModal')) window.closeEditOlModal(); });
+document.getElementById('confirmModal').addEventListener('click',e=>{ if(e.target===document.getElementById('confirmModal')) window.fecharConfirmModal(); });
 window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
+
+// Fechar modais com Escape
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('open');
+  });
+});
+
+// Modal de confirmação reutilizável (substitui confirm() nativo)
+function confirmarAcao(msg, cb) {
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmModal').classList.add('open');
+  document.getElementById('btnConfirmarAcao').onclick = () => {
+    document.getElementById('confirmModal').classList.remove('open');
+    cb();
+  };
+}
+window.fecharConfirmModal = () => document.getElementById('confirmModal').classList.remove('open');
 
 // Carrega contador da landing page
 async function loadLandingCounter(){
+  const el = document.getElementById('landingCounter');
   try {
     const [snapProvas, snapOl] = await Promise.all([
       getDocs(collection(db,'provas')),
@@ -763,28 +964,125 @@ async function loadLandingCounter(){
     ]);
     const total = snapProvas.size;
     const ol    = snapOl.size;
-    const el = document.getElementById('landingCounter');
     if(el) el.innerHTML = `<strong>${total}</strong> prova${total!==1?'s':''} em <strong>${ol}</strong> olimpíada${ol!==1?'s':''}`;
-  } catch(e){ /* silencioso */ }
+  } catch(e) {
+    if(el) el.innerHTML = '<span style="color:var(--text-muted)">Dados indisponíveis</span>';
+  }
 }
 loadLandingCounter();
+
+// Aplica debounce no campo de busca (250ms)
+document.addEventListener('DOMContentLoaded', () => {
+  const fSearch = document.getElementById('fSearch');
+  if (fSearch) fSearch.oninput = debounce(applyTeacherFilters, 250);
+});
 window.switchTab=(id,idx)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
   if(id==='tabConfiguracoes') renderConfigLists();
+  if(id==='tabDatas') renderDatasAdmin();
+  if(id==='tabCadastrarData') populateDatasSelects();
 };
 
+// ── Cache de sessão ────────────────────────
+function cacheSet(key, data) {
+  try { sessionStorage.setItem('arena_' + key, JSON.stringify(data)); } catch {}
+}
+function cacheGet(key) {
+  try {
+    const raw = sessionStorage.getItem('arena_' + key);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+function cacheClear() {
+  ['provas','olimpiadas','config','datas'].forEach(k => sessionStorage.removeItem('arena_' + k));
+}
+
 // ── Firebase ───────────────────────────────
-async function loadOlimpiadas(){ const s=await getDocs(query(collection(db,'olimpiadas'),orderBy('nome'))); allOlimpiadas=s.docs.map(d=>({id:d.id,...d.data()})); }
-async function loadProvas(){ const s=await getDocs(query(collection(db,'provas'),orderBy('criadoEm','desc'))); allProvas=s.docs.map(d=>({id:d.id,...d.data()})); }
-async function loadTeacherData(){ document.getElementById('teacherGrid').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas(),loadConfig()]); populateSelect('fOlimpiada','Todas'); populateAnoSelect('fAno'); refreshDynamicSelects(); applyTeacherFilters(); }
-async function loadAdminData(){ document.getElementById('adminRecentGrid').innerHTML=loadingHTML(); document.getElementById('olimpiadasList').innerHTML=loadingHTML(); await Promise.all([loadOlimpiadas(),loadProvas(),loadConfig()]); populateSelect('inputOlimpiada','Selecione...'); populateSelect('afOlimpiada','Todas'); populateAnoSelect('afAno'); refreshDynamicSelects(); renderOlimpiadasList(); renderStats(); renderRecentGrid(); applyAdminFilters(); }
+async function loadOlimpiadas() {
+  const cached = cacheGet('olimpiadas');
+  if (cached) { allOlimpiadas = cached; return; }
+  const s = await getDocs(query(collection(db,'olimpiadas'), orderBy('nome')));
+  allOlimpiadas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  cacheSet('olimpiadas', allOlimpiadas);
+}
+
+async function loadProvas() {
+  const cached = cacheGet('provas');
+  if (cached) { allProvas = cached; return; }
+  const s = await getDocs(query(collection(db,'provas'), orderBy('criadoEm','desc')));
+  allProvas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  cacheSet('provas', allProvas);
+}
+
+async function loadTeacherData() {
+  document.getElementById('teacherGrid').innerHTML = skeletonListHTML(6);
+  try {
+    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig()]);
+    populateSelect('fOlimpiada','Todas');
+    populateAnoSelect('fAno');
+    refreshDynamicSelects();
+    populateDatasSelects();
+    restoreFiltros();
+    applyTeacherFilters();
+    renderProximasDatas();
+  } catch(e) {
+    document.getElementById('teacherGrid').innerHTML = errorState('Não foi possível carregar as avaliações. Verifique sua conexão e tente novamente.');
+  }
+}
+
+async function loadAdminData() {
+  document.getElementById('adminRecentGrid').innerHTML = skeletonCardsHTML(6);
+  document.getElementById('olimpiadasList').innerHTML = loadingHTML();
+  cacheClear(); // admin sempre busca dados frescos
+  try {
+    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig()]);
+    populateSelect('inputOlimpiada','Selecione...');
+    populateSelect('afOlimpiada','Todas');
+    populateAnoSelect('afAno');
+    refreshDynamicSelects();
+    populateDatasSelects();
+    renderOlimpiadasList();
+    renderStats();
+    renderRecentGrid();
+    applyAdminFilters();
+    renderDatasAdmin();
+  } catch(e) {
+    showToast('Erro ao carregar dados: ' + e.message, 'error');
+  }
+}
 
 // ── CRUD Olimpiadas ────────────────────────
-window.cadastrarOlimpiada=async()=>{ const nome=document.getElementById('oNome').value.trim(); const desc=document.getElementById('oDesc').value.trim(); const area=document.getElementById('oArea').value; const color=parseInt(document.getElementById('oColor').value); if(!nome){showToast('Informe o nome','error');return;} const btn=document.getElementById('btnCadastrarOlimpiada'); btn.disabled=true;btn.textContent='Salvando...'; try{ await addDoc(collection(db,'olimpiadas'),{nome,desc,area,color}); document.getElementById('oNome').value='';document.getElementById('oDesc').value=''; showToast('Olimpíada cadastrada!'); await loadAdminData(); window.switchTab('tabOlimpiadas',4); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Cadastrar Olimpíada'; };
-window.deletarOlimpiada=async(id)=>{ if(!confirm('Remover?'))return; await deleteDoc(doc(db,'olimpiadas',id)); showToast('Removida.'); await loadAdminData(); };
+window.cadastrarOlimpiada = async () => {
+  const nome = document.getElementById('oNome').value.trim();
+  const desc = document.getElementById('oDesc').value.trim();
+  const area = document.getElementById('oArea').value;
+  const color = parseInt(document.getElementById('oColor').value);
+  if (!nome) { showToast('Informe o nome', 'error'); return; }
+  const btn = document.getElementById('btnCadastrarOlimpiada');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await addDoc(collection(db,'olimpiadas'), {nome, desc, area, color});
+    document.getElementById('oNome').value = '';
+    document.getElementById('oDesc').value = '';
+    showToast('Olimpíada cadastrada!');
+    await loadAdminData();
+    window.switchTab('tabOlimpiadas', 4);
+  } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  btn.disabled = false; btn.textContent = '✦ Cadastrar Olimpíada';
+};
+
+window.deletarOlimpiada = async (id) => {
+  confirmarAcao('Remover esta olimpíada permanentemente?', async () => {
+    try {
+      await deleteDoc(doc(db,'olimpiadas',id));
+      showToast('Removida.');
+      await loadAdminData();
+    } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  });
+};
 
 // ── Edit Prova ─────────────────────────────
 window.abrirEdicaoPorId = (btn)=>{
@@ -817,6 +1115,8 @@ window.salvarEdicao = async()=>{
   const link = document.getElementById('editLink').value.trim();
   const gabarito = document.getElementById('editGabarito').value.trim();
   if(!oid||!fase||!ano||!nivel||!link){ showToast('Preencha todos os campos obrigatórios','error'); return; }
+  if(!isUrl(link)){ showToast('Link da prova inválido','error'); return; }
+  if(gabarito && !isUrl(gabarito)){ showToast('Link do gabarito inválido','error'); return; }
   const ol = allOlimpiadas.find(o=>o.id===oid);
   if(!ol){ showToast('Olimpíada não encontrada','error'); return; }
   const btn = document.getElementById('btnSalvarEdicao');
@@ -911,13 +1211,14 @@ window.addConfigItem = async (key, inputId, listId) => {
 };
 
 window.removeConfigItem = async (key, idx, listId) => {
-  if(!confirm('Remover este item?')) return;
-  const cfg = await loadConfig();
-  const arr = [...(cfg[key]||[])];
-  arr.splice(idx,1);
-  await saveConfig({[key]: arr});
-  showToast('Removido.');
-  renderConfigLists();
+  confirmarAcao('Remover este item?', async () => {
+    const cfg = await loadConfig();
+    const arr = [...(cfg[key]||[])];
+    arr.splice(idx,1);
+    await saveConfig({[key]: arr});
+    showToast('Removido.');
+    renderConfigLists();
+  });
 };
 
 window.alterarSenha = async () => {
@@ -1021,8 +1322,56 @@ window.salvarEdicaoOl = async()=>{
 function renderOlimpiadasList(){ const list=document.getElementById('olimpiadasList'); document.getElementById('oCount').textContent=allOlimpiadas.length; if(!allOlimpiadas.length){list.innerHTML='<p style="color:var(--text-muted);padding:20px 0">Nenhuma olimpíada cadastrada.</p>';return;} list.innerHTML=allOlimpiadas.map(o=>`<div class="olimpiada-item"><div class="olimpiada-info"><div class="olimpiada-color color-dot-${o.color}"></div><div><div class="olimpiada-name">${o.nome}</div><div class="olimpiada-area">${o.area}${o.desc?' · '+o.desc:''}</div></div></div><div style="display:flex;gap:8px"><button class="btn-del" data-ol='${JSON.stringify(o).replace(/'/g,"&apos;")}' onclick="abrirEdicaoOl(JSON.parse(this.dataset.ol))" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarOlimpiada('${o.id}')">🗑</button></div></div>`).join(''); }
 
 // ── CRUD Provas ────────────────────────────
-window.cadastrarProva=async()=>{ const oid=document.getElementById('inputOlimpiada').value; const fase=document.getElementById('inputFase').value; const ano=document.getElementById('inputAno').value; const nivel=document.getElementById('inputNivel').value; const titulo=document.getElementById('inputTitulo').value.trim(); const link=document.getElementById('inputLink').value.trim(); const gabarito=document.getElementById('inputGabarito').value.trim(); if(!oid||!fase||!ano||!nivel||!link){showToast('Preencha os campos obrigatórios (*)','error');return;} const ol=allOlimpiadas.find(o=>o.id===oid); if(!ol){showToast('Olimpíada não encontrada','error');return;} const btn=document.getElementById('btnCadastrarProva'); btn.disabled=true;btn.textContent='Salvando...'; try{ await addDoc(collection(db,'provas'),{olimpiadaId:oid,olimpiadaNome:ol.nome,olimpiadaColor:ol.color,fase,ano:parseInt(ano),nivel,titulo:titulo||`${ol.nome} — ${fase} ${ano}`,link,gabarito,criadoEm:new Date().toISOString()}); ['inputOlimpiada','inputFase','inputNivel'].forEach(id=>document.getElementById(id).value=''); ['inputAno','inputTitulo','inputLink','inputGabarito'].forEach(id=>document.getElementById(id).value=''); showToast('Avaliação cadastrada!'); await loadAdminData(); window.switchTab('tabProvas',1); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Cadastrar Avaliação'; };
-window.deletarProva=async(id)=>{ if(!confirm('Remover?'))return; await deleteDoc(doc(db,'provas',id)); showToast('Removida.'); await loadAdminData(); };
+window.cadastrarProva=async()=>{
+  const oid      = document.getElementById('inputOlimpiada').value;
+  const fase     = document.getElementById('inputFase').value;
+  const ano      = document.getElementById('inputAno').value;
+  const nivel    = document.getElementById('inputNivel').value;
+  const titulo   = document.getElementById('inputTitulo').value.trim();
+  const link     = document.getElementById('inputLink').value.trim();
+  const gabarito = document.getElementById('inputGabarito').value.trim();
+  if(!oid||!fase||!ano||!nivel||!link){ showToast('Preencha os campos obrigatórios (*)','error'); return; }
+  if(!isUrl(link)){ showToast('Link da prova inválido','error'); return; }
+  if(gabarito && !isUrl(gabarito)){ showToast('Link do gabarito inválido','error'); return; }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if(!ol){ showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnCadastrarProva');
+  btn.disabled=true; btn.textContent='Salvando...';
+  try{
+    await addDoc(collection(db,'provas'),{
+      olimpiadaId:oid, olimpiadaNome:ol.nome, olimpiadaColor:ol.color,
+      fase, ano:parseInt(ano), nivel,
+      titulo: titulo||`${ol.nome} — ${fase} ${ano}`,
+      link, gabarito, criadoEm:new Date().toISOString()
+    });
+    ['inputOlimpiada','inputFase','inputNivel'].forEach(id=>document.getElementById(id).value='');
+    ['inputAno','inputTitulo','inputLink','inputGabarito'].forEach(id=>document.getElementById(id).value='');
+    showToast('Avaliação cadastrada!');
+    await loadAdminData();
+    window.switchTab('tabProvas',1);
+  }catch(e){ showToast('Erro: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='✦ Cadastrar Avaliação';
+};
+
+window.deletarProva = async (id) => {
+  confirmarAcao('Remover esta avaliação permanentemente?', async () => {
+    // Guarda cópia para possível desfazer
+    const prova = allProvas.find(p => p.id === id);
+    try {
+      await deleteDoc(doc(db,'provas',id));
+      await loadAdminData();
+      showToast('Avaliação removida.', 'success', async () => {
+        // Desfazer: re-insere a prova
+        if (prova) {
+          const { id: _id, ...dados } = prova;
+          await addDoc(collection(db,'provas'), dados);
+          await loadAdminData();
+          showToast('Exclusão desfeita!');
+        }
+      });
+    } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  });
+};
 
 
 
@@ -1035,75 +1384,553 @@ window.closeImportModal=()=>document.getElementById('importModal').classList.rem
 window.confirmImport=async()=>{ const validas=importRows.filter(r=>r.status==='ok'); const btn=document.getElementById('btnConfirmImport'); btn.disabled=true;btn.textContent='Importando...'; try{ for(const r of validas){ await addDoc(collection(db,'provas'),{olimpiadaId:r.ol.id,olimpiadaNome:r.ol.nome,olimpiadaColor:r.ol.color,fase:r.fase,ano:r.ano,nivel:r.nivel,titulo:r.titulo||`${r.ol.nome} — ${r.fase} ${r.ano}`,link:r.link,gabarito:r.gabarito||'',criadoEm:new Date().toISOString()}); } showToast(`${validas.length} avaliações importadas!`); window.closeImportModal(); await loadAdminData(); window.switchTab('tabProvas',1); }catch(e){showToast('Erro: '+e.message,'error');} btn.disabled=false;btn.textContent='✦ Importar válidos'; };
 
 // ── Render ─────────────────────────────────
-function provaRowHTML(p){ const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-open gab">📋 Gabarito</a>`:''; const isNovo=p.ano>=2026; const badgeNovo=isNovo?'<span class="badge-novo">✦ Novo</span>':''; return `<div class="prova-row"><div class="prova-row-top"><span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span class="prova-row-title">${p.titulo}</span>${badgeNovo}</div><div class="prova-row-bottom"><div class="prova-row-meta"><span class="prova-row-pill">📅 ${p.ano}</span><span class="prova-row-pill">🏁 ${p.fase}</span><span class="prova-row-pill">📚 ${p.nivel}</span></div><div class="prova-row-actions"><a href="${p.link}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}</div></div></div>`; }
-function provaCardHTML(p,isAdmin){ const del=isAdmin?`<button class="btn-del" data-id="${p.id}" onclick="abrirEdicaoPorId(this)" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button><button class="btn-del" onclick="deletarProva('${p.id}')">🗑</button>`:''; const gab=p.gabarito?`<a href="${p.gabarito}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>`:''; const data=p.criadoEm?new Date(p.criadoEm).toLocaleDateString('pt-BR'):''; return `<div class="prova-card"><div class="prova-card-header"><span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${p.olimpiadaNome}</span><span style="font-size:.72rem;color:var(--text-muted)">${data}</span></div><div class="prova-card-title">${p.titulo}</div><div class="prova-meta"><span class="meta-pill">📅 ${p.ano}</span><span class="meta-pill">🏁 ${p.fase}</span><span class="meta-pill">📚 ${p.nivel}</span></div><div class="prova-card-actions"><a href="${p.link}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}</div></div>`; }
-function emptyState(msg){ return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${msg}</p></div>`; }
-function loadingHTML(){ return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`; }
-function renderStats(){ const anos=[...new Set(allProvas.map(p=>p.ano))]; document.getElementById('statProvas').textContent=allProvas.length; document.getElementById('statOlimpiadas').textContent=allOlimpiadas.length; document.getElementById('statAnos').textContent=anos.length; document.getElementById('statGabarito').textContent=allProvas.filter(p=>p.gabarito).length; }
-function renderRecentGrid(){ const r=[...allProvas].sort((a,b)=>b.criadoEm>a.criadoEm?1:-1).slice(0,6); document.getElementById('adminRecentGrid').innerHTML=r.length?r.map(p=>provaCardHTML(p,true)).join(''):emptyState('Nenhuma avaliação cadastrada.'); }
-function populateSelect(id,lbl){ const sel=document.getElementById(id);if(!sel)return; const val=sel.value; sel.innerHTML=`<option value="">${lbl}</option>`+allOlimpiadas.map(o=>`<option value="${o.id}">${o.nome}</option>`).join(''); sel.value=val; }
-function populateAnoSelect(id){ const anos=[...new Set(allProvas.map(p=>p.ano))].sort((a,b)=>b-a); const sel=document.getElementById(id);if(!sel)return; const val=sel.value; sel.innerHTML='<option value="">Todos</option>'+anos.map(a=>`<option>${a}</option>`).join(''); sel.value=val; }
+function provaRowHTML(p) {
+  const gab = p.gabarito ? `<a href="${esc(p.gabarito)}" target="_blank" class="btn-open gab">📋 Gabarito</a>` : '';
+  const isNovo = p.ano >= 2026;
+  const badgeNovo = isNovo ? '<span class="badge-novo">✦ Novo</span>' : '';
+  return `<div class="prova-row">
+    <div class="prova-row-top">
+      <span class="prova-row-tag olimpiada-tag-${p.olimpiadaColor??0}">${esc(p.olimpiadaNome)}</span>
+      <span class="prova-row-title">${esc(p.titulo)}</span>${badgeNovo}
+    </div>
+    <div class="prova-row-bottom">
+      <div class="prova-row-meta">
+        <span class="prova-row-pill">📅 ${esc(p.ano)}</span>
+        <span class="prova-row-pill">🏁 ${esc(p.fase)}</span>
+        <span class="prova-row-pill">📚 ${esc(p.nivel)}</span>
+      </div>
+      <div class="prova-row-actions">
+        <a href="${esc(p.link)}" target="_blank" class="btn-open">🔗 Abrir Prova</a>${gab}
+      </div>
+    </div>
+  </div>`;
+}
+
+function provaCardHTML(p, isAdmin) {
+  const del = isAdmin
+    ? `<button class="btn-del" data-id="${esc(p.id)}" onclick="abrirEdicaoPorId(this)" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
+       <button class="btn-del" onclick="deletarProva('${esc(p.id)}')">🗑</button>`
+    : '';
+  const gab = p.gabarito ? `<a href="${esc(p.gabarito)}" target="_blank" class="btn-view" style="background:var(--accent3)">📋</a>` : '';
+  const data = p.criadoEm ? new Date(p.criadoEm).toLocaleDateString('pt-BR') : '';
+  return `<div class="prova-card">
+    <div class="prova-card-header">
+      <span class="prova-olimpiada-tag olimpiada-tag-${p.olimpiadaColor??0}">${esc(p.olimpiadaNome)}</span>
+      <span style="font-size:.72rem;color:var(--text-muted)">${esc(data)}</span>
+    </div>
+    <div class="prova-card-title">${esc(p.titulo)}</div>
+    <div class="prova-meta">
+      <span class="meta-pill">📅 ${esc(p.ano)}</span>
+      <span class="meta-pill">🏁 ${esc(p.fase)}</span>
+      <span class="meta-pill">📚 ${esc(p.nivel)}</span>
+    </div>
+    <div class="prova-card-actions">
+      <a href="${esc(p.link)}" target="_blank" class="btn-view">🔗 Abrir</a>${gab}${del}
+    </div>
+  </div>`;
+}
+
+function emptyState(msg) {
+  return `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhuma avaliação encontrada</h3><p>${esc(msg)}</p></div>`;
+}
+function errorState(msg) {
+  return `<div class="empty-state"><div class="icon">⚠️</div><h3>Erro ao carregar</h3><p>${esc(msg)}</p></div>`;
+}
+function loadingHTML() {
+  return `<div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>`;
+}
+function skeletonListHTML(n) {
+  return Array.from({length: n}, () =>
+    `<div class="skeleton skeleton-row"><div class="skeleton-inner" style="width:100%;height:100%"></div></div>`
+  ).join('');
+}
+function skeletonCardsHTML(n) {
+  return `<div class="cards-grid">${Array.from({length: n}, () =>
+    `<div class="skeleton skeleton-card"><div class="skeleton-inner" style="width:100%;height:100%"></div></div>`
+  ).join('')}</div>`;
+}
+
+function renderStats() {
+  const anos = [...new Set(allProvas.map(p => p.ano))];
+  document.getElementById('statProvas').textContent = allProvas.length;
+  document.getElementById('statOlimpiadas').textContent = allOlimpiadas.length;
+  document.getElementById('statAnos').textContent = anos.length;
+  document.getElementById('statGabarito').textContent = allProvas.filter(p => p.gabarito).length;
+}
+function renderRecentGrid() {
+  const r = [...allProvas].sort((a,b) => b.criadoEm > a.criadoEm ? 1 : -1).slice(0, 6);
+  document.getElementById('adminRecentGrid').innerHTML = r.length
+    ? r.map(p => provaCardHTML(p, true)).join('')
+    : emptyState('Nenhuma avaliação cadastrada.');
+}
+function populateSelect(id, lbl) {
+  const sel = document.getElementById(id); if (!sel) return;
+  const val = sel.value;
+  sel.innerHTML = `<option value="">${lbl}</option>` + allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
+  sel.value = val;
+}
+function populateAnoSelect(id) {
+  const anos = [...new Set(allProvas.map(p => p.ano))].sort((a,b) => b-a);
+  const sel = document.getElementById(id); if (!sel) return;
+  const val = sel.value;
+  sel.innerHTML = '<option value="">Todos</option>' + anos.map(a => `<option>${a}</option>`).join('');
+  sel.value = val;
+}
+
+// ── Filtros persistidos na URL e na sessão ──
+function salvarFiltros() {
+  const estado = {
+    s: document.getElementById('fSearch').value,
+    ol: document.getElementById('fOlimpiada').value,
+    fase: document.getElementById('fFase').value,
+    ano: document.getElementById('fAno').value,
+    nivel: document.getElementById('fNivel').value,
+  };
+  // Persiste na sessão
+  try { sessionStorage.setItem('arena_filtros', JSON.stringify(estado)); } catch {}
+  // Sincroniza URL para permitir compartilhamento
+  const params = new URLSearchParams();
+  if (estado.ol)    params.set('ol', estado.ol);
+  if (estado.fase)  params.set('fase', estado.fase);
+  if (estado.ano)   params.set('ano', estado.ano);
+  if (estado.nivel) params.set('nivel', estado.nivel);
+  if (estado.s)     params.set('q', estado.s);
+  const qs = params.toString();
+  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  // Mostrar/ocultar botão limpar
+  const algumAtivo = Object.values(estado).some(v => v !== '');
+  const btn = document.getElementById('btnLimparFiltros');
+  if (btn) btn.classList.toggle('visible', algumAtivo);
+}
+
+function restoreFiltros() {
+  // Prioridade: URL → sessionStorage
+  const params = new URLSearchParams(location.search);
+  const sessao = (() => { try { return JSON.parse(sessionStorage.getItem('arena_filtros') || 'null'); } catch { return null; } })();
+  const ol    = params.get('ol')    || sessao?.ol    || '';
+  const fase  = params.get('fase')  || sessao?.fase  || '';
+  const ano   = params.get('ano')   || sessao?.ano   || '';
+  const nivel = params.get('nivel') || sessao?.nivel || '';
+  const s     = params.get('q')     || sessao?.s     || '';
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+  setVal('fOlimpiada', ol);
+  setVal('fFase', fase);
+  setVal('fAno', ano);
+  setVal('fNivel', nivel);
+  setVal('fSearch', s);
+}
+
+window.limparFiltros = () => {
+  ['fSearch','fOlimpiada','fFase','fAno','fNivel'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  history.replaceState(null, '', location.pathname);
+  try { sessionStorage.removeItem('arena_filtros'); } catch {}
+  const btn = document.getElementById('btnLimparFiltros');
+  if (btn) btn.classList.remove('visible');
+  applyTeacherFilters();
+};
 
 // ── Filters ────────────────────────────────
-window.onOlimpiadaChange=()=>{
-  // Reseta os outros filtros ao trocar de olimpíada
+window.onOlimpiadaChange = () => {
   document.getElementById('fFase').value  = '';
   document.getElementById('fAno').value   = '';
   document.getElementById('fNivel').value = '';
   applyTeacherFilters();
 };
 
-window.applyTeacherFilters=()=>{
+window.applyTeacherFilters = () => {
   const s     = document.getElementById('fSearch').value.toLowerCase();
   const oid   = document.getElementById('fOlimpiada').value;
   const fase  = document.getElementById('fFase').value;
   const ano   = document.getElementById('fAno').value;
   const nivel = document.getElementById('fNivel').value;
 
-  // Provas da olimpíada selecionada (ou todas)
-  const provasDaOlimpiada = oid ? allProvas.filter(p=>p.olimpiadaId===oid) : allProvas;
-
   // Atualiza filtros dependentes com base na olimpíada selecionada
-  const fases  = [...new Set(provasDaOlimpiada.map(p=>p.fase))].sort();
-  const anos   = [...new Set(provasDaOlimpiada.map(p=>p.ano))].sort((a,b)=>b-a);
-  const niveis = [...new Set(provasDaOlimpiada.map(p=>p.nivel))].sort();
+  const provasDaOlimpiada = oid ? allProvas.filter(p => p.olimpiadaId === oid) : allProvas;
+  const fases  = [...new Set(provasDaOlimpiada.map(p => p.fase))].sort();
+  const anos   = [...new Set(provasDaOlimpiada.map(p => p.ano))].sort((a,b) => b-a);
+  const niveis = [...new Set(provasDaOlimpiada.map(p => p.nivel))].sort();
 
   const selFase  = document.getElementById('fFase');
   const selAno   = document.getElementById('fAno');
   const selNivel = document.getElementById('fNivel');
+  const vFase = selFase.value, vAno = selAno.value, vNivel = selNivel.value;
 
-  const vFase  = selFase.value;
-  const vAno   = selAno.value;
-  const vNivel = selNivel.value;
+  selFase.innerHTML  = '<option value="">Todas</option>'  + fases.map(f  => `<option>${esc(f)}</option>`).join('');
+  selAno.innerHTML   = '<option value="">Todos</option>'  + anos.map(a   => `<option>${a}</option>`).join('');
+  selNivel.innerHTML = '<option value="">Todos</option>'  + niveis.map(n => `<option>${esc(n)}</option>`).join('');
 
-  selFase.innerHTML  = '<option value="">Todas</option>'  + fases.map(f=>`<option>${f}</option>`).join('');
-  selAno.innerHTML   = '<option value="">Todos</option>'  + anos.map(a=>`<option>${a}</option>`).join('');
-  selNivel.innerHTML = '<option value="">Todos</option>'  + niveis.map(n=>`<option>${n}</option>`).join('');
+  if (fases.includes(vFase))             selFase.value  = vFase;
+  if (anos.map(String).includes(vAno))   selAno.value   = vAno;
+  if (niveis.includes(vNivel))           selNivel.value = vNivel;
 
-  // Mantém seleção se ainda válida
-  if(fases.includes(vFase))   selFase.value  = vFase;
-  if(anos.map(String).includes(vAno)) selAno.value = vAno;
-  if(niveis.includes(vNivel)) selNivel.value = vNivel;
-
-  // Filtra provas com todos os critérios
-  const f = allProvas.filter(p=>{
-    if(oid   && p.olimpiadaId!==oid)           return false;
-    if(selFase.value  && p.fase!==selFase.value)           return false;
-    if(selAno.value   && p.ano!==parseInt(selAno.value))   return false;
-    if(selNivel.value && p.nivel!==selNivel.value)         return false;
-    if(s && !`${p.titulo} ${p.olimpiadaNome} ${p.fase}`.toLowerCase().includes(s)) return false;
+  // Filtra com todos os critérios
+  filteredProvas = allProvas.filter(p => {
+    if (oid            && p.olimpiadaId !== oid)               return false;
+    if (selFase.value  && p.fase !== selFase.value)            return false;
+    if (selAno.value   && p.ano !== parseInt(selAno.value))    return false;
+    if (selNivel.value && p.nivel !== selNivel.value)          return false;
+    if (s && !`${p.titulo} ${p.olimpiadaNome} ${p.fase}`.toLowerCase().includes(s)) return false;
     return true;
-  }).sort((a,b)=>b.ano-a.ano);
+  }).sort((a,b) => b.ano - a.ano);
 
-  document.getElementById('teacherCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`;
-  document.getElementById('teacherGrid').innerHTML=f.length?f.map(p=>provaRowHTML(p)).join(''):emptyState('Tente ajustar os filtros.');
+  currentPage = 0;
+  salvarFiltros();
+  renderTeacherPage();
 };
-window.applyAdminFilters=()=>{ const s=document.getElementById('afSearch').value.toLowerCase(); const oid=document.getElementById('afOlimpiada').value; const fase=document.getElementById('afFase').value; const ano=document.getElementById('afAno').value; const f=allProvas.filter(p=>{ if(oid&&p.olimpiadaId!==oid)return false; if(fase&&p.fase!==fase)return false; if(ano&&p.ano!==parseInt(ano))return false; if(s&&!`${p.titulo} ${p.olimpiadaNome}`.toLowerCase().includes(s))return false; return true; }).sort((a,b)=>b.criadoEm>a.criadoEm?1:-1); document.getElementById('adminCount').textContent=`${f.length} ${f.length===1?'prova':'provas'}`; document.getElementById('adminGrid').innerHTML=f.length?f.map(p=>provaCardHTML(p,true)).join(''):emptyState('Nenhuma avaliação corresponde.'); };
 
-// ── Toast ──────────────────────────────────
+// Paginação da lista de professor
+function renderTeacherPage() {
+  const grid = document.getElementById('teacherGrid');
+  const count = document.getElementById('teacherCount');
+  count.textContent = `${filteredProvas.length} ${filteredProvas.length === 1 ? 'prova' : 'provas'}`;
+
+  if (!filteredProvas.length) {
+    grid.innerHTML = emptyState('Tente ajustar os filtros.');
+    return;
+  }
+
+  const slice = filteredProvas.slice(0, (currentPage + 1) * PAGE_SIZE);
+  const rows = slice.map(p => provaRowHTML(p)).join('');
+  const temMais = slice.length < filteredProvas.length;
+  const btnMais = temMais
+    ? `<div style="text-align:center;margin-top:16px">
+        <button onclick="carregarMais()" class="btn-limpar visible" style="border-color:var(--border2);color:var(--text-dim)">
+          Carregar mais (${filteredProvas.length - slice.length} restantes)
+        </button>
+       </div>`
+    : '';
+  grid.innerHTML = rows + btnMais;
+}
+
+window.carregarMais = () => {
+  currentPage++;
+  renderTeacherPage();
+};
+
+window.applyAdminFilters = () => {
+  const s    = document.getElementById('afSearch').value.toLowerCase();
+  const oid  = document.getElementById('afOlimpiada').value;
+  const fase = document.getElementById('afFase').value;
+  const ano  = document.getElementById('afAno').value;
+  const f = allProvas.filter(p => {
+    if (oid  && p.olimpiadaId !== oid)           return false;
+    if (fase && p.fase !== fase)                 return false;
+    if (ano  && p.ano !== parseInt(ano))         return false;
+    if (s    && !`${p.titulo} ${p.olimpiadaNome}`.toLowerCase().includes(s)) return false;
+    return true;
+  }).sort((a,b) => b.criadoEm > a.criadoEm ? 1 : -1);
+  document.getElementById('adminCount').textContent = `${f.length} ${f.length === 1 ? 'prova' : 'provas'}`;
+  document.getElementById('adminGrid').innerHTML = f.length
+    ? f.map(p => provaCardHTML(p, true)).join('')
+    : emptyState('Nenhuma avaliação corresponde.');
+};
+
+// ── Toast com "Desfazer" para exclusão ──────
 let toastTimer;
-function showToast(msg,type){ const el=document.getElementById('toast'); el.innerHTML=(type==='error'?'✕ ':'✓ ')+msg; el.className='toast show'+(type==='error'?' error':''); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
-window.showToast=showToast;
+let undoCallback = null;
+
+function showToast(msg, type, undoCb) {
+  const el = document.getElementById('toast');
+  undoCallback = undoCb || null;
+  const undoBtn = undoCb
+    ? `<button onclick="executarUndo()" style="margin-left:10px;background:none;border:1.5px solid currentColor;border-radius:6px;padding:2px 10px;cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;color:inherit;font-weight:700">Desfazer</button>`
+    : '';
+  el.innerHTML = (type === 'error' ? '✕ ' : '✓ ') + esc(msg) + undoBtn;
+  el.className = 'toast show' + (type === 'error' ? ' error' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.classList.remove('show'); undoCallback = null; }, undoCb ? 5000 : 3200);
+}
+window.showToast = showToast;
+
+window.executarUndo = () => {
+  clearTimeout(toastTimer);
+  document.getElementById('toast').classList.remove('show');
+  if (undoCallback) { undoCallback(); undoCallback = null; }
+};
+
+// ── DATAS DE PROVAS ────────────────────────
+let allDatas = [];
+
+async function loadDatas() {
+  const cached = cacheGet('datas');
+  if (cached) { allDatas = cached; return; }
+  const s = await getDocs(query(collection(db,'datas'), orderBy('data','asc')));
+  allDatas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  cacheSet('datas', allDatas);
+}
+
+// Utilitário: formata data ISO → dd/mm/aaaa
+function fmtData(iso) {
+  if (!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function fmtDataCurta(iso) {
+  if (!iso) return {dia:'—',mes:'—',ano:''};
+  const [y,m,d] = iso.split('-');
+  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return {dia:d, mes:meses[parseInt(m)-1], ano:y};
+}
+
+// Dias restantes até a data
+function diasRestantes(iso) {
+  if (!iso) return null;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const prova = new Date(iso + 'T00:00:00');
+  return Math.ceil((prova - hoje) / 86400000);
+}
+
+function countdownBadge(iso) {
+  const d = diasRestantes(iso);
+  if (d === null) return '';
+  if (d < 0)  return `<span class="data-countdown passado">✓ Realizada</span>`;
+  if (d === 0) return `<span class="data-countdown urgente">🔴 Hoje!</span>`;
+  if (d <= 7)  return `<span class="data-countdown urgente">⚡ ${d} dia${d>1?'s':''}</span>`;
+  if (d <= 30) return `<span class="data-countdown proximo">🟡 ${d} dias</span>`;
+  return `<span class="data-countdown normal">📅 ${d} dias</span>`;
+}
+
+// ── Render: lista admin de datas ───────────
+function renderDatasAdmin() {
+  const list = document.getElementById('datasAdminList');
+  const countEl = document.getElementById('datasCount');
+  if (!list) return;
+  if (!allDatas.length) {
+    if(countEl) countEl.textContent = '0';
+    list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><h3>Nenhuma data cadastrada</h3><p>Use a aba ➕ Datas para cadastrar datas de provas.</p></div>`;
+    return;
+  }
+  const sorted = [...allDatas].sort((a,b) => a.data > b.data ? 1 : -1);
+  if(countEl) countEl.textContent = sorted.length;
+  list.innerHTML = sorted.map(dt => {
+    const {dia,mes,ano} = fmtDataCurta(dt.data);
+    const horario = dt.horario ? ` · ${dt.horario}` : '';
+    const local = dt.local ? `<div class="data-admin-local">📍 ${esc(dt.local)}</div>` : '';
+    const info  = dt.info  ? `<div class="data-admin-info">${esc(dt.info)}</div>` : '';
+    const ol = allOlimpiadas.find(o => o.id === dt.olimpiadaId);
+    const color = ol?.color ?? 0;
+    return `<div class="data-admin-row">
+      <div class="data-admin-date-block">
+        <div class="data-admin-date-day">${esc(dia)}</div>
+        <div class="data-admin-date-month">${esc(mes)}</div>
+        <div class="data-admin-date-year">${esc(ano)}</div>
+      </div>
+      <div class="data-admin-body">
+        <div class="data-admin-top">
+          <span class="prova-row-tag olimpiada-tag-${color}">${esc(dt.olimpiadaNome)}</span>
+          <span class="data-admin-titulo">${esc(dt.fase)}${horario}</span>
+          ${countdownBadge(dt.data)}
+        </div>
+        <div class="data-admin-meta">
+          <span class="data-admin-pill">📅 ${fmtData(dt.data)}</span>
+          ${dt.horario ? `<span class="data-admin-pill">🕐 ${esc(dt.horario)}</span>` : ''}
+        </div>
+        ${local}${info}
+      </div>
+      <div class="data-admin-actions">
+        <button class="btn-del" onclick="abrirEdicaoData('${esc(dt.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
+        <button class="btn-del" onclick="deletarData('${esc(dt.id)}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Render: próximas 3 datas (sidebar professor) ──
+function renderProximasDatas() {
+  const el = document.getElementById('proximasDatasList');
+  const countEl = document.getElementById('proximasCount');
+  if (!el) return;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const proximas = [...allDatas]
+    .filter(dt => new Date(dt.data + 'T00:00:00') >= hoje)
+    .sort((a,b) => a.data > b.data ? 1 : -1)
+    .slice(0, 3);
+  if (countEl) countEl.textContent = proximas.length ? proximas.length : '';
+  if (!proximas.length) {
+    el.innerHTML = `<p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Nenhuma data futura cadastrada.</p>`;
+    return;
+  }
+  el.innerHTML = proximas.map(dt => {
+    const ol = allOlimpiadas.find(o => o.id === dt.olimpiadaId);
+    const color = ol?.color ?? 0;
+    const horario = dt.horario ? ` · ${dt.horario}` : '';
+    const local = dt.local ? `<div class="data-item-local">📍 ${esc(dt.local)}</div>` : '';
+    const info  = dt.info  ? `<div class="data-item-info">${esc(dt.info)}</div>` : '';
+    return `<div class="data-item">
+      <div class="data-item-header">
+        <span class="data-item-olimpiada olimpiada-tag-${color}">${esc(dt.olimpiadaNome)}</span>
+        <span class="data-item-data">${fmtData(dt.data)}</span>
+      </div>
+      <div class="data-item-fase">${esc(dt.fase)}${horario}</div>
+      ${countdownBadge(dt.data)}
+      ${local}${info}
+    </div>`;
+  }).join('');
+}
+
+// ── Render: datas de olimpíada específica (sidebar esquerda) ──
+window.renderDatasOlimpiada = () => {
+  const oid = document.getElementById('tDatasOlimpiada')?.value;
+  const el  = document.getElementById('datasOlimpiadaList');
+  if (!el) return;
+  if (!oid) {
+    el.innerHTML = `<p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Selecione uma olimpíada para ver as datas cadastradas.</p>`;
+    return;
+  }
+  const dados = [...allDatas]
+    .filter(dt => dt.olimpiadaId === oid)
+    .sort((a,b) => a.data > b.data ? 1 : -1);
+  if (!dados.length) {
+    el.innerHTML = `<p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Nenhuma data cadastrada para esta olimpíada.</p>`;
+    return;
+  }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  const color = ol?.color ?? 0;
+  el.innerHTML = dados.map(dt => {
+    const horario = dt.horario ? ` · ${dt.horario}` : '';
+    const local = dt.local ? `<div class="data-item-local">📍 ${esc(dt.local)}</div>` : '';
+    const info  = dt.info  ? `<div class="data-item-info">${esc(dt.info)}</div>` : '';
+    return `<div class="data-item">
+      <div class="data-item-header">
+        <span class="data-item-fase">${esc(dt.fase)}</span>
+        <span class="data-item-data">${fmtData(dt.data)}</span>
+      </div>
+      ${dt.horario ? `<div class="data-item-fase" style="margin-bottom:3px">🕐 ${esc(dt.horario)}</div>` : ''}
+      ${countdownBadge(dt.data)}
+      ${local}${info}
+    </div>`;
+  }).join('');
+};
+
+// ── populate select de olimpíadas no form datas ──
+function populateDatasSelects() {
+  ['dtOlimpiada','editDtOlimpiada','tDatasOlimpiada'].forEach(id => {
+    const sel = document.getElementById(id); if (!sel) return;
+    const val = sel.value;
+    const placeholder = id === 'tDatasOlimpiada' ? 'Selecione uma olimpíada...' : 'Selecione...';
+    sel.innerHTML = `<option value="">${placeholder}</option>` +
+      allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
+    if (val) sel.value = val;
+  });
+  // populate fases usando configCache
+  const cfg = configCache || CONFIG_DEFAULTS;
+  const faseOpts = '<option value="">Selecione...</option>' + (cfg.fases||[]).map(f => `<option>${esc(f)}</option>`).join('');
+  ['dtFase','editDtFase'].forEach(id => {
+    const sel = document.getElementById(id); if (!sel) return;
+    const val = sel.value;
+    sel.innerHTML = faseOpts;
+    if (val) sel.value = val;
+  });
+}
+
+// ── CRUD Datas ─────────────────────────────
+window.cadastrarData = async () => {
+  const oid     = document.getElementById('dtOlimpiada').value;
+  const fase    = document.getElementById('dtFase').value;
+  const data    = document.getElementById('dtData').value;
+  const horario = document.getElementById('dtHorario').value;
+  const local   = document.getElementById('dtLocal').value.trim();
+  const info    = document.getElementById('dtInfo').value.trim();
+  if (!oid || !fase || !data) { showToast('Preencha os campos obrigatórios (*)','error'); return; }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnCadastrarData');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await addDoc(collection(db,'datas'), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      fase, data, horario, local, info, criadoEm: new Date().toISOString()
+    });
+    ['dtOlimpiada','dtFase','dtData','dtHorario','dtLocal'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value='';
+    });
+    document.getElementById('dtInfo').value = '';
+    showToast('Data cadastrada com sucesso!');
+    cacheClear();
+    await loadDatas();
+    renderDatasAdmin();
+    renderProximasDatas();
+    window.switchTab('tabDatas', 6);
+  } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  btn.disabled = false; btn.textContent = '✦ Cadastrar Data';
+};
+
+window.deletarData = async (id) => {
+  confirmarAcao('Remover esta data permanentemente?', async () => {
+    const data = allDatas.find(d => d.id === id);
+    try {
+      await deleteDoc(doc(db,'datas',id));
+      cacheClear();
+      await loadDatas();
+      renderDatasAdmin();
+      renderProximasDatas();
+      showToast('Data removida.', 'success', async () => {
+        if (data) {
+          const { id: _id, ...dados } = data;
+          await addDoc(collection(db,'datas'), dados);
+          cacheClear();
+          await loadDatas();
+          renderDatasAdmin();
+          renderProximasDatas();
+          showToast('Exclusão desfeita!');
+        }
+      });
+    } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  });
+};
+
+window.abrirEdicaoData = (id) => {
+  const dt = allDatas.find(d => d.id === id);
+  if (!dt) { showToast('Data não encontrada','error'); return; }
+  document.getElementById('editDataId').value    = dt.id;
+  document.getElementById('editDtData').value    = dt.data;
+  document.getElementById('editDtHorario').value = dt.horario || '';
+  document.getElementById('editDtLocal').value   = dt.local   || '';
+  document.getElementById('editDtInfo').value    = dt.info    || '';
+  // populate selects antes de setar valores
+  populateDatasSelects();
+  document.getElementById('editDtOlimpiada').value = dt.olimpiadaId;
+  document.getElementById('editDtFase').value      = dt.fase;
+  document.getElementById('editDataModal').classList.add('open');
+  setTimeout(() => document.getElementById('editDtData').focus(), 100);
+};
+
+window.closeEditDataModal = () => document.getElementById('editDataModal').classList.remove('open');
+
+window.salvarEdicaoData = async () => {
+  const id      = document.getElementById('editDataId').value;
+  const oid     = document.getElementById('editDtOlimpiada').value;
+  const fase    = document.getElementById('editDtFase').value;
+  const data    = document.getElementById('editDtData').value;
+  const horario = document.getElementById('editDtHorario').value;
+  const local   = document.getElementById('editDtLocal').value.trim();
+  const info    = document.getElementById('editDtInfo').value.trim();
+  if (!oid || !fase || !data) { showToast('Preencha os campos obrigatórios','error'); return; }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnSalvarData');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await updateDoc(doc(db,'datas',id), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      fase, data, horario, local, info
+    });
+    window.closeEditDataModal();
+    showToast('Data atualizada com sucesso!');
+    cacheClear();
+    await loadDatas();
+    renderDatasAdmin();
+    renderProximasDatas();
+  } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  btn.disabled = false; btn.textContent = '✦ Salvar alterações';
+};
+
+// Fecha editDataModal ao clicar fora
+document.getElementById('editDataModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('editDataModal')) window.closeEditDataModal();
+});
 </script>
 </body>
 </html>
