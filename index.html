@@ -826,8 +826,27 @@
 
     <div class="tab-panel" id="tabCadastrarMedalhista">
       <div class="section-header"><h2 class="section-title">Cadastrar Medalhista</h2></div>
+
+      <!-- Importação em lote -->
+      <div class="form-card" style="max-width:680px;margin-bottom:24px">
+        <p class="form-title">📥 Importar em lote via Excel</p>
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:16px">Baixe o modelo, preencha e faça o upload para cadastrar vários alunos de uma vez. A coluna <strong>olimpiada</strong> deve ser <strong>exatamente igual</strong> ao nome cadastrado. A coluna <strong>medalha</strong> aceita: <code>Ouro</code>, <code>Prata</code>, <code>Bronze</code> ou <code>Menção Honrosa</code>.</p>
+        <button class="btn-download-model" onclick="downloadModeloMedalhistas()">⬇️ Baixar planilha modelo (.xlsx)</button>
+        <div class="import-zone" id="mdImportZone"
+          onclick="document.getElementById('mdImportFileInput').click()"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleMdDrop(event)">
+          <div class="icon">🏅</div>
+          <h3>Clique ou arraste o arquivo aqui</h3>
+          <p>Formato aceito: .xlsx</p>
+        </div>
+        <input type="file" id="mdImportFileInput" accept=".xlsx" onchange="handleMdImportFile(this.files[0])">
+      </div>
+
+      <!-- Cadastro individual -->
       <div class="form-card" style="max-width:680px">
-        <p class="form-title">🏅 Novo Medalhista</p>
+        <p class="form-title">🏅 Cadastro individual</p>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">Olimpíada *</label>
@@ -963,6 +982,20 @@
     <div class="modal-btns" style="margin-top:20px">
       <button class="btn btn-ghost" onclick="closeEditDataModal()">Cancelar</button>
       <button class="btn btn-primary" id="btnSalvarData" onclick="salvarEdicaoData()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IMPORTAR MEDALHISTAS PREVIEW -->
+<div class="modal-overlay" id="mdImportModal" role="dialog" aria-modal="true" aria-labelledby="mdImportModalTitle">
+  <div class="modal" style="max-width:780px;max-height:90vh;overflow-y:auto">
+    <h2 id="mdImportModalTitle">📥 Prévia da Importação — Medalhistas</h2>
+    <p>Revise os dados antes de confirmar</p>
+    <div class="import-summary" id="mdImportSummary"></div>
+    <div style="overflow-x:auto"><table class="preview-table" id="mdPreviewTable"></table></div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeMdImportModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnConfirmMdImport" onclick="confirmMdImport()">✦ Importar válidos</button>
     </div>
   </div>
 </div>
@@ -1133,7 +1166,7 @@ window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
 // Fechar modais com Escape
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal','editMedalistaModal'].forEach(id => {
+  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal','editMedalistaModal','mdImportModal'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('open');
   });
@@ -2396,6 +2429,137 @@ window.salvarEdicaoMedalhista = async () => {
 document.getElementById('editMedalistaModal').addEventListener('click', e => {
   if (e.target === document.getElementById('editMedalistaModal')) window.closeEditMedalistaModal();
 });
+
+document.getElementById('mdImportModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('mdImportModal')) window.closeMdImportModal();
+});
+
+// ── IMPORTAÇÃO EM LOTE DE MEDALHISTAS ──────
+let mdImportRows = [];
+
+window.downloadModeloMedalhistas = () => {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([
+    ['olimpiada', 'fase', 'ano', 'nome', 'medalha', 'obs'],
+    ['OBMEP',  '1ª Fase', 2024, 'Ana Clara Souza',      'Ouro',           ''],
+    ['OBMEP',  '1ª Fase', 2024, 'Bruno Lima',           'Prata',          ''],
+    ['OBMEP',  '1ª Fase', 2024, 'Carlos Mendes',        'Bronze',         ''],
+    ['OBI',    '2ª Fase', 2024, 'Daniela Ferreira',     'Menção Honrosa', 'Melhor do estado'],
+  ]);
+  ws['!cols'] = [{wch:14},{wch:12},{wch:6},{wch:30},{wch:16},{wch:36}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Medalhistas');
+  XLSX.writeFile(wb, 'modelo_medalhistas.xlsx');
+};
+
+window.handleMdDrop = (e) => {
+  e.preventDefault();
+  document.getElementById('mdImportZone').classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f) handleMdImportFile(f);
+};
+
+window.handleMdImportFile = (file) => {
+  if (!file || !file.name.endsWith('.xlsx')) { showToast('Use apenas .xlsx', 'error'); return; }
+  // Limpa input para permitir re-upload do mesmo arquivo
+  document.getElementById('mdImportFileInput').value = '';
+  const r = new FileReader();
+  r.onload = (e) => {
+    const wb   = XLSX.read(e.target.result, {type:'array'});
+    const ws   = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, {defval:''});
+    if (!rows.length) { showToast('Planilha vazia', 'error'); return; }
+    processMdImportRows(rows);
+  };
+  r.readAsArrayBuffer(file);
+};
+
+const MEDALHAS_VALIDAS = ['ouro','prata','bronze','menção honrosa','mencao honrosa'];
+function normalizeMedalha(v) {
+  const map = {
+    'ouro': 'Ouro', 'prata': 'Prata', 'bronze': 'Bronze',
+    'menção honrosa': 'Menção Honrosa', 'mencao honrosa': 'Menção Honrosa',
+    'menção': 'Menção Honrosa', 'mencao': 'Menção Honrosa', 'mh': 'Menção Honrosa'
+  };
+  return map[String(v||'').trim().toLowerCase()] || null;
+}
+
+function processMdImportRows(rows) {
+  const nomesOl = allOlimpiadas.map(o => o.nome.toLowerCase().trim());
+  mdImportRows = rows.map((r, i) => {
+    const olimpiada = String(r.olimpiada || '').trim();
+    const fase      = String(r.fase      || '').trim();
+    const ano       = parseInt(r.ano);
+    const nome      = String(r.nome      || '').trim();
+    const medalhaRaw= String(r.medalha   || '').trim();
+    const obs       = String(r.obs       || '').trim();
+    const medalha   = normalizeMedalha(medalhaRaw);
+    const erros = [];
+    if (!olimpiada) erros.push('olimpíada vazia');
+    else if (!nomesOl.includes(olimpiada.toLowerCase())) erros.push(`"${olimpiada}" não encontrada`);
+    if (!fase)    erros.push('fase vazia');
+    if (!ano || isNaN(ano)) erros.push('ano inválido');
+    if (!nome)    erros.push('nome vazio');
+    if (!medalha) erros.push(`medalha inválida: "${medalhaRaw}"`);
+    const ol = allOlimpiadas.find(o => o.nome.toLowerCase().trim() === olimpiada.toLowerCase());
+    return { olimpiada, fase, ano, nome, medalha, obs, erros, status: erros.length ? 'err' : 'ok', ol, idx: i + 2 };
+  });
+
+  const ok  = mdImportRows.filter(r => r.status === 'ok').length;
+  const err = mdImportRows.filter(r => r.status === 'err').length;
+
+  document.getElementById('mdImportSummary').innerHTML =
+    `<span class="imp-badge imp-ok">✓ ${ok} válidos</span>` +
+    (err ? `<span class="imp-badge imp-err">✗ ${err} com erro</span>` : '');
+
+  const tbody = mdImportRows.map(r =>
+    `<tr class="${r.status}">
+      <td>${r.idx}</td>
+      <td>${esc(r.olimpiada)||'—'}</td>
+      <td>${esc(r.nome)||'—'}</td>
+      <td>${esc(r.fase)||'—'}</td>
+      <td>${esc(r.ano)||'—'}</td>
+      <td>${esc(r.medalha||r.erros.find(e=>e.includes('medalha'))||'—')}</td>
+      <td style="color:var(--danger);font-size:.75rem">${r.erros.join(', ')}</td>
+    </tr>`
+  ).join('');
+
+  document.getElementById('mdPreviewTable').innerHTML =
+    `<thead><tr><th>Linha</th><th>Olimpíada</th><th>Nome</th><th>Fase</th><th>Ano</th><th>Medalha</th><th>Erros</th></tr></thead>
+     <tbody>${tbody}</tbody>`;
+
+  document.getElementById('btnConfirmMdImport').disabled = ok === 0;
+  document.getElementById('mdImportModal').classList.add('open');
+}
+
+window.closeMdImportModal = () => document.getElementById('mdImportModal').classList.remove('open');
+
+window.confirmMdImport = async () => {
+  const validas = mdImportRows.filter(r => r.status === 'ok');
+  const btn = document.getElementById('btnConfirmMdImport');
+  btn.disabled = true; btn.textContent = 'Importando...';
+  try {
+    for (const r of validas) {
+      await addDoc(collection(db, 'medalhistas'), {
+        olimpiadaId:    r.ol.id,
+        olimpiadaNome:  r.ol.nome,
+        olimpiadaColor: r.ol.color,
+        fase:    r.fase,
+        ano:     r.ano,
+        nome:    r.nome,
+        medalha: r.medalha,
+        obs:     r.obs || '',
+        criadoEm: new Date().toISOString()
+      });
+    }
+    showToast(`${validas.length} medalhista${validas.length !== 1 ? 's' : ''} importado${validas.length !== 1 ? 's' : ''}!`);
+    window.closeMdImportModal();
+    cacheClear();
+    await loadMedalhistas();
+    populateMedalistasFilterSelects();
+    window.switchTab('tabMedalhistas', 8);
+  } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  btn.disabled = false; btn.textContent = '✦ Importar válidos';
+};
 </script>
 </body>
 </html>
