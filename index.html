@@ -27,6 +27,10 @@
     --shadow-md:0 4px 12px rgba(13,148,136,.1),0 2px 4px rgba(0,0,0,.06);
     --shadow-lg:0 12px 32px rgba(13,148,136,.14),0 4px 8px rgba(0,0,0,.08);
     --radius:12px;--radius-lg:18px;--radius-xl:24px;
+    --gold:#f59e0b;--goldl:#fef3c7;--goldt:#92400e;
+    --silver:#94a3b8;--silverl:#f1f5f9;--silvert:#334155;
+    --bronze:#b45309;--bronzel:#fef9c3;--bronzet:#78350f;
+    --mention:#7c3aed;--mentionl:#ede9fe;--mentiont:#4c1d95;
   }
   [data-theme="dark"] {
     --bg:#0d1f1e;--bg2:#122322;--surface:#162b2a;--surface2:#122322;
@@ -39,6 +43,10 @@
     --shadow-md:0 4px 12px rgba(0,0,0,.3),0 2px 4px rgba(0,0,0,.2);
     --shadow-lg:0 12px 32px rgba(0,0,0,.4),0 4px 8px rgba(0,0,0,.3);
     --radius:12px;--radius-lg:18px;--radius-xl:24px;
+    --gold:#fbbf24;--goldl:rgba(251,191,36,.18);--goldt:#fde68a;
+    --silver:#94a3b8;--silverl:rgba(148,163,184,.15);--silvert:#cbd5e1;
+    --bronze:#d97706;--bronzel:rgba(217,119,6,.18);--bronzet:#fcd34d;
+    --mention:#a78bfa;--mentionl:rgba(167,139,250,.18);--mentiont:#ddd6fe;
   }
 
   /* ── RESET & BASE ── */
@@ -390,6 +398,60 @@
   .settings-pass-btn{margin-top:4px;padding:10px;background:var(--accent);color:white;border:none;border-radius:9px;font-family:'Syne',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 1px 4px rgba(13,148,136,.2)}
   .settings-pass-btn:hover{background:var(--accent-dark);transform:translateY(-1px)}
 
+  /* ══════════════════════════════════════════
+     ── MEDALHISTAS ──
+  ══════════════════════════════════════════ */
+  .medal-selector{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px}
+  @media(max-width:480px){.medal-selector{grid-template-columns:repeat(2,1fr)}}
+  .medal-option{position:relative}
+  .medal-option input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+  .medal-option label{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:var(--radius);border:2px solid var(--border);cursor:pointer;transition:all .18s;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);background:var(--bg2)}
+  .medal-option label .medal-emoji{font-size:1.6rem;line-height:1}
+  .medal-option label:hover{border-color:var(--border2);transform:translateY(-2px)}
+  .medal-option.ouro   input:checked + label{border-color:var(--gold);  background:var(--goldl);  color:var(--goldt)}
+  .medal-option.prata  input:checked + label{border-color:var(--silver);background:var(--silverl);color:var(--silvert)}
+  .medal-option.bronze input:checked + label{border-color:var(--bronze);background:var(--bronzel);color:var(--bronzet)}
+  .medal-option.mencao input:checked + label{border-color:var(--mention);background:var(--mentionl);color:var(--mentiont)}
+  .medal-option.ouro   label:hover{border-color:var(--gold)}
+  .medal-option.prata  label:hover{border-color:var(--silver)}
+  .medal-option.bronze label:hover{border-color:var(--bronze)}
+  .medal-option.mencao label:hover{border-color:var(--mention)}
+
+  .medal-group{margin-bottom:32px}
+  .medal-group-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+  .medal-group-icon{font-size:1.8rem;line-height:1}
+  .medal-group-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800}
+  .medal-group-count{font-size:.75rem;padding:3px 12px;border-radius:20px;font-weight:700}
+  .medal-group.ouro   .medal-group-title{color:var(--goldt)}   .medal-group.ouro   .medal-group-count{background:var(--goldl);  color:var(--goldt)}  .medal-group.ouro   .medal-group-header{border-color:var(--gold)}
+  .medal-group.prata  .medal-group-title{color:var(--silvert)} .medal-group.prata  .medal-group-count{background:var(--silverl);color:var(--silvert)}.medal-group.prata  .medal-group-header{border-color:var(--silver)}
+  .medal-group.bronze .medal-group-title{color:var(--bronzet)} .medal-group.bronze .medal-group-count{background:var(--bronzel);color:var(--bronzet)}.medal-group.bronze .medal-group-header{border-color:var(--bronze)}
+  .medal-group.mencao .medal-group-title{color:var(--mentiont)}.medal-group.mencao .medal-group-count{background:var(--mentionl);color:var(--mentiont)}.medal-group.mencao .medal-group-header{border-color:var(--mention)}
+
+  .alunos-lista{display:flex;flex-direction:column;gap:0}
+  .aluno-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);transition:background .12s}
+  .aluno-row:first-child{border-top:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0}
+  .aluno-row:last-child{border-radius:0 0 var(--radius) var(--radius);border-bottom:none}
+  .aluno-row:hover{background:var(--bg2)}
+  .aluno-num{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;color:var(--text-muted);width:22px;text-align:right;flex-shrink:0}
+  .aluno-medal-badge{flex-shrink:0;font-size:1.1rem;line-height:1}
+  .aluno-nome{flex:1;font-weight:600;font-size:.9rem;color:var(--text)}
+  .aluno-obs{font-size:.75rem;color:var(--text-muted);font-style:italic;margin-left:8px}
+  .aluno-actions{display:flex;gap:5px;flex-shrink:0;margin-left:auto}
+
+  .medal-filter-bar{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:24px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;box-shadow:var(--shadow)}
+  .medal-filter-bar .filter-group{flex:1;min-width:150px}
+
+  .awaiting-filter{text-align:center;padding:60px 20px;color:var(--text-muted)}
+  .awaiting-filter .icon{font-size:2.8rem;opacity:.35;margin-bottom:14px}
+  .awaiting-filter p{font-size:.88rem}
+
+  .medal-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+  .medal-summary-item{display:flex;align-items:center;gap:8px;padding:7px 15px;border-radius:var(--radius);border:1.5px solid var(--border);font-size:.82rem;font-weight:700;box-shadow:var(--shadow)}
+  .medal-summary-item.ouro  {border-color:var(--gold);  background:var(--goldl);  color:var(--goldt)}
+  .medal-summary-item.prata {border-color:var(--silver);background:var(--silverl);color:var(--silvert)}
+  .medal-summary-item.bronze{border-color:var(--bronze);background:var(--bronzel);color:var(--bronzet)}
+  .medal-summary-item.mencao{border-color:var(--mention);background:var(--mentionl);color:var(--mentiont)}
+
 </style>
 </head>
 <body>
@@ -623,7 +685,9 @@
     <div class="tab" onclick="switchTab('tabCadastrarOlimpiada',5)">➕ Olimpíada</div>
     <div class="tab" onclick="switchTab('tabDatas',6)">📅 Datas</div>
     <div class="tab" onclick="switchTab('tabCadastrarData',7)">➕ Datas</div>
-    <div class="tab" onclick="switchTab('tabConfiguracoes',8)">⚙️ Configurações</div>
+    <div class="tab" onclick="switchTab('tabMedalhistas',8)">🥇 Medalhistas</div>
+    <div class="tab" onclick="switchTab('tabCadastrarMedalhista',9)">➕ Medalhista</div>
+    <div class="tab" onclick="switchTab('tabConfiguracoes',10)">⚙️ Configurações</div>
   </div>
   <div class="content">
     <div class="tab-panel active" id="tabDashboard">
@@ -723,6 +787,94 @@
       </div>
     </div>
 
+    <div class="tab-panel" id="tabMedalhistas">
+      <div class="section-header">
+        <h2 class="section-title">🥇 Medalhistas <span class="count-badge" id="medalistasCount">–</span></h2>
+        <button class="btn-limpar visible" onclick="switchTab('tabCadastrarMedalhista',9)" style="border-color:var(--accent);color:var(--accent)">➕ Novo medalhista</button>
+      </div>
+      <div class="medal-filter-bar">
+        <div class="filter-group">
+          <label>Olimpíada *</label>
+          <select class="filter-select" id="mfOlimpiada" onchange="applyMedalistasFilters()">
+            <option value="">Selecione uma olimpíada...</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Ano *</label>
+          <select class="filter-select" id="mfAno" onchange="applyMedalistasFilters()">
+            <option value="">Selecione o ano...</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Fase *</label>
+          <select class="filter-select" id="mfFase" onchange="applyMedalistasFilters()">
+            <option value="">Selecione a fase...</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Buscar aluno</label>
+          <input type="text" class="filter-input" id="mfSearch" placeholder="Nome do aluno..." oninput="applyMedalistasFilters()">
+        </div>
+      </div>
+      <div id="medalistasResult">
+        <div class="awaiting-filter">
+          <div class="icon">🏅</div>
+          <p>Selecione a olimpíada, o ano e a fase para ver os medalhistas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tabCadastrarMedalhista">
+      <div class="section-header"><h2 class="section-title">Cadastrar Medalhista</h2></div>
+      <div class="form-card" style="max-width:680px">
+        <p class="form-title">🏅 Novo Medalhista</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Olimpíada *</label>
+            <select class="form-select" id="mdOlimpiada"><option value="">Selecione...</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fase *</label>
+            <select class="form-select" id="mdFase"><option value="">Selecione...</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ano *</label>
+            <input type="number" class="form-input" id="mdAno" placeholder="Ex: 2024" min="2000" max="2099">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nome do aluno *</label>
+            <input type="text" class="form-input" id="mdNome" placeholder="Nome completo">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Medalha / Classificação *</label>
+            <div class="medal-selector">
+              <div class="medal-option ouro">
+                <input type="radio" name="mdMedalha" id="mdOuro" value="Ouro">
+                <label for="mdOuro"><span class="medal-emoji">🥇</span>Ouro</label>
+              </div>
+              <div class="medal-option prata">
+                <input type="radio" name="mdMedalha" id="mdPrata" value="Prata">
+                <label for="mdPrata"><span class="medal-emoji">🥈</span>Prata</label>
+              </div>
+              <div class="medal-option bronze">
+                <input type="radio" name="mdMedalha" id="mdBronze" value="Bronze">
+                <label for="mdBronze"><span class="medal-emoji">🥉</span>Bronze</label>
+              </div>
+              <div class="medal-option mencao">
+                <input type="radio" name="mdMedalha" id="mdMencao" value="Menção Honrosa">
+                <label for="mdMencao"><span class="medal-emoji">🎖️</span>Menção Honrosa</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Observações</label>
+            <input type="text" class="form-input" id="mdObs" placeholder="Ex: Melhor resultado do estado, classificado para fase nacional... (opcional)">
+          </div>
+        </div>
+        <button class="form-submit" id="btnCadastrarMedalhista" onclick="cadastrarMedalhista()">✦ Cadastrar Medalhista</button>
+      </div>
+    </div>
+
     <div class="tab-panel" id="tabConfiguracoes">
       <div class="section-header"><h2 class="section-title">Configurações do Sistema</h2></div>
       <div class="settings-grid">
@@ -815,6 +967,50 @@
   </div>
 </div>
 
+<!-- MODAL EDITAR MEDALHISTA -->
+<div class="modal-overlay" id="editMedalistaModal" role="dialog" aria-modal="true" aria-labelledby="editMedalistaModalTitle">
+  <div class="modal" style="max-width:560px">
+    <h2 id="editMedalistaModalTitle">✏️ Editar Medalhista</h2>
+    <p>Altere os campos e salve</p>
+    <input type="hidden" id="editMdId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label class="form-label">Olimpíada *</label>
+        <select class="form-select modal-input" id="editMdOlimpiada" style="margin-bottom:0"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fase *</label>
+        <select class="form-select modal-input" id="editMdFase" style="margin-bottom:0"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ano *</label>
+        <input type="number" class="modal-input" id="editMdAno" style="margin-bottom:0" min="2000" max="2099">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nome *</label>
+        <input type="text" class="modal-input" id="editMdNome" style="margin-bottom:0" placeholder="Nome completo">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Medalha *</label>
+        <select class="form-select modal-input" id="editMdMedalha" style="margin-bottom:0">
+          <option value="Ouro">🥇 Ouro</option>
+          <option value="Prata">🥈 Prata</option>
+          <option value="Bronze">🥉 Bronze</option>
+          <option value="Menção Honrosa">🎖️ Menção Honrosa</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Observações</label>
+        <input type="text" class="modal-input" id="editMdObs" style="margin-bottom:0" placeholder="Opcional">
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeEditMedalistaModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarMedalista" onclick="salvarEdicaoMedalhista()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL CONFIRMAÇÃO -->
 <div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
   <div class="modal" style="max-width:360px">
@@ -849,7 +1045,7 @@ const firebaseConfig = {
 // Senha gerenciada exclusivamente pelo Firestore
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
-let allProvas=[], allOlimpiadas=[], importRows=[], deferredPrompt=null;
+let allProvas=[], allOlimpiadas=[], allDatas=[], allMedalhistas=[], importRows=[], deferredPrompt=null;
 
 // ── Utilitários ────────────────────────────
 // Escapa HTML para evitar XSS ao inserir dados do Firestore via innerHTML
@@ -937,7 +1133,7 @@ window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
 // Fechar modais com Escape
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal'].forEach(id => {
+  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal','editMedalistaModal'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('open');
   });
@@ -984,6 +1180,8 @@ window.switchTab=(id,idx)=>{
   if(id==='tabConfiguracoes') renderConfigLists();
   if(id==='tabDatas') renderDatasAdmin();
   if(id==='tabCadastrarData') populateDatasSelects();
+  if(id==='tabMedalhistas'){ populateMedalistasFilterSelects(); applyMedalistasFilters(); }
+  if(id==='tabCadastrarMedalhista') populateMedalistaFormSelects();
 };
 
 // ── Cache de sessão ────────────────────────
@@ -997,7 +1195,7 @@ function cacheGet(key) {
   } catch { return null; }
 }
 function cacheClear() {
-  ['provas','olimpiadas','config','datas'].forEach(k => sessionStorage.removeItem('arena_' + k));
+  ['provas','olimpiadas','config','datas','medalhistas'].forEach(k => sessionStorage.removeItem('arena_' + k));
 }
 
 // ── Firebase ───────────────────────────────
@@ -1038,12 +1236,14 @@ async function loadAdminData() {
   document.getElementById('olimpiadasList').innerHTML = loadingHTML();
   cacheClear(); // admin sempre busca dados frescos
   try {
-    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig()]);
+    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig(), loadMedalhistas()]);
     populateSelect('inputOlimpiada','Selecione...');
     populateSelect('afOlimpiada','Todas');
     populateAnoSelect('afAno');
     refreshDynamicSelects();
     populateDatasSelects();
+    populateMedalistaFormSelects();
+    populateMedalistasFilterSelects();
     renderOlimpiadasList();
     renderStats();
     renderRecentGrid();
@@ -1651,8 +1851,6 @@ window.executarUndo = () => {
 };
 
 // ── DATAS DE PROVAS ────────────────────────
-let allDatas = [];
-
 async function loadDatas() {
   const cached = cacheGet('datas');
   if (cached) { allDatas = cached; return; }
@@ -1661,6 +1859,13 @@ async function loadDatas() {
   cacheSet('datas', allDatas);
 }
 
+async function loadMedalhistas() {
+  const cached = cacheGet('medalhistas');
+  if (cached) { allMedalhistas = cached; return; }
+  const s = await getDocs(query(collection(db,'medalhistas'), orderBy('criadoEm','desc')));
+  allMedalhistas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  cacheSet('medalhistas', allMedalhistas);
+}
 // Utilitário: formata data ISO → dd/mm/aaaa
 function fmtData(iso) {
   if (!iso) return '—';
@@ -1930,6 +2135,266 @@ window.salvarEdicaoData = async () => {
 // Fecha editDataModal ao clicar fora
 document.getElementById('editDataModal').addEventListener('click', e => {
   if (e.target === document.getElementById('editDataModal')) window.closeEditDataModal();
+});
+
+// ══════════════════════════════════════════════
+// ── MEDALHISTAS ──────────────────────────────
+// ══════════════════════════════════════════════
+
+const MEDAL_CONFIG = {
+  'Ouro':           { emoji:'🥇', cls:'ouro',   label:'Ouro' },
+  'Prata':          { emoji:'🥈', cls:'prata',  label:'Prata' },
+  'Bronze':         { emoji:'🥉', cls:'bronze', label:'Bronze' },
+  'Menção Honrosa': { emoji:'🎖️', cls:'mencao', label:'Menção Honrosa' }
+};
+const MEDAL_ORDER = ['Ouro','Prata','Bronze','Menção Honrosa'];
+
+// Popula selects do formulário de cadastro
+function populateMedalistaFormSelects() {
+  const cfg = configCache || { fases: ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'] };
+  const faseOpts = '<option value="">Selecione...</option>' +
+    (cfg.fases || []).map(f => `<option>${esc(f)}</option>`).join('');
+  ['mdFase','editMdFase'].forEach(id => {
+    const sel = document.getElementById(id); if (!sel) return;
+    const val = sel.value;
+    sel.innerHTML = faseOpts;
+    if (val) sel.value = val;
+  });
+  const olOpts = '<option value="">Selecione...</option>' +
+    allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
+  ['mdOlimpiada','editMdOlimpiada'].forEach(id => {
+    const sel = document.getElementById(id); if (!sel) return;
+    const val = sel.value;
+    sel.innerHTML = olOpts;
+    if (val) sel.value = val;
+  });
+}
+
+// Popula selects de filtro da aba de visualização
+function populateMedalistasFilterSelects() {
+  const selOl = document.getElementById('mfOlimpiada');
+  if (selOl) {
+    const val = selOl.value;
+    selOl.innerHTML = '<option value="">Selecione uma olimpíada...</option>' +
+      allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
+    if (val) selOl.value = val;
+  }
+  const anos = [...new Set(allMedalhistas.map(m => m.ano))].sort((a,b) => b-a);
+  const selAno = document.getElementById('mfAno');
+  if (selAno) {
+    const val = selAno.value;
+    selAno.innerHTML = '<option value="">Selecione o ano...</option>' +
+      anos.map(a => `<option>${a}</option>`).join('');
+    if (val) selAno.value = val;
+  }
+  const cfg = configCache || { fases: ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'] };
+  const selFase = document.getElementById('mfFase');
+  if (selFase) {
+    const val = selFase.value;
+    selFase.innerHTML = '<option value="">Selecione a fase...</option>' +
+      (cfg.fases || []).map(f => `<option>${esc(f)}</option>`).join('');
+    if (val) selFase.value = val;
+  }
+}
+
+// Aplica filtros e renderiza resultado
+window.applyMedalistasFilters = () => {
+  const oid  = document.getElementById('mfOlimpiada')?.value || '';
+  const ano  = document.getElementById('mfAno')?.value || '';
+  const fase = document.getElementById('mfFase')?.value || '';
+  const s    = (document.getElementById('mfSearch')?.value || '').toLowerCase();
+  const el   = document.getElementById('medalistasResult');
+  const countEl = document.getElementById('medalistasCount');
+  if (!el) return;
+
+  // Atualiza anos dinamicamente ao selecionar olimpíada
+  if (oid) {
+    const anosOl = [...new Set(allMedalhistas.filter(m => m.olimpiadaId === oid).map(m => m.ano))].sort((a,b)=>b-a);
+    const selAno = document.getElementById('mfAno');
+    if (selAno) {
+      const vAno = selAno.value;
+      selAno.innerHTML = '<option value="">Selecione o ano...</option>' +
+        anosOl.map(a=>`<option>${a}</option>`).join('');
+      if (anosOl.map(String).includes(vAno)) selAno.value = vAno;
+    }
+  }
+
+  if (!oid) {
+    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🏅</div><p>Selecione a olimpíada, o ano e a fase para ver os medalhistas.</p></div>`;
+    if (countEl) countEl.textContent = '–';
+    return;
+  }
+  if (!ano || !fase) {
+    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🔎</div><p>Selecione também o <strong>ano</strong> e a <strong>fase</strong> para ver os medalhistas.</p></div>`;
+    if (countEl) countEl.textContent = '–';
+    return;
+  }
+
+  const lista = allMedalhistas.filter(m => {
+    if (m.olimpiadaId !== oid)        return false;
+    if (m.ano !== parseInt(ano))      return false;
+    if (m.fase !== fase)              return false;
+    if (s && !m.nome.toLowerCase().includes(s)) return false;
+    return true;
+  });
+
+  if (countEl) countEl.textContent = lista.length;
+
+  if (!lista.length) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhum medalhista encontrado</h3><p>Nenhum medalhista cadastrado para esta seleção.</p></div>`;
+    return;
+  }
+
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  const olColor = ol?.color ?? 0;
+
+  const summaryHTML = MEDAL_ORDER.map(medal => {
+    const n = lista.filter(m => m.medalha === medal).length;
+    if (!n) return '';
+    const mc = MEDAL_CONFIG[medal];
+    return `<div class="medal-summary-item ${mc.cls}">${mc.emoji} <strong>${n}</strong> ${mc.label}</div>`;
+  }).join('');
+
+  const gruposHTML = MEDAL_ORDER.map(medal => {
+    const grupo = lista
+      .filter(m => m.medalha === medal)
+      .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    if (!grupo.length) return '';
+    const mc = MEDAL_CONFIG[medal];
+    const rowsHTML = grupo.map((m, i) => {
+      const obs = m.obs ? `<span class="aluno-obs">${esc(m.obs)}</span>` : '';
+      return `<div class="aluno-row">
+        <span class="aluno-num">${i + 1}.</span>
+        <span class="aluno-medal-badge">${mc.emoji}</span>
+        <span class="aluno-nome">${esc(m.nome)}</span>
+        ${obs}
+        <div class="aluno-actions">
+          <button class="btn-del" onclick="abrirEdicaoMedalhista('${esc(m.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent);padding:5px 8px" aria-label="Editar">✏️</button>
+          <button class="btn-del" onclick="deletarMedalhista('${esc(m.id)}')" style="padding:5px 8px" aria-label="Excluir">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="medal-group ${mc.cls}">
+      <div class="medal-group-header">
+        <span class="medal-group-icon">${mc.emoji}</span>
+        <span class="medal-group-title">${mc.label}</span>
+        <span class="medal-group-count">${grupo.length} aluno${grupo.length!==1?'s':''}</span>
+      </div>
+      <div class="alunos-lista">${rowsHTML}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <span class="prova-row-tag olimpiada-tag-${olColor}">${esc(ol?.nome||'')}</span>
+      <span style="font-size:.85rem;color:var(--text-muted)">${esc(fase)} · ${esc(ano)}</span>
+    </div>
+    <div class="medal-summary">${summaryHTML}</div>
+    ${gruposHTML}
+  `;
+};
+
+// ── CRUD Medalhistas ───────────────────────
+window.cadastrarMedalhista = async () => {
+  const oid    = document.getElementById('mdOlimpiada').value;
+  const fase   = document.getElementById('mdFase').value;
+  const ano    = document.getElementById('mdAno').value;
+  const nome   = document.getElementById('mdNome').value.trim();
+  const medalha= document.querySelector('input[name="mdMedalha"]:checked')?.value;
+  const obs    = document.getElementById('mdObs').value.trim();
+  if (!oid || !fase || !ano || !nome || !medalha) {
+    showToast('Preencha todos os campos obrigatórios (*)', 'error'); return;
+  }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada', 'error'); return; }
+  const btn = document.getElementById('btnCadastrarMedalhista');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await addDoc(collection(db, 'medalhistas'), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      fase, ano: parseInt(ano), nome, medalha, obs,
+      criadoEm: new Date().toISOString()
+    });
+    ['mdOlimpiada','mdFase','mdAno','mdNome','mdObs'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.querySelectorAll('input[name="mdMedalha"]').forEach(r => r.checked = false);
+    showToast('Medalhista cadastrado com sucesso!');
+    cacheClear(); await loadMedalhistas();
+    populateMedalistasFilterSelects();
+    window.switchTab('tabMedalhistas', 8);
+  } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  btn.disabled = false; btn.textContent = '✦ Cadastrar Medalhista';
+};
+
+window.deletarMedalhista = async (id) => {
+  confirmarAcao('Remover este medalhista permanentemente?', async () => {
+    const reg = allMedalhistas.find(m => m.id === id);
+    try {
+      await deleteDoc(doc(db, 'medalhistas', id));
+      cacheClear(); await loadMedalhistas();
+      applyMedalistasFilters();
+      showToast('Medalhista removido.', 'success', async () => {
+        if (reg) {
+          const { id: _id, ...dados } = reg;
+          await addDoc(collection(db, 'medalhistas'), dados);
+          cacheClear(); await loadMedalhistas();
+          applyMedalistasFilters();
+          showToast('Exclusão desfeita!');
+        }
+      });
+    } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  });
+};
+
+window.abrirEdicaoMedalhista = (id) => {
+  const m = allMedalhistas.find(x => x.id === id);
+  if (!m) { showToast('Medalhista não encontrado', 'error'); return; }
+  document.getElementById('editMdId').value      = m.id;
+  document.getElementById('editMdNome').value    = m.nome;
+  document.getElementById('editMdAno').value     = m.ano;
+  document.getElementById('editMdObs').value     = m.obs || '';
+  document.getElementById('editMdMedalha').value = m.medalha;
+  populateMedalistaFormSelects();
+  document.getElementById('editMdOlimpiada').value = m.olimpiadaId;
+  document.getElementById('editMdFase').value      = m.fase;
+  document.getElementById('editMedalistaModal').classList.add('open');
+};
+
+window.closeEditMedalistaModal = () => {
+  document.getElementById('editMedalistaModal').classList.remove('open');
+};
+
+window.salvarEdicaoMedalhista = async () => {
+  const id      = document.getElementById('editMdId').value;
+  const oid     = document.getElementById('editMdOlimpiada').value;
+  const fase    = document.getElementById('editMdFase').value;
+  const ano     = parseInt(document.getElementById('editMdAno').value);
+  const nome    = document.getElementById('editMdNome').value.trim();
+  const medalha = document.getElementById('editMdMedalha').value;
+  const obs     = document.getElementById('editMdObs').value.trim();
+  if (!oid || !fase || !ano || !nome || !medalha) {
+    showToast('Preencha todos os campos obrigatórios', 'error'); return;
+  }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada', 'error'); return; }
+  const btn = document.getElementById('btnSalvarMedalista');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await updateDoc(doc(db, 'medalhistas', id), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      fase, ano, nome, medalha, obs
+    });
+    window.closeEditMedalistaModal();
+    showToast('Medalhista atualizado com sucesso!');
+    cacheClear(); await loadMedalhistas();
+    applyMedalistasFilters();
+  } catch(e) { showToast('Erro: ' + e.message, 'error'); }
+  btn.disabled = false; btn.textContent = '✦ Salvar alterações';
+};
+
+document.getElementById('editMedalistaModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('editMedalistaModal')) window.closeEditMedalistaModal();
 });
 </script>
 </body>
