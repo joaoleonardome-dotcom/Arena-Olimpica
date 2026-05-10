@@ -445,6 +445,30 @@
   .datas-box-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
   .datas-box-title span{font-size:.72rem;background:var(--accentl);color:var(--accent);padding:2px 9px;border-radius:20px;font-weight:700}
   .datas-box select.filter-select{margin-bottom:12px;width:100%}
+  /* ── ALERTAS ── */
+  .alertas-section{margin-bottom:32px}
+  .alertas-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .alertas-header h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text)}
+  .alertas-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:700px){.alertas-grid{grid-template-columns:1fr}}
+  .alertas-col-title{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .alerta-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 15px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:border-color .18s,box-shadow .18s;box-shadow:var(--shadow)}
+  .alerta-card:last-child{margin-bottom:0}
+  .alerta-card:hover{border-color:var(--border2);box-shadow:var(--shadow-md)}
+  .alerta-card.urgente{border-left:3px solid var(--danger);border-color:rgba(220,38,38,.3)}
+  .alerta-card.proximo{border-left:3px solid var(--gold);border-color:rgba(245,158,11,.3)}
+  .alerta-card.normal{border-left:3px solid var(--accent);border-color:rgba(13,148,136,.25)}
+  .alerta-card.encerrado{border-left:3px solid var(--border2);opacity:.6}
+  .alerta-icon{font-size:1.5rem;flex-shrink:0;line-height:1}
+  .alerta-body{flex:1;min-width:0}
+  .alerta-nome{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .alerta-detalhe{font-size:.76rem;color:var(--text-muted);margin-top:2px}
+  .alerta-badge{flex-shrink:0;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .alerta-badge.urgente{background:var(--dangerl);color:var(--danger)}
+  .alerta-badge.proximo{background:var(--goldl);color:var(--goldt)}
+  .alerta-badge.normal{background:var(--accentl);color:var(--accent)}
+  .alerta-badge.encerrado{background:var(--bg2);color:var(--text-muted)}
+  .alerta-empty{font-size:.82rem;color:var(--text-muted);text-align:center;padding:18px 0;font-style:italic}
 
   /* Item de data na sidebar */
   .data-item{padding:11px 13px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg2);margin-bottom:8px;transition:border-color .15s;overflow:hidden;min-width:0}
@@ -940,10 +964,13 @@
       <div class="sidebar-divider"></div>
       <span class="sidebar-section-label">Calendário</span>
       <div class="nav-item" data-panel="tabDatas" onclick="navTo('tabDatas',6)">
-        <span class="nav-icon">📅</span> Datas de Provas
+        <span class="nav-icon">📅</span> Datas
       </div>
       <div class="nav-sub-item" data-panel="tabCadastrarData" onclick="navTo('tabCadastrarData',7)">
-        ➕ Adicionar Data
+        ➕ Adicionar Data de Prova
+      </div>
+      <div class="nav-sub-item" data-panel="tabCadastrarInscricao" onclick="navTo('tabCadastrarInscricao',11)">
+        ➕ Adicionar Inscrição
       </div>
 
       <div class="sidebar-divider"></div>
@@ -979,6 +1006,7 @@
         <div class="tab" onclick="switchTab('tabMedalhistas',8)">🥇 Medalhistas</div>
         <div class="tab" onclick="switchTab('tabCadastrarMedalhista',9)">➕ Medalhista</div>
         <div class="tab" onclick="switchTab('tabConfiguracoes',10)">⚙️ Configurações</div>
+        <div class="tab" onclick="switchTab('tabCadastrarInscricao',11)">➕ Inscrição</div>
       </div>
       <div class="tab-panel active" id="tabDashboard">
       <!-- ── DASHBOARD HEADER ── -->
@@ -1150,24 +1178,62 @@
       </div>
     </div>
 
-      <!-- ABA: DATAS CADASTRADAS -->
+      <!-- ABA: DATAS -->
       <div class="tab-panel" id="tabDatas">
       <div class="section-header">
-        <h2 class="section-title">Datas de Provas <span class="count-badge" id="datasCount">–</span></h2>
+        <h2 class="section-title">📅 Datas</h2>
         <div class="section-actions">
-          <button class="btn-action" onclick="navTo('tabCadastrarData',7)">➕ Nova Data</button>
+          <button class="btn-action secondary" onclick="navTo('tabCadastrarInscricao',11)">✏️ Nova Inscrição</button>
+          <button class="btn-action" onclick="navTo('tabCadastrarData',7)">➕ Nova Data de Prova</button>
         </div>
       </div>
-      <div class="datas-admin-list" id="datasAdminList">
-        <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
+
+      <!-- ── ALERTAS ── -->
+      <div class="alertas-section">
+        <div class="alertas-header">
+          <h3>🔔 Alertas</h3>
+          <span class="count-badge" id="alertasCount">–</span>
+        </div>
+        <div class="alertas-grid">
+          <div>
+            <div class="alertas-col-title">📝 Inscrições próximas</div>
+            <div id="alertasInscricoes"><div class="alerta-empty">Carregando...</div></div>
+          </div>
+          <div>
+            <div class="alertas-col-title">🗓️ Provas próximas</div>
+            <div id="alertasProvas"><div class="alerta-empty">Carregando...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Datas de Inscrição -->
+      <div style="margin-bottom:28px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">📝 Datas de Inscrição</h3>
+          <span class="count-badge" id="inscricoesCount">–</span>
+        </div>
+        <div class="datas-admin-list" id="inscricoesAdminList">
+          <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
+        </div>
+      </div>
+
+      <!-- Datas de Provas -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">🗓️ Datas de Provas</h3>
+          <span class="count-badge" id="datasCount">–</span>
+        </div>
+        <div class="datas-admin-list" id="datasAdminList">
+          <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
+        </div>
       </div>
     </div>
 
-    <!-- ABA: CADASTRAR DATA -->
+    <!-- ABA: CADASTRAR DATA DE PROVA -->
       <div class="tab-panel" id="tabCadastrarData">
       <div class="section-header"><h2 class="section-title">Cadastrar Data de Prova</h2></div>
       <div class="form-card">
-        <p class="form-title">📅 Nova Data</p>
+        <p class="form-title">🗓️ Nova Data de Prova</p>
         <div class="form-grid">
           <div class="form-group"><label class="form-label">Olimpíada *</label><select class="form-select" id="dtOlimpiada"><option value="">Selecione...</option></select></div>
           <div class="form-group"><label class="form-label">Fase *</label><select class="form-select" id="dtFase"><option value="">Selecione...</option></select></div>
@@ -1176,7 +1242,24 @@
           <div class="form-group full"><label class="form-label">Local da prova</label><input type="text" class="form-input" id="dtLocal" placeholder="Ex: Escola estadual, UFMG, Online..."></div>
           <div class="form-group full"><label class="form-label">Informações gerais</label><textarea class="form-input" id="dtInfo" rows="3" placeholder="Inscrições, link de inscrição, materiais permitidos, observações..." style="resize:vertical;font-family:'DM Sans',sans-serif"></textarea></div>
         </div>
-        <button class="form-submit" id="btnCadastrarData" onclick="cadastrarData()">✦ Cadastrar Data</button>
+        <button class="form-submit" id="btnCadastrarData" onclick="cadastrarData()">✦ Cadastrar Data de Prova</button>
+      </div>
+    </div>
+
+      <!-- ABA: CADASTRAR INSCRIÇÃO -->
+      <div class="tab-panel" id="tabCadastrarInscricao">
+      <div class="section-header"><h2 class="section-title">Cadastrar Data de Inscrição</h2></div>
+      <div class="form-card">
+        <p class="form-title">📝 Nova Inscrição</p>
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Olimpíada *</label><select class="form-select" id="inOlimpiada"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label class="form-label">Início das inscrições *</label><input type="date" class="form-input" id="inDataInicio"></div>
+          <div class="form-group"><label class="form-label">Fim das inscrições *</label><input type="date" class="form-input" id="inDataFim"></div>
+          <div class="form-group full"><label class="form-label">Link do regulamento</label><input type="url" class="form-input" id="inLinkRegulamento" placeholder="https://..."></div>
+          <div class="form-group full"><label class="form-label">Link do site oficial</label><input type="url" class="form-input" id="inLinkSite" placeholder="https://..."></div>
+          <div class="form-group full"><label class="form-label">Link do formulário de inscrição</label><input type="url" class="form-input" id="inLinkFormulario" placeholder="https://..."></div>
+        </div>
+        <button class="form-submit" id="btnCadastrarInscricao" onclick="cadastrarInscricao()">✦ Cadastrar Inscrição</button>
       </div>
     </div>
 
@@ -1184,6 +1267,7 @@
       <div class="section-header">
         <h2 class="section-title">🥇 Medalhistas <span class="count-badge" id="medalistasCount">–</span></h2>
         <div class="section-actions">
+          <button class="btn-action secondary" id="btnImprimirMedalhistas" onclick="imprimirMedalhistas()" style="display:none">🖨️ Imprimir Lista</button>
           <button class="btn-action" onclick="navTo('tabCadastrarMedalhista',9)">➕ Adicionar Medalhista</button>
         </div>
       </div>
@@ -1382,6 +1466,27 @@
   </div>
 </div>
 
+<!-- MODAL EDITAR INSCRIÇÃO -->
+<div class="modal-overlay" id="editInscricaoModal" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width:560px">
+    <h2>✏️ Editar Inscrição</h2>
+    <p>Altere os campos e salve</p>
+    <input type="hidden" id="editInscricaoId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Olimpíada *</label><select class="form-select modal-input" id="editInOlimpiada" style="margin-bottom:0"></select></div>
+      <div class="form-group"><label class="form-label">Início *</label><input type="date" class="modal-input" id="editInDataInicio" style="margin-bottom:0"></div>
+      <div class="form-group"><label class="form-label">Fim *</label><input type="date" class="modal-input" id="editInDataFim" style="margin-bottom:0"></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do regulamento</label><input type="url" class="modal-input" id="editInLinkRegulamento" style="margin-bottom:0" placeholder="https://..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do site oficial</label><input type="url" class="modal-input" id="editInLinkSite" style="margin-bottom:0" placeholder="https://..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do formulário de inscrição</label><input type="url" class="modal-input" id="editInLinkFormulario" style="margin-bottom:0" placeholder="https://..."></div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeEditInscricaoModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarInscricao" onclick="salvarEdicaoInscricao()">✦ Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL IMPORTAR MEDALHISTAS PREVIEW -->
 <div class="modal-overlay" id="mdImportModal" role="dialog" aria-modal="true" aria-labelledby="mdImportModalTitle">
   <div class="modal" style="max-width:780px;max-height:90vh;overflow-y:auto">
@@ -1474,7 +1579,16 @@ const firebaseConfig = {
 // Senha gerenciada exclusivamente pelo Firestore
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
-let allProvas=[], allOlimpiadas=[], allDatas=[], allMedalhistas=[], importRows=[], deferredPrompt=null;
+let allProvas=[], allOlimpiadas=[], allDatas=[], allMedalhistas=[], allInscricoes=[], importRows=[], deferredPrompt=null;
+
+// ── CONFIGURAÇÕES (declaradas aqui para evitar "before initialization") ──
+const CONFIG_DEFAULTS = {
+  areas:  ['Matemática','Ciências','Física','Química','Biologia','Computação/TI','Astronomia','Robótica','Multidisciplinar','Outra'],
+  niveis: ['Nível 1','Nível 2','Nível 3','Nível Universitário','Nível P','Nível E','Nível B','Nível C','Nível J','Nível S'],
+  fases:  ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'],
+  senha:  ''
+};
+let configCache = null;
 
 // ── Utilitários ────────────────────────────
 // Escapa HTML para evitar XSS ao inserir dados do Firestore via innerHTML
@@ -1551,18 +1665,23 @@ function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.class
 window.logout=()=>showScreen('landing');
 window.openAdminModal=()=>{ document.getElementById('adminModal').classList.add('open'); document.getElementById('adminPass').value=''; document.getElementById('adminError').style.display='none'; setTimeout(()=>document.getElementById('adminPass').focus(),100); };
 window.closeAdminModal=()=>document.getElementById('adminModal').classList.remove('open');
-// checkAdmin definido abaixo via Firestore
-document.getElementById('adminModal').addEventListener('click',e=>{ if(e.target===document.getElementById('adminModal')) window.closeAdminModal(); });
-document.getElementById('importModal').addEventListener('click',e=>{ if(e.target===document.getElementById('importModal')) window.closeImportModal(); });
-document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) window.closeEditModal(); });
-document.getElementById('editOlModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editOlModal')) window.closeEditOlModal(); });
-document.getElementById('confirmModal').addEventListener('click',e=>{ if(e.target===document.getElementById('confirmModal')) window.fecharConfirmModal(); });
 window.enterTeacher=()=>{ showScreen('teacherScreen'); loadTeacherData(); };
+
+// Registra listeners de forma segura (evita crash se elemento não existir)
+function safeListener(id, fn) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', fn);
+}
+safeListener('adminModal',    e=>{ if(e.target===document.getElementById('adminModal'))    window.closeAdminModal(); });
+safeListener('importModal',   e=>{ if(e.target===document.getElementById('importModal'))   window.closeImportModal(); });
+safeListener('editModal',     e=>{ if(e.target===document.getElementById('editModal'))     window.closeEditModal(); });
+safeListener('editOlModal',   e=>{ if(e.target===document.getElementById('editOlModal'))   window.closeEditOlModal(); });
+safeListener('confirmModal',  e=>{ if(e.target===document.getElementById('confirmModal'))  window.fecharConfirmModal(); });
 
 // Fechar modais com Escape
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  ['adminModal','importModal','editModal','editOlModal','editDataModal','confirmModal','editMedalistaModal','mdImportModal'].forEach(id => {
+  ['adminModal','importModal','editModal','editOlModal','editDataModal','editInscricaoModal','confirmModal','editMedalistaModal','mdImportModal'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('open');
   });
@@ -1570,14 +1689,18 @@ document.addEventListener('keydown', e => {
 
 // Modal de confirmação reutilizável (substitui confirm() nativo)
 function confirmarAcao(msg, cb) {
-  document.getElementById('confirmMsg').textContent = msg;
-  document.getElementById('confirmModal').classList.add('open');
-  document.getElementById('btnConfirmarAcao').onclick = () => {
-    document.getElementById('confirmModal').classList.remove('open');
+  const confirmMsgEl = document.getElementById('confirmMsg');
+  const confirmModalEl = document.getElementById('confirmModal');
+  const btnConfirmar = document.getElementById('btnConfirmarAcao');
+  if (!confirmMsgEl || !confirmModalEl || !btnConfirmar) return;
+  confirmMsgEl.textContent = msg;
+  confirmModalEl.classList.add('open');
+  btnConfirmar.onclick = () => {
+    confirmModalEl.classList.remove('open');
     cb();
   };
 }
-window.fecharConfirmModal = () => document.getElementById('confirmModal').classList.remove('open');
+window.fecharConfirmModal = () => { const el = document.getElementById('confirmModal'); if(el) el.classList.remove('open'); };
 
 // Carrega contador da landing page
 async function loadLandingCounter(){
@@ -1596,24 +1719,25 @@ async function loadLandingCounter(){
 }
 loadLandingCounter();
 
-// Aplica debounce no campo de busca (250ms)
-document.addEventListener('DOMContentLoaded', () => {
-  const fSearch = document.getElementById('fSearch');
-  if (fSearch) fSearch.oninput = debounce(applyTeacherFilters, 250);
-});
+// Aplica debounce no campo de busca (250ms) — lazy ref para não depender de ordem de definição
+const fSearchEl = document.getElementById('fSearch');
+if (fSearchEl) fSearchEl.oninput = debounce((...args) => {
+  if (typeof window.applyTeacherFilters === 'function') window.applyTeacherFilters(...args);
+}, 250);
 window.switchTab=(id,idx)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.tab')[idx].classList.add('active');
+  const tabEl = document.querySelectorAll('.tab')[idx];
+  if (tabEl) tabEl.classList.add('active');
   // sync sidebar nav items
   document.querySelectorAll('.nav-item,.nav-sub-item').forEach(n=>n.classList.remove('active'));
   const navEl = document.querySelector(`[data-panel="${id}"]`);
   if(navEl) navEl.classList.add('active');
   if(id==='tabDashboard') { populateDashFilters(); renderDashboard(); }
   if(id==='tabConfiguracoes') renderConfigLists();
-  if(id==='tabDatas') renderDatasAdmin();
-  if(id==='tabCadastrarData') populateDatasSelects();
+  if(id==='tabDatas') { renderDatasAdmin(); renderInscricoesAdmin(); renderAlertas(); }
+  if(id==='tabCadastrarData' || id==='tabCadastrarInscricao') populateDatasSelects();
   if(id==='tabMedalhistas'){ populateMedalistasFilterSelects(); applyMedalistasFilters(); }
   if(id==='tabCadastrarMedalhista') populateMedalistaFormSelects();
   // close mobile sidebar after navigation
@@ -1653,16 +1777,26 @@ function cacheClear() {
 async function loadOlimpiadas() {
   const cached = cacheGet('olimpiadas');
   if (cached) { allOlimpiadas = cached; return; }
-  const s = await getDocs(query(collection(db,'olimpiadas'), orderBy('nome')));
-  allOlimpiadas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  try {
+    const s = await getDocs(query(collection(db,'olimpiadas'), orderBy('nome')));
+    allOlimpiadas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  } catch(e) {
+    const s = await getDocs(collection(db,'olimpiadas'));
+    allOlimpiadas = s.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (a.nome||'').localeCompare(b.nome||'','pt-BR'));
+  }
   cacheSet('olimpiadas', allOlimpiadas);
 }
 
 async function loadProvas() {
   const cached = cacheGet('provas');
   if (cached) { allProvas = cached; return; }
-  const s = await getDocs(query(collection(db,'provas'), orderBy('criadoEm','desc')));
-  allProvas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  try {
+    const s = await getDocs(query(collection(db,'provas'), orderBy('criadoEm','desc')));
+    allProvas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  } catch(e) {
+    const s = await getDocs(collection(db,'provas'));
+    allProvas = s.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.criadoEm||'') > (a.criadoEm||'') ? 1 : -1);
+  }
   cacheSet('provas', allProvas);
 }
 
@@ -1678,7 +1812,8 @@ async function loadTeacherData() {
     applyTeacherFilters();
     renderProximasDatas();
   } catch(e) {
-    document.getElementById('teacherGrid').innerHTML = errorState('Não foi possível carregar as avaliações. Verifique sua conexão e tente novamente.');
+    console.error('loadTeacherData error:', e);
+    document.getElementById('teacherGrid').innerHTML = errorState('Não foi possível carregar as avaliações. Verifique sua conexão e tente novamente. (' + e.message + ')');
   }
 }
 
@@ -1686,7 +1821,7 @@ async function loadAdminData() {
   document.getElementById('olimpiadasList').innerHTML = loadingHTML();
   cacheClear(); // admin sempre busca dados frescos
   try {
-    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig(), loadMedalhistas()]);
+    await Promise.all([loadOlimpiadas(), loadProvas(), loadDatas(), loadConfig(), loadMedalhistas(), loadInscricoes()]);
     populateSelect('inputOlimpiada','Selecione...');
     populateSelect('afOlimpiada','Todas');
     populateAnoSelect('afAno');
@@ -1700,6 +1835,8 @@ async function loadAdminData() {
     renderDashboard();
     applyAdminFilters();
     renderDatasAdmin();
+    renderInscricoesAdmin();
+    renderAlertas();
   } catch(e) {
     showToast('Erro ao carregar dados: ' + e.message, 'error');
   }
@@ -1789,16 +1926,6 @@ window.salvarEdicao = async()=>{
 
 
 // ── CONFIGURAÇÕES ──────────────────────────
-// Defaults que são gravados no Firebase na primeira vez
-const CONFIG_DEFAULTS = {
-  areas:  ['Matemática','Ciências','Física','Química','Biologia','Computação/TI','Astronomia','Robótica','Multidisciplinar','Outra'],
-  niveis: ['Nível 1','Nível 2','Nível 3','Nível Universitário','Nível P','Nível E','Nível B','Nível C','Nível J','Nível S'],
-  fases:  ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'],
-  senha:  '' // definida pelo administrador via painel
-};
-
-let configCache = null;
-
 async function loadConfig(){
   try {
     const snap = await getDocs(collection(db,'config'));
@@ -1923,21 +2050,33 @@ function refreshDynamicSelects(){
 
 // Autenticação via Firestore — senha não exposta no código
 window.checkAdmin = async () => {
-  const cfg = await loadConfig();
-  const senhaCorreta = cfg.senha || '';
-  if(!senhaCorreta){
-    document.getElementById('adminError').textContent = 'Nenhuma senha configurada. Acesse o Firestore para definir.';
-    document.getElementById('adminError').style.display='block';
-    return;
-  }
-  if(document.getElementById('adminPass').value === senhaCorreta){
-    window.closeAdminModal();
-    showScreen('adminScreen');
-    loadAdminData();
-  } else {
-    document.getElementById('adminError').textContent = 'Senha incorreta. Tente novamente.';
-    document.getElementById('adminError').style.display='block';
-    document.getElementById('adminPass').select();
+  const errorEl = document.getElementById('adminError');
+  const passEl  = document.getElementById('adminPass');
+  const btnEl   = document.querySelector('#adminModal .btn-primary');
+  errorEl.style.display = 'none';
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Verificando...'; }
+  try {
+    const cfg = await loadConfig();
+    const senhaCorreta = cfg.senha || '';
+    if (!senhaCorreta) {
+      errorEl.textContent = 'Nenhuma senha configurada. Defina a senha no Firestore (coleção config → campo senha).';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (passEl.value === senhaCorreta) {
+      window.closeAdminModal();
+      showScreen('adminScreen');
+      loadAdminData();
+    } else {
+      errorEl.textContent = 'Senha incorreta. Tente novamente.';
+      errorEl.style.display = 'block';
+      passEl.select();
+    }
+  } catch(e) {
+    errorEl.textContent = 'Erro ao conectar com o servidor. Verifique sua conexão.';
+    errorEl.style.display = 'block';
+  } finally {
+    if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Entrar'; }
   }
 };
 
@@ -2579,16 +2718,26 @@ window.executarUndo = () => {
 async function loadDatas() {
   const cached = cacheGet('datas');
   if (cached) { allDatas = cached; return; }
-  const s = await getDocs(query(collection(db,'datas'), orderBy('data','asc')));
-  allDatas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  try {
+    const s = await getDocs(query(collection(db,'datas'), orderBy('data','asc')));
+    allDatas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  } catch(e) {
+    const s = await getDocs(collection(db,'datas'));
+    allDatas = s.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (a.data||'') > (b.data||'') ? 1 : -1);
+  }
   cacheSet('datas', allDatas);
 }
 
 async function loadMedalhistas() {
   const cached = cacheGet('medalhistas');
   if (cached) { allMedalhistas = cached; return; }
-  const s = await getDocs(query(collection(db,'medalhistas'), orderBy('criadoEm','desc')));
-  allMedalhistas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  try {
+    const s = await getDocs(query(collection(db,'medalhistas'), orderBy('criadoEm','desc')));
+    allMedalhistas = s.docs.map(d => ({id: d.id, ...d.data()}));
+  } catch(e) {
+    const s = await getDocs(collection(db,'medalhistas'));
+    allMedalhistas = s.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.criadoEm||'') > (a.criadoEm||'') ? 1 : -1);
+  }
   cacheSet('medalhistas', allMedalhistas);
 }
 // Utilitário: formata data ISO → dd/mm/aaaa
@@ -2620,6 +2769,24 @@ function countdownBadge(iso) {
   if (d <= 7)  return `<span class="data-countdown urgente">⚡ ${d} dia${d>1?'s':''}</span>`;
   if (d <= 30) return `<span class="data-countdown proximo">🟡 ${d} dias</span>`;
   return `<span class="data-countdown normal">📅 ${d} dias</span>`;
+}
+
+// Badge para inscrições: conta até o fim das inscrições
+function inscricaoBadge(dataInicio, dataFim) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const inicio = new Date(dataInicio + 'T00:00:00');
+  const fim    = new Date(dataFim    + 'T00:00:00');
+  if (hoje > fim)    return `<span class="data-countdown passado">✓ Encerrada</span>`;
+  if (hoje < inicio) {
+    const diasParaAbrir = Math.ceil((inicio - hoje) / 86400000);
+    return `<span class="data-countdown normal">📅 Abre em ${diasParaAbrir} dia${diasParaAbrir>1?'s':''}</span>`;
+  }
+  // inscrições abertas — mostra dias até o fim
+  const diasRestam = Math.ceil((fim - hoje) / 86400000);
+  if (diasRestam === 0) return `<span class="data-countdown urgente">🔴 Encerra hoje!</span>`;
+  if (diasRestam <= 7) return `<span class="data-countdown urgente">⚡ ${diasRestam} dia${diasRestam>1?'s':''} restante${diasRestam>1?'s':''}</span>`;
+  if (diasRestam <= 30) return `<span class="data-countdown proximo">🟡 ${diasRestam} dias restantes</span>`;
+  return `<span class="data-countdown normal">✅ ${diasRestam} dias restantes</span>`;
 }
 
 // ── Render: lista admin de datas ───────────
@@ -2676,7 +2843,7 @@ function renderProximasDatas() {
   const proximas = [...allDatas]
     .filter(dt => new Date(dt.data + 'T00:00:00') >= hoje)
     .sort((a,b) => a.data > b.data ? 1 : -1)
-    .slice(0, 3);
+    .slice(0, 5);
   if (countEl) countEl.textContent = proximas.length ? proximas.length : '';
   if (!proximas.length) {
     el.innerHTML = `<p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Nenhuma data futura cadastrada.</p>`;
@@ -2685,17 +2852,11 @@ function renderProximasDatas() {
   el.innerHTML = proximas.map(dt => {
     const ol = allOlimpiadas.find(o => o.id === dt.olimpiadaId);
     const color = ol?.color ?? 0;
-    const horario = dt.horario ? ` · ${dt.horario}` : '';
-    const local = dt.local ? `<div class="data-item-local">📍 ${esc(dt.local)}</div>` : '';
-    const info  = dt.info  ? `<div class="data-item-info">${esc(dt.info)}</div>` : '';
     return `<div class="data-item">
       <div class="data-item-header">
         <span class="data-item-olimpiada olimpiada-tag-${color}">${esc(dt.olimpiadaNome)}</span>
         <span class="data-item-data">${fmtData(dt.data)}</span>
       </div>
-      <div class="data-item-fase">${esc(dt.fase)}${horario}</div>
-      ${countdownBadge(dt.data)}
-      ${local}${info}
     </div>`;
   }).join('');
 }
@@ -2716,27 +2877,19 @@ window.renderDatasOlimpiada = () => {
     el.innerHTML = `<p style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:12px 0">Nenhuma data cadastrada para esta olimpíada.</p>`;
     return;
   }
-  const ol = allOlimpiadas.find(o => o.id === oid);
-  const color = ol?.color ?? 0;
   el.innerHTML = dados.map(dt => {
-    const horario = dt.horario ? ` · ${dt.horario}` : '';
-    const local = dt.local ? `<div class="data-item-local">📍 ${esc(dt.local)}</div>` : '';
-    const info  = dt.info  ? `<div class="data-item-info">${esc(dt.info)}</div>` : '';
     return `<div class="data-item">
       <div class="data-item-header">
         <span class="data-item-fase">${esc(dt.fase)}</span>
         <span class="data-item-data">${fmtData(dt.data)}</span>
       </div>
-      ${dt.horario ? `<div class="data-item-fase" style="margin-bottom:3px">🕐 ${esc(dt.horario)}</div>` : ''}
-      ${countdownBadge(dt.data)}
-      ${local}${info}
     </div>`;
   }).join('');
 };
 
 // ── populate select de olimpíadas no form datas ──
 function populateDatasSelects() {
-  ['dtOlimpiada','editDtOlimpiada','tDatasOlimpiada'].forEach(id => {
+  ['dtOlimpiada','editDtOlimpiada','tDatasOlimpiada','inOlimpiada','editInOlimpiada'].forEach(id => {
     const sel = document.getElementById(id); if (!sel) return;
     const val = sel.value;
     const placeholder = id === 'tDatasOlimpiada' ? 'Selecione uma olimpíada...' : 'Selecione...';
@@ -2744,7 +2897,6 @@ function populateDatasSelects() {
       allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
     if (val) sel.value = val;
   });
-  // populate fases usando configCache
   const cfg = configCache || CONFIG_DEFAULTS;
   const faseOpts = '<option value="">Selecione...</option>' + (cfg.fases||[]).map(f => `<option>${esc(f)}</option>`).join('');
   ['dtFase','editDtFase'].forEach(id => {
@@ -2858,9 +3010,261 @@ window.salvarEdicaoData = async () => {
 };
 
 // Fecha editDataModal ao clicar fora
-document.getElementById('editDataModal').addEventListener('click', e => {
+safeListener('editDataModal', e => {
   if (e.target === document.getElementById('editDataModal')) window.closeEditDataModal();
 });
+
+safeListener('editInscricaoModal', e => {
+  if (e.target === document.getElementById('editInscricaoModal')) window.closeEditInscricaoModal();
+});
+
+// ══════════════════════════════════════════════
+// ── INSCRIÇÕES ───────────────────────────────
+// ══════════════════════════════════════════════
+
+
+async function loadInscricoes() {
+  try {
+    const snap = await getDocs(collection(db, 'inscricoes'));
+    allInscricoes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { allInscricoes = []; }
+  renderInscricoesAdmin();
+}
+
+function renderInscricoesAdmin() {
+  const list = document.getElementById('inscricoesAdminList');
+  const countEl = document.getElementById('inscricoesCount');
+  if (!list) return;
+  if (!allInscricoes.length) {
+    if (countEl) countEl.textContent = '0';
+    list.innerHTML = `<div class="empty-state"><div class="icon">📝</div><h3>Nenhuma inscrição cadastrada</h3><p>Use o botão ➕ Nova Inscrição para cadastrar períodos de inscrição.</p></div>`;
+    return;
+  }
+  const sorted = [...allInscricoes].sort((a,b) => a.dataInicio > b.dataInicio ? 1 : -1);
+  if (countEl) countEl.textContent = sorted.length;
+  list.innerHTML = sorted.map(ins => {
+    const ol = allOlimpiadas.find(o => o.id === ins.olimpiadaId);
+    const color = ol?.color ?? 0;
+    const {dia:diaI, mes:mesI, ano:anoI} = fmtDataCurta(ins.dataInicio);
+    const links = [
+      ins.linkRegulamento ? `<a href="${esc(ins.linkRegulamento)}" target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent)">📄 Regulamento</a>` : '',
+      ins.linkSite        ? `<a href="${esc(ins.linkSite)}"        target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent2)">🌐 Site</a>` : '',
+      ins.linkFormulario  ? `<a href="${esc(ins.linkFormulario)}"  target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent3)">📋 Formulário</a>` : '',
+    ].filter(Boolean).join('');
+    return `<div class="data-admin-row">
+      <div class="data-admin-date-block">
+        <div class="data-admin-date-day">${esc(diaI)}</div>
+        <div class="data-admin-date-month">${esc(mesI)}</div>
+        <div class="data-admin-date-year">${esc(anoI)}</div>
+      </div>
+      <div class="data-admin-body">
+        <div class="data-admin-top">
+          <span class="prova-row-tag olimpiada-tag-${color}">${esc(ins.olimpiadaNome)}</span>
+          <span class="data-admin-titulo">📝 Inscrições</span>
+          ${inscricaoBadge(ins.dataInicio, ins.dataFim)}
+        </div>
+        <div class="data-admin-meta">
+          <span class="data-admin-pill">De: ${fmtData(ins.dataInicio)}</span>
+          <span class="data-admin-pill">Até: ${fmtData(ins.dataFim)}</span>
+        </div>
+        ${links ? `<div class="data-admin-meta" style="margin-top:6px">${links}</div>` : ''}
+      </div>
+      <div class="data-admin-actions">
+        <button class="btn-del" onclick="abrirEdicaoInscricao('${esc(ins.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
+        <button class="btn-del" onclick="deletarInscricao('${esc(ins.id)}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.cadastrarInscricao = async () => {
+  const oid          = document.getElementById('inOlimpiada').value;
+  const dataInicio   = document.getElementById('inDataInicio').value;
+  const dataFim      = document.getElementById('inDataFim').value;
+  const linkReg      = document.getElementById('inLinkRegulamento').value.trim();
+  const linkSite     = document.getElementById('inLinkSite').value.trim();
+  const linkForm     = document.getElementById('inLinkFormulario').value.trim();
+  if (!oid || !dataInicio || !dataFim) { showToast('Preencha os campos obrigatórios (*)','error'); return; }
+  if (dataFim < dataInicio) { showToast('A data de fim não pode ser anterior ao início','error'); return; }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnCadastrarInscricao');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await addDoc(collection(db, 'inscricoes'), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      dataInicio, dataFim,
+      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm,
+      criadoEm: new Date().toISOString()
+    });
+    ['inOlimpiada','inDataInicio','inDataFim','inLinkRegulamento','inLinkSite','inLinkFormulario'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    showToast('Inscrição cadastrada com sucesso!');
+    cacheClear();
+    await loadInscricoes();
+    window.switchTab('tabDatas', 6);
+  } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  btn.disabled = false; btn.textContent = '✦ Cadastrar Inscrição';
+};
+
+window.deletarInscricao = async (id) => {
+  confirmarAcao('Remover esta inscrição permanentemente?', async () => {
+    const ins = allInscricoes.find(i => i.id === id);
+    try {
+      await deleteDoc(doc(db, 'inscricoes', id));
+      cacheClear();
+      await loadInscricoes();
+      showToast('Inscrição removida.', 'success', async () => {
+        if (ins) {
+          const { id: _id, ...dados } = ins;
+          await addDoc(collection(db, 'inscricoes'), dados);
+          cacheClear();
+          await loadInscricoes();
+          showToast('Exclusão desfeita!');
+        }
+      });
+    } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  });
+};
+
+window.abrirEdicaoInscricao = (id) => {
+  const ins = allInscricoes.find(i => i.id === id);
+  if (!ins) { showToast('Inscrição não encontrada','error'); return; }
+  document.getElementById('editInscricaoId').value      = ins.id;
+  document.getElementById('editInDataInicio').value     = ins.dataInicio || '';
+  document.getElementById('editInDataFim').value        = ins.dataFim || '';
+  document.getElementById('editInLinkRegulamento').value= ins.linkRegulamento || '';
+  document.getElementById('editInLinkSite').value       = ins.linkSite || '';
+  document.getElementById('editInLinkFormulario').value = ins.linkFormulario || '';
+  populateDatasSelects();
+  document.getElementById('editInOlimpiada').value = ins.olimpiadaId;
+
+  document.getElementById('editInscricaoModal').classList.add('open');
+};
+
+window.closeEditInscricaoModal = () => document.getElementById('editInscricaoModal').classList.remove('open');
+
+window.salvarEdicaoInscricao = async () => {
+  const id           = document.getElementById('editInscricaoId').value;
+  const oid          = document.getElementById('editInOlimpiada').value;
+  const dataInicio   = document.getElementById('editInDataInicio').value;
+  const dataFim      = document.getElementById('editInDataFim').value;
+  const linkReg      = document.getElementById('editInLinkRegulamento').value.trim();
+  const linkSite     = document.getElementById('editInLinkSite').value.trim();
+  const linkForm     = document.getElementById('editInLinkFormulario').value.trim();
+  if (!oid || !dataInicio || !dataFim) { showToast('Preencha os campos obrigatórios','error'); return; }
+  if (dataFim < dataInicio) { showToast('A data de fim não pode ser anterior ao início','error'); return; }
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  if (!ol) { showToast('Olimpíada não encontrada','error'); return; }
+  const btn = document.getElementById('btnSalvarInscricao');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    await updateDoc(doc(db, 'inscricoes', id), {
+      olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
+      dataInicio, dataFim,
+      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm
+    });
+    window.closeEditInscricaoModal();
+    showToast('Inscrição atualizada com sucesso!');
+    cacheClear();
+    await loadInscricoes();
+  } catch(e) { showToast('Erro: ' + e.message,'error'); }
+  btn.disabled = false; btn.textContent = '✦ Salvar alterações';
+};
+
+// ══════════════════════════════════════════════
+// ── ALERTAS ──────────────────────────────────
+// ══════════════════════════════════════════════
+
+function renderAlertas() {
+  const elIns   = document.getElementById('alertasInscricoes');
+  const elProvas = document.getElementById('alertasProvas');
+  const elCount  = document.getElementById('alertasCount');
+  if (!elIns || !elProvas) return;
+
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  // ── Inscrições: mostra todas não encerradas + as 3 mais recentes encerradas
+  const ins = [...allInscricoes]
+    .map(i => {
+      const fim   = new Date(i.dataFim   + 'T00:00:00');
+      const inicio = new Date(i.dataInicio + 'T00:00:00');
+      const diasFim = Math.ceil((fim - hoje) / 86400000);
+      let estado, badgeClass, label;
+      if (hoje > fim) {
+        estado = 'encerrado'; badgeClass = 'encerrado'; label = 'Encerrada';
+      } else if (hoje < inicio) {
+        const d = Math.ceil((inicio - hoje) / 86400000);
+        estado = d <= 7 ? 'urgente' : d <= 30 ? 'proximo' : 'normal';
+        badgeClass = estado;
+        label = `Abre em ${d} dia${d>1?'s':''}`;
+      } else {
+        estado = diasFim <= 7 ? 'urgente' : diasFim <= 30 ? 'proximo' : 'normal';
+        badgeClass = estado;
+        label = diasFim === 0 ? 'Encerra hoje!' : `${diasFim} dia${diasFim>1?'s':''} restante${diasFim>1?'s':''}`;
+      }
+      return { ...i, diasFim, estado, badgeClass, label };
+    })
+    .sort((a, b) => {
+      // encerradas por último, depois ordena por diasFim crescente
+      if (a.estado === 'encerrado' && b.estado !== 'encerrado') return 1;
+      if (a.estado !== 'encerrado' && b.estado === 'encerrado') return -1;
+      return a.diasFim - b.diasFim;
+    });
+
+  const insVisiveis = ins.filter(i => i.estado !== 'encerrado').slice(0, 5);
+  // se não houver nenhuma aberta, mostra as 3 mais recentes encerradas
+  const insList = insVisiveis.length ? insVisiveis : ins.filter(i => i.estado === 'encerrado').slice(0, 3);
+
+  elIns.innerHTML = insList.length ? insList.map(i => `
+    <div class="alerta-card ${i.estado}">
+      <div class="alerta-icon">📝</div>
+      <div class="alerta-body">
+        <div class="alerta-nome">${esc(i.olimpiadaNome)}</div>
+        <div class="alerta-detalhe">Inscrições: ${fmtData(i.dataInicio)} → ${fmtData(i.dataFim)}</div>
+      </div>
+      <span class="alerta-badge ${i.badgeClass}">${i.label}</span>
+    </div>`).join('')
+    : '<div class="alerta-empty">Nenhuma inscrição cadastrada</div>';
+
+  // ── Provas: mostra futuras + hoje, ordena por data
+  const provas = [...allDatas]
+    .map(d => {
+      const data  = new Date(d.data + 'T00:00:00');
+      const dias  = Math.ceil((data - hoje) / 86400000);
+      let estado, badgeClass, label;
+      if (dias < 0)       { estado = 'encerrado'; badgeClass = 'encerrado'; label = 'Realizada'; }
+      else if (dias === 0){ estado = 'urgente';   badgeClass = 'urgente';   label = 'Hoje!'; }
+      else if (dias <= 7) { estado = 'urgente';   badgeClass = 'urgente';   label = `${dias} dia${dias>1?'s':''}`;  }
+      else if (dias <= 30){ estado = 'proximo';   badgeClass = 'proximo';   label = `${dias} dias`; }
+      else                { estado = 'normal';    badgeClass = 'normal';    label = `${dias} dias`; }
+      return { ...d, dias, estado, badgeClass, label };
+    })
+    .sort((a, b) => {
+      if (a.estado === 'encerrado' && b.estado !== 'encerrado') return 1;
+      if (a.estado !== 'encerrado' && b.estado === 'encerrado') return -1;
+      return a.dias - b.dias;
+    });
+
+  const provasVisiveis = provas.filter(p => p.estado !== 'encerrado').slice(0, 5);
+  const provasList = provasVisiveis.length ? provasVisiveis : provas.filter(p => p.estado === 'encerrado').slice(0, 3);
+
+  elProvas.innerHTML = provasList.length ? provasList.map(p => `
+    <div class="alerta-card ${p.estado}">
+      <div class="alerta-icon">🗓️</div>
+      <div class="alerta-body">
+        <div class="alerta-nome">${esc(p.olimpiadaNome)} — ${esc(p.fase)}</div>
+        <div class="alerta-detalhe">${fmtData(p.data)}${p.horario ? ' às ' + esc(p.horario) : ''}${p.local ? ' · ' + esc(p.local) : ''}</div>
+      </div>
+      <span class="alerta-badge ${p.badgeClass}">${p.label}</span>
+    </div>`).join('')
+    : '<div class="alerta-empty">Nenhuma prova cadastrada</div>';
+
+  // Conta alertas urgentes/próximos
+  const total = [...insVisiveis, ...provasVisiveis].filter(x => x.estado !== 'encerrado').length;
+  if (elCount) elCount.textContent = total || '0';
+}
 
 // ══════════════════════════════════════════════
 // ── MEDALHISTAS ──────────────────────────────
@@ -2947,11 +3351,15 @@ window.applyMedalistasFilters = () => {
   if (!oid) {
     el.innerHTML = `<div class="awaiting-filter"><div class="icon">🏅</div><p>Selecione a olimpíada, o ano e a fase para ver os medalhistas.</p></div>`;
     if (countEl) countEl.textContent = '–';
+    const btnPrint = document.getElementById('btnImprimirMedalhistas');
+    if (btnPrint) btnPrint.style.display = 'none';
     return;
   }
   if (!ano || !fase) {
     el.innerHTML = `<div class="awaiting-filter"><div class="icon">🔎</div><p>Selecione também o <strong>ano</strong> e a <strong>fase</strong> para ver os medalhistas.</p></div>`;
     if (countEl) countEl.textContent = '–';
+    const btnPrint2 = document.getElementById('btnImprimirMedalhistas');
+    if (btnPrint2) btnPrint2.style.display = 'none';
     return;
   }
 
@@ -2964,6 +3372,9 @@ window.applyMedalistasFilters = () => {
   });
 
   if (countEl) countEl.textContent = lista.length;
+  // Mostra botão de imprimir quando há resultados
+  const btnPrint = document.getElementById('btnImprimirMedalhistas');
+  if (btnPrint) btnPrint.style.display = lista.length ? 'inline-flex' : 'none';
 
   if (!lista.length) {
     el.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhum medalhista encontrado</h3><p>Nenhum medalhista cadastrado para esta seleção.</p></div>`;
@@ -3118,11 +3529,11 @@ window.salvarEdicaoMedalhista = async () => {
   btn.disabled = false; btn.textContent = '✦ Salvar alterações';
 };
 
-document.getElementById('editMedalistaModal').addEventListener('click', e => {
+safeListener('editMedalistaModal', e => {
   if (e.target === document.getElementById('editMedalistaModal')) window.closeEditMedalistaModal();
 });
 
-document.getElementById('mdImportModal').addEventListener('click', e => {
+safeListener('mdImportModal', e => {
   if (e.target === document.getElementById('mdImportModal')) window.closeMdImportModal();
 });
 
@@ -3251,6 +3662,96 @@ window.confirmMdImport = async () => {
     window.switchTab('tabMedalhistas', 8);
   } catch(e) { showToast('Erro: ' + e.message, 'error'); }
   btn.disabled = false; btn.textContent = '✦ Importar válidos';
+};
+</script>
+<script>
+window.imprimirMedalhistas = () => {
+  const oid  = document.getElementById('mfOlimpiada')?.value || '';
+  const ano  = document.getElementById('mfAno')?.value || '';
+  const fase = document.getElementById('mfFase')?.value || '';
+  if (!oid || !ano || !fase) { showToast('Selecione olimpíada, ano e fase antes de imprimir', 'error'); return; }
+
+  const ol = allOlimpiadas.find(o => o.id === oid);
+  const lista = allMedalhistas.filter(m =>
+    m.olimpiadaId === oid && m.ano === parseInt(ano) && m.fase === fase
+  );
+  if (!lista.length) { showToast('Nenhum medalhista para imprimir', 'error'); return; }
+
+  const MEDAL_PRINT = {
+    'Ouro':           { emoji:'🥇', cls:'ouro',   label:'Ouro' },
+    'Prata':          { emoji:'🥈', cls:'prata',  label:'Prata' },
+    'Bronze':         { emoji:'🥉', cls:'bronze', label:'Bronze' },
+    'Menção Honrosa': { emoji:'🎖️', cls:'mencao', label:'Menção Honrosa' }
+  };
+  const MEDAL_ORDER_P = ['Ouro','Prata','Bronze','Menção Honrosa'];
+
+  const summaryHTML = MEDAL_ORDER_P.map(medal => {
+    const n = lista.filter(m => m.medalha === medal).length;
+    if (!n) return '';
+    const mc = MEDAL_PRINT[medal];
+    return `<span class="s ${mc.cls}">${mc.emoji} ${n} ${mc.label}</span>`;
+  }).join('');
+
+  const gruposHTML = MEDAL_ORDER_P.map(medal => {
+    const grupo = lista.filter(m => m.medalha === medal).sort((a,b) => a.nome.localeCompare(b.nome,'pt-BR'));
+    if (!grupo.length) return '';
+    const mc = MEDAL_PRINT[medal];
+    const rows = grupo.map((m, i) =>
+      `<tr><td class="n">${i+1}.</td><td class="nome">${m.nome}</td><td class="obs">${m.obs||''}</td></tr>`
+    ).join('');
+    return `<div class="grupo">
+      <div class="gtitle ${mc.cls}">${mc.emoji} ${mc.label} <small>(${grupo.length} aluno${grupo.length!==1?'s':''})</small></div>
+      <table><tbody>${rows}</tbody></table>
+    </div>`;
+  }).join('');
+
+  const now = new Date().toLocaleDateString('pt-BR');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Medalhistas</title><style>
+    @page{size:A4 portrait;margin:12mm 14mm}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,sans-serif;font-size:11pt;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    h1{font-size:17pt;font-weight:900;color:#0a3d3a;margin-bottom:3px}
+    .sub{font-size:10pt;color:#444;margin-bottom:10px}
+    hr{border:none;border-top:2.5px solid #0d9488;margin-bottom:10px}
+    .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .s{font-size:9pt;font-weight:700;padding:3px 12px;border-radius:20px;border:1.5px solid #ccc}
+    .s.ouro{border-color:#f59e0b;background:#fef3c7;color:#78350f}
+    .s.prata{border-color:#94a3b8;background:#f1f5f9;color:#334155}
+    .s.bronze{border-color:#b45309;background:#fef9c3;color:#78350f}
+    .s.mencao{border-color:#7c3aed;background:#ede9fe;color:#4c1d95}
+    .grupo{margin-bottom:10px;break-inside:avoid}
+    .gtitle{font-size:11pt;font-weight:800;padding:4px 10px;border-radius:6px;margin-bottom:3px}
+    .gtitle.ouro{background:#fef3c7;color:#78350f}
+    .gtitle.prata{background:#f1f5f9;color:#334155}
+    .gtitle.bronze{background:#fef9c3;color:#78350f}
+    .gtitle.mencao{background:#ede9fe;color:#4c1d95}
+    .gtitle small{font-size:9pt;font-weight:400}
+    table{width:100%;border-collapse:collapse}
+    tr{break-inside:avoid}
+    td{padding:3px 8px;font-size:11pt;border-bottom:1px solid #e5e7eb;vertical-align:middle}
+    td.n{width:26px;color:#999;font-size:9pt;text-align:right;padding-right:6px}
+    td.nome{font-weight:600}
+    td.obs{font-size:9pt;color:#555;font-style:italic}
+    .footer{margin-top:14px;padding-top:6px;border-top:1px solid #ccc;font-size:8pt;color:#888;text-align:center}
+  </style></head><body>
+    <h1>&#127942; ${ol?.nome||''} &mdash; Medalhistas</h1>
+    <div class="sub">${fase} &middot; ${ano} &nbsp;|&nbsp; ${lista.length} aluno${lista.length!==1?'s':''}</div>
+    <hr>
+    <div class="summary">${summaryHTML}</div>
+    ${gruposHTML}
+    <div class="footer">Gerado em ${now} &middot; Arena Ol&iacute;mpica</div>
+    <script>window.onload=function(){window.print()}<\/script>
+  </body></html>`;
+
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 };
 </script>
 </body>
