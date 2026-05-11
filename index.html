@@ -445,6 +445,31 @@
   .datas-box-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
   .datas-box-title span{font-size:.72rem;background:var(--accentl);color:var(--accent);padding:2px 9px;border-radius:20px;font-weight:700}
   .datas-box select.filter-select{margin-bottom:12px;width:100%}
+  /* ── MODAL DETALHE DATA/INSCRIÇÃO ── */
+  .detalhe-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);z-index:1100;align-items:center;justify-content:center;padding:20px}
+  .detalhe-modal-overlay.open{display:flex}
+  .detalhe-modal{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:480px;animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;box-shadow:var(--shadow-lg);position:relative}
+  .detalhe-modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);line-height:1;transition:color .15s}
+  .detalhe-modal-close:hover{color:var(--text)}
+  .detalhe-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .detalhe-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:4px}
+  .detalhe-subtitle{font-size:.82rem;color:var(--text-muted);margin-bottom:20px}
+  .detalhe-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .detalhe-field{background:var(--bg2);border-radius:var(--radius);padding:11px 14px}
+  .detalhe-field.full{grid-column:1/-1}
+  .detalhe-field-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:3px}
+  .detalhe-field-value{font-size:.9rem;font-weight:600;color:var(--text)}
+  .detalhe-links{display:flex;flex-direction:column;gap:8px}
+  .detalhe-link-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text-dim);font-size:.85rem;font-weight:600;transition:all .18s}
+  .detalhe-link-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accentl)}
+  .detalhe-link-icon{font-size:1rem}
+
+  /* cards clicáveis */
+  .data-admin-row{cursor:pointer}
+  .data-admin-row:hover{border-color:var(--border2);box-shadow:var(--shadow-md)}
+  .alerta-card{cursor:pointer}
+
+
   /* ── ALERTAS ── */
   .alertas-section{margin-bottom:32px}
   .alertas-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
@@ -1208,9 +1233,20 @@
 
       <!-- Datas de Inscrição -->
       <div style="margin-bottom:28px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
           <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">📝 Datas de Inscrição</h3>
           <span class="count-badge" id="inscricoesCount">–</span>
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <select class="filter-select" id="filtroInsOlimpiada" onchange="renderInscricoesAdmin()" style="font-size:.8rem;padding:6px 28px 6px 10px;min-width:140px">
+              <option value="">Todas as olimpíadas</option>
+            </select>
+            <select class="filter-select" id="filtroInsStatus" onchange="renderInscricoesAdmin()" style="font-size:.8rem;padding:6px 28px 6px 10px">
+              <option value="">Todos os status</option>
+              <option value="aberta">Abertas</option>
+              <option value="futura">Futuras</option>
+              <option value="encerrada">Encerradas</option>
+            </select>
+          </div>
         </div>
         <div class="datas-admin-list" id="inscricoesAdminList">
           <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
@@ -1219,9 +1255,20 @@
 
       <!-- Datas de Provas -->
       <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
           <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">🗓️ Datas de Provas</h3>
           <span class="count-badge" id="datasCount">–</span>
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <select class="filter-select" id="filtroDataOlimpiada" onchange="renderDatasAdmin()" style="font-size:.8rem;padding:6px 28px 6px 10px;min-width:140px">
+              <option value="">Todas as olimpíadas</option>
+            </select>
+            <select class="filter-select" id="filtroDataStatus" onchange="renderDatasAdmin()" style="font-size:.8rem;padding:6px 28px 6px 10px">
+              <option value="">Todos os status</option>
+              <option value="futura">Futuras</option>
+              <option value="hoje">Hoje</option>
+              <option value="passada">Realizadas</option>
+            </select>
+          </div>
         </div>
         <div class="datas-admin-list" id="datasAdminList">
           <div class="loading-state"><div class="spinner"></div><span>Carregando...</span></div>
@@ -1258,6 +1305,7 @@
           <div class="form-group full"><label class="form-label">Link do regulamento</label><input type="url" class="form-input" id="inLinkRegulamento" placeholder="https://..."></div>
           <div class="form-group full"><label class="form-label">Link do site oficial</label><input type="url" class="form-input" id="inLinkSite" placeholder="https://..."></div>
           <div class="form-group full"><label class="form-label">Link do formulário de inscrição</label><input type="url" class="form-input" id="inLinkFormulario" placeholder="https://..."></div>
+          <div class="form-group full"><label class="form-label">Link do formulário de inscrição 2 <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label><input type="url" class="form-input" id="inLinkFormulario2" placeholder="https://..."></div>
         </div>
         <button class="form-submit" id="btnCadastrarInscricao" onclick="cadastrarInscricao()">✦ Cadastrar Inscrição</button>
       </div>
@@ -1479,6 +1527,7 @@
       <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do regulamento</label><input type="url" class="modal-input" id="editInLinkRegulamento" style="margin-bottom:0" placeholder="https://..."></div>
       <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do site oficial</label><input type="url" class="modal-input" id="editInLinkSite" style="margin-bottom:0" placeholder="https://..."></div>
       <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do formulário de inscrição</label><input type="url" class="modal-input" id="editInLinkFormulario" style="margin-bottom:0" placeholder="https://..."></div>
+      <div class="form-group" style="grid-column:1/-1"><label class="form-label">Link do formulário de inscrição 2 <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label><input type="url" class="modal-input" id="editInLinkFormulario2" style="margin-bottom:0" placeholder="https://..."></div>
     </div>
     <div class="modal-btns" style="margin-top:20px">
       <button class="btn btn-ghost" onclick="closeEditInscricaoModal()">Cancelar</button>
@@ -2794,13 +2843,36 @@ function renderDatasAdmin() {
   const list = document.getElementById('datasAdminList');
   const countEl = document.getElementById('datasCount');
   if (!list) return;
-  if (!allDatas.length) {
+
+  const filtroOl     = document.getElementById('filtroDataOlimpiada')?.value || '';
+  const filtroStatus = document.getElementById('filtroDataStatus')?.value || '';
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  let sorted = [...allDatas].sort((a,b) => a.data > b.data ? 1 : -1);
+
+  if (filtroOl) sorted = sorted.filter(d => d.olimpiadaId === filtroOl);
+  if (filtroStatus === 'futura')  sorted = sorted.filter(d => new Date(d.data+'T00:00:00') > hoje);
+  if (filtroStatus === 'hoje')    sorted = sorted.filter(d => { const dd=new Date(d.data+'T00:00:00'); return dd.getTime()===hoje.getTime(); });
+  if (filtroStatus === 'passada') sorted = sorted.filter(d => new Date(d.data+'T00:00:00') < hoje);
+
+  if (!sorted.length) {
     if(countEl) countEl.textContent = '0';
-    list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><h3>Nenhuma data cadastrada</h3><p>Use a aba ➕ Datas para cadastrar datas de provas.</p></div>`;
+    list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><h3>Nenhuma data encontrada</h3><p>Tente ajustar os filtros ou cadastre novas datas.</p></div>`;
     return;
   }
-  const sorted = [...allDatas].sort((a,b) => a.data > b.data ? 1 : -1);
   if(countEl) countEl.textContent = sorted.length;
+
+  // Populate filter olimpiada select if empty
+  const selOl = document.getElementById('filtroDataOlimpiada');
+  if (selOl && selOl.options.length <= 1) {
+    allOlimpiadas.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.id; opt.textContent = o.nome;
+      selOl.appendChild(opt);
+    });
+    if (filtroOl) selOl.value = filtroOl;
+  }
+
   list.innerHTML = sorted.map(dt => {
     const {dia,mes,ano} = fmtDataCurta(dt.data);
     const horario = dt.horario ? ` · ${dt.horario}` : '';
@@ -2808,7 +2880,7 @@ function renderDatasAdmin() {
     const info  = dt.info  ? `<div class="data-admin-info">${esc(dt.info)}</div>` : '';
     const ol = allOlimpiadas.find(o => o.id === dt.olimpiadaId);
     const color = ol?.color ?? 0;
-    return `<div class="data-admin-row">
+    return `<div class="data-admin-row" data-id="${dt.id}" data-tipo="prova" title="Ver detalhes — clique para abrir">
       <div class="data-admin-date-block">
         <div class="data-admin-date-day">${esc(dia)}</div>
         <div class="data-admin-date-month">${esc(mes)}</div>
@@ -2827,8 +2899,8 @@ function renderDatasAdmin() {
         ${local}${info}
       </div>
       <div class="data-admin-actions">
-        <button class="btn-del" onclick="abrirEdicaoData('${esc(dt.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
-        <button class="btn-del" onclick="deletarData('${esc(dt.id)}')">🗑</button>
+        <button class="btn-del" onclick="event.stopPropagation();abrirEdicaoData('${esc(dt.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
+        <button class="btn-del" onclick="event.stopPropagation();deletarData('${esc(dt.id)}')">🗑</button>
       </div>
     </div>`;
   }).join('');
@@ -3035,12 +3107,41 @@ function renderInscricoesAdmin() {
   const list = document.getElementById('inscricoesAdminList');
   const countEl = document.getElementById('inscricoesCount');
   if (!list) return;
-  if (!allInscricoes.length) {
+
+  const filtroOl     = document.getElementById('filtroInsOlimpiada')?.value || '';
+  const filtroStatus = document.getElementById('filtroInsStatus')?.value || '';
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  // Populate filter select if empty
+  const selOl = document.getElementById('filtroInsOlimpiada');
+  if (selOl && selOl.options.length <= 1) {
+    allOlimpiadas.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.id; opt.textContent = o.nome;
+      selOl.appendChild(opt);
+    });
+    if (filtroOl) selOl.value = filtroOl;
+  }
+  let sorted = [...allInscricoes].sort((a,b) => a.dataInicio > b.dataInicio ? 1 : -1);
+
+  if (filtroOl) sorted = sorted.filter(i => i.olimpiadaId === filtroOl);
+  if (filtroStatus) {
+    const hoje2 = new Date(); hoje2.setHours(0,0,0,0);
+    sorted = sorted.filter(i => {
+      const ini = new Date(i.dataInicio+'T00:00:00');
+      const fim = new Date(i.dataFim+'T00:00:00');
+      if (filtroStatus === 'aberta')    return hoje2 >= ini && hoje2 <= fim;
+      if (filtroStatus === 'futura')    return hoje2 < ini;
+      if (filtroStatus === 'encerrada') return hoje2 > fim;
+      return true;
+    });
+  }
+
+  if (!sorted.length) {
     if (countEl) countEl.textContent = '0';
-    list.innerHTML = `<div class="empty-state"><div class="icon">📝</div><h3>Nenhuma inscrição cadastrada</h3><p>Use o botão ➕ Nova Inscrição para cadastrar períodos de inscrição.</p></div>`;
+    list.innerHTML = `<div class="empty-state"><div class="icon">📝</div><h3>Nenhuma inscrição encontrada</h3><p>Tente ajustar os filtros ou cadastre uma nova inscrição.</p></div>`;
     return;
   }
-  const sorted = [...allInscricoes].sort((a,b) => a.dataInicio > b.dataInicio ? 1 : -1);
   if (countEl) countEl.textContent = sorted.length;
   list.innerHTML = sorted.map(ins => {
     const ol = allOlimpiadas.find(o => o.id === ins.olimpiadaId);
@@ -3050,8 +3151,9 @@ function renderInscricoesAdmin() {
       ins.linkRegulamento ? `<a href="${esc(ins.linkRegulamento)}" target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent)">📄 Regulamento</a>` : '',
       ins.linkSite        ? `<a href="${esc(ins.linkSite)}"        target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent2)">🌐 Site</a>` : '',
       ins.linkFormulario  ? `<a href="${esc(ins.linkFormulario)}"  target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent3)">📋 Formulário</a>` : '',
+      ins.linkFormulario2 ? `<a href="${esc(ins.linkFormulario2)}" target="_blank" class="data-admin-pill" style="text-decoration:none;color:var(--accent3)">📋 Formulário 2</a>` : '',
     ].filter(Boolean).join('');
-    return `<div class="data-admin-row">
+    return `<div class="data-admin-row" data-id="${ins.id}" data-tipo="inscricao" title="Ver detalhes — clique para abrir">
       <div class="data-admin-date-block">
         <div class="data-admin-date-day">${esc(diaI)}</div>
         <div class="data-admin-date-month">${esc(mesI)}</div>
@@ -3070,8 +3172,8 @@ function renderInscricoesAdmin() {
         ${links ? `<div class="data-admin-meta" style="margin-top:6px">${links}</div>` : ''}
       </div>
       <div class="data-admin-actions">
-        <button class="btn-del" onclick="abrirEdicaoInscricao('${esc(ins.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
-        <button class="btn-del" onclick="deletarInscricao('${esc(ins.id)}')">🗑</button>
+        <button class="btn-del" onclick="event.stopPropagation();abrirEdicaoInscricao('${esc(ins.id)}')" style="background:var(--accentl);border-color:var(--border2);color:var(--accent)">✏️</button>
+        <button class="btn-del" onclick="event.stopPropagation();deletarInscricao('${esc(ins.id)}')">🗑</button>
       </div>
     </div>`;
   }).join('');
@@ -3084,6 +3186,7 @@ window.cadastrarInscricao = async () => {
   const linkReg      = document.getElementById('inLinkRegulamento').value.trim();
   const linkSite     = document.getElementById('inLinkSite').value.trim();
   const linkForm     = document.getElementById('inLinkFormulario').value.trim();
+  const linkForm2    = document.getElementById('inLinkFormulario2').value.trim();
   if (!oid || !dataInicio || !dataFim) { showToast('Preencha os campos obrigatórios (*)','error'); return; }
   if (dataFim < dataInicio) { showToast('A data de fim não pode ser anterior ao início','error'); return; }
   const ol = allOlimpiadas.find(o => o.id === oid);
@@ -3094,10 +3197,10 @@ window.cadastrarInscricao = async () => {
     await addDoc(collection(db, 'inscricoes'), {
       olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
       dataInicio, dataFim,
-      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm,
+      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm, linkFormulario2: linkForm2,
       criadoEm: new Date().toISOString()
     });
-    ['inOlimpiada','inDataInicio','inDataFim','inLinkRegulamento','inLinkSite','inLinkFormulario'].forEach(id => {
+    ['inOlimpiada','inDataInicio','inDataFim','inLinkRegulamento','inLinkSite','inLinkFormulario','inLinkFormulario2'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = '';
     });
     showToast('Inscrição cadastrada com sucesso!');
@@ -3137,6 +3240,7 @@ window.abrirEdicaoInscricao = (id) => {
   document.getElementById('editInLinkRegulamento').value= ins.linkRegulamento || '';
   document.getElementById('editInLinkSite').value       = ins.linkSite || '';
   document.getElementById('editInLinkFormulario').value = ins.linkFormulario || '';
+  document.getElementById('editInLinkFormulario2').value = ins.linkFormulario2 || '';
   populateDatasSelects();
   document.getElementById('editInOlimpiada').value = ins.olimpiadaId;
 
@@ -3153,6 +3257,7 @@ window.salvarEdicaoInscricao = async () => {
   const linkReg      = document.getElementById('editInLinkRegulamento').value.trim();
   const linkSite     = document.getElementById('editInLinkSite').value.trim();
   const linkForm     = document.getElementById('editInLinkFormulario').value.trim();
+  const linkForm2    = document.getElementById('editInLinkFormulario2').value.trim();
   if (!oid || !dataInicio || !dataFim) { showToast('Preencha os campos obrigatórios','error'); return; }
   if (dataFim < dataInicio) { showToast('A data de fim não pode ser anterior ao início','error'); return; }
   const ol = allOlimpiadas.find(o => o.id === oid);
@@ -3163,7 +3268,7 @@ window.salvarEdicaoInscricao = async () => {
     await updateDoc(doc(db, 'inscricoes', id), {
       olimpiadaId: oid, olimpiadaNome: ol.nome, olimpiadaColor: ol.color,
       dataInicio, dataFim,
-      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm
+      linkRegulamento: linkReg, linkSite, linkFormulario: linkForm, linkFormulario2: linkForm2
     });
     window.closeEditInscricaoModal();
     showToast('Inscrição atualizada com sucesso!');
@@ -3218,7 +3323,7 @@ function renderAlertas() {
   const insList = insVisiveis.length ? insVisiveis : ins.filter(i => i.estado === 'encerrado').slice(0, 3);
 
   elIns.innerHTML = insList.length ? insList.map(i => `
-    <div class="alerta-card ${i.estado}">
+    <div class="alerta-card ${i.estado}" data-id="${i.id}" data-tipo="inscricao" title="Ver detalhes — clique para abrir">
       <div class="alerta-icon">📝</div>
       <div class="alerta-body">
         <div class="alerta-nome">${esc(i.olimpiadaNome)}</div>
@@ -3251,7 +3356,7 @@ function renderAlertas() {
   const provasList = provasVisiveis.length ? provasVisiveis : provas.filter(p => p.estado === 'encerrado').slice(0, 3);
 
   elProvas.innerHTML = provasList.length ? provasList.map(p => `
-    <div class="alerta-card ${p.estado}">
+    <div class="alerta-card ${p.estado}" data-id="${p.id}" data-tipo="prova" title="Ver detalhes — clique para abrir">
       <div class="alerta-icon">🗓️</div>
       <div class="alerta-body">
         <div class="alerta-nome">${esc(p.olimpiadaNome)} — ${esc(p.fase)}</div>
@@ -3264,7 +3369,110 @@ function renderAlertas() {
   // Conta alertas urgentes/próximos
   const total = [...insVisiveis, ...provasVisiveis].filter(x => x.estado !== 'encerrado').length;
   if (elCount) elCount.textContent = total || '0';
+
+  // Popula filtros de olimpíada nas duas seções (se ainda vazios)
+  ['filtroInsOlimpiada','filtroDataOlimpiada'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if (sel && sel.options.length <= 1) {
+      allOlimpiadas.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.id; opt.textContent = o.nome;
+        sel.appendChild(opt);
+      });
+    }
+  });
 }
+
+// ══════════════════════════════════════════════
+// ── MODAL DETALHES ────────────────────────────
+// ══════════════════════════════════════════════
+
+// Expõe funções de render no window para uso em onchange/onclick inline
+window.renderDatasAdmin        = renderDatasAdmin;
+window.renderInscricoesAdmin   = renderInscricoesAdmin;
+window.renderAlertas           = renderAlertas;
+
+window.fecharDetalhe = () => document.getElementById('detalheModal').classList.remove('open');
+
+// Delegated click handler for data-admin-row and alerta-card (avoids onclick inline ID escaping issues)
+document.addEventListener('click', e => {
+  const card = e.target.closest('[data-id][data-tipo]');
+  if (!card) return;
+  // ignore clicks on action buttons inside the card
+  if (e.target.closest('.data-admin-actions') || e.target.closest('.btn-del')) return;
+  const id   = card.dataset.id;
+  const tipo = card.dataset.tipo;
+  if (tipo === 'prova')     window.abrirDetalheProva(id);
+  if (tipo === 'inscricao') window.abrirDetalheInscricao(id);
+});
+document.addEventListener('click', e => {
+  const m = document.getElementById('detalheModal');
+  if (e.target === m) m.classList.remove('open');
+});
+
+function abrirModalDetalhe({ titulo, subtitulo, badgeHTML, campos, links }) {
+  document.getElementById('detalheTitulo').textContent   = titulo;
+  document.getElementById('detalheSubtitulo').textContent = subtitulo || '';
+  document.getElementById('detalheBadgeRow').innerHTML   = badgeHTML || '';
+
+  document.getElementById('detalheGrid').innerHTML = campos.map(c =>
+    `<div class="detalhe-field${c.full?' full':''}">
+      <div class="detalhe-field-label">${c.label}</div>
+      <div class="detalhe-field-value">${c.value || '—'}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('detalheLinks').innerHTML = links.length
+    ? links.map(l => `<a href="${l.href}" target="_blank" class="detalhe-link-btn">
+        <span class="detalhe-link-icon">${l.icon}</span>${l.label}
+      </a>`).join('')
+    : '';
+
+  document.getElementById('detalheModal').classList.add('open');
+}
+
+window.abrirDetalheProva = (id) => {
+  const dt = allDatas.find(d => d.id === id);
+  if (!dt) return;
+  const ol = allOlimpiadas.find(o => o.id === dt.olimpiadaId);
+  const color = ol?.color ?? 0;
+  abrirModalDetalhe({
+    titulo: `${dt.olimpiadaNome} — ${dt.fase}`,
+    subtitulo: 'Data de Prova',
+    badgeHTML: `<span class="prova-row-tag olimpiada-tag-${color}">${esc(dt.olimpiadaNome)}</span>${countdownBadge(dt.data)}`,
+    campos: [
+      { label: 'Data',    value: fmtData(dt.data) },
+      { label: 'Horário', value: dt.horario || '—' },
+      { label: 'Fase',    value: dt.fase },
+      { label: 'Local',   value: dt.local || '—' },
+      { label: 'Informações adicionais', value: dt.info || '—', full: true },
+    ],
+    links: []
+  });
+};
+
+window.abrirDetalheInscricao = (id) => {
+  const ins = allInscricoes.find(i => i.id === id);
+  if (!ins) return;
+  const ol = allOlimpiadas.find(o => o.id === ins.olimpiadaId);
+  const color = ol?.color ?? 0;
+  const links = [
+    ins.linkRegulamento && { href: ins.linkRegulamento, icon: '📄', label: 'Regulamento' },
+    ins.linkSite        && { href: ins.linkSite,        icon: '🌐', label: 'Site oficial' },
+    ins.linkFormulario  && { href: ins.linkFormulario,  icon: '📋', label: 'Formulário de inscrição' },
+    ins.linkFormulario2 && { href: ins.linkFormulario2, icon: '📋', label: 'Formulário de inscrição 2' },
+  ].filter(Boolean);
+  abrirModalDetalhe({
+    titulo: ins.olimpiadaNome,
+    subtitulo: 'Período de Inscrição',
+    badgeHTML: `<span class="prova-row-tag olimpiada-tag-${color}">${esc(ins.olimpiadaNome)}</span>${inscricaoBadge(ins.dataInicio, ins.dataFim)}`,
+    campos: [
+      { label: 'Início das inscrições', value: fmtData(ins.dataInicio) },
+      { label: 'Fim das inscrições',    value: fmtData(ins.dataFim) },
+    ],
+    links
+  });
+};
 
 // ══════════════════════════════════════════════
 // ── MEDALHISTAS ──────────────────────────────
@@ -3742,7 +3950,20 @@ window.imprimirMedalhistas = () => {
     ${gruposHTML}
     <div class="footer">Gerado em ${now} &middot; Arena Ol&iacute;mpica</div>
     <script>window.onload=function(){window.print()}<\/script>
-  </body></html>`;
+  
+<!-- MODAL DETALHE: DATA DE PROVA / INSCRIÇÃO -->
+<div class="detalhe-modal-overlay" id="detalheModal">
+  <div class="detalhe-modal">
+    <button class="detalhe-modal-close" onclick="fecharDetalhe()" title="Fechar">✕</button>
+    <div class="detalhe-badge-row" id="detalheBadgeRow"></div>
+    <div class="detalhe-title" id="detalheTitulo"></div>
+    <div class="detalhe-subtitle" id="detalheSubtitulo"></div>
+    <div class="detalhe-grid" id="detalheGrid"></div>
+    <div class="detalhe-links" id="detalheLinks"></div>
+  </div>
+</div>
+
+</body></html>`;
 
   const blob = new Blob([html], {type:'text/html;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
