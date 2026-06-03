@@ -723,6 +723,127 @@
   .medal-summary-item.bronze{border-color:var(--bronze);background:var(--bronzel);color:var(--bronzet)}
   .medal-summary-item.mencao{border-color:var(--mention);background:var(--mentionl);color:var(--mentiont)}
 
+  /* ══════════════════════════════════════════
+     ── CALENDÁRIO MENSAL ──
+  ══════════════════════════════════════════ */
+
+  /* Layout externo: calendário + painel lateral */
+  .cal-outer{display:grid;grid-template-columns:1fr 280px;gap:0;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);margin-bottom:28px;overflow:hidden}
+  @media(max-width:900px){.cal-outer{grid-template-columns:1fr}}
+
+  /* Parte principal do calendário */
+  .cal-wrap{padding:0;background:transparent}
+
+  /* Cabeçalho */
+  .cal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1.5px solid var(--border);gap:12px;flex-wrap:wrap}
+  .cal-header-left{display:flex;align-items:center;gap:14px}
+  .cal-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-.02em;min-width:180px}
+  .cal-nav{display:flex;align-items:center;gap:6px}
+  .cal-nav-btn{background:none;border:1.5px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;color:var(--text-muted);transition:all .15s;font-family:'DM Sans',sans-serif;line-height:1}
+  .cal-nav-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accentl)}
+  .cal-today-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 13px;font-size:.75rem;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+  .cal-today-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accentl)}
+  .cal-legend{display:flex;gap:14px;align-items:center}
+  .cal-legend-item{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--text-muted)}
+  .cal-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .cal-legend-dot.prova{background:var(--accent)}
+  .cal-legend-dot.inscricao{background:var(--mention)}
+
+  /* Grade */
+  .cal-grid-wrap{padding:0 8px 10px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid var(--border)}
+  .cal-dow{text-align:center;font-size:.63rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--text-muted);padding:14px 0 10px;border-right:1px solid var(--border);border-bottom:1.5px solid var(--border2)}
+  .cal-cell{
+    min-height:88px;padding:8px 7px 6px;cursor:default;
+    transition:background .12s;position:relative;
+    border-right:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .cal-cell:hover{background:var(--bg2)}
+  .cal-cell.other-month{background:var(--bg2)}
+  .cal-cell.other-month .cal-day-num{color:var(--border2)}
+  .cal-cell.today{background:var(--accentl)}
+  .cal-cell.has-event{cursor:pointer}
+  .cal-cell.selected{background:var(--accentl);outline:2px solid var(--accent);outline-offset:-2px;z-index:1}
+  .cal-cell.today.selected{outline-color:var(--accent-dark)}
+
+  /* Número do dia */
+  .cal-day-num{
+    font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;
+    color:var(--text-dim);line-height:1;margin-bottom:5px;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:24px;height:24px;border-radius:50%;
+  }
+  .cal-cell.today .cal-day-num{
+    background:var(--accent);color:white;font-weight:800;
+  }
+
+  /* Eventos */
+  .cal-event-pip{
+    font-size:.63rem;font-weight:600;padding:2px 6px;
+    border-radius:3px;margin-bottom:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    max-width:100%;display:flex;align-items:center;gap:4px;line-height:1.4;
+  }
+  .cal-event-pip::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .cal-event-pip.prova{background:rgba(13,148,136,.12);color:var(--accent)}
+  .cal-event-pip.prova::before{background:var(--accent)}
+  [data-theme="dark"] .cal-event-pip.prova{background:rgba(20,184,166,.18)}
+  .cal-event-pip.inscricao{background:rgba(124,58,237,.1);color:var(--mentiont)}
+  .cal-event-pip.inscricao::before{background:var(--mention)}
+  [data-theme="dark"] .cal-event-pip.inscricao{background:rgba(167,139,250,.15);color:var(--mention)}
+  .cal-event-pip.more{background:transparent;color:var(--text-muted);font-size:.6rem;padding-left:4px}
+  .cal-event-pip.more::before{display:none}
+
+  /* Painel lateral de detalhes */
+  .cal-detail-panel{
+    border-left:1.5px solid var(--border);
+    background:var(--surface2);
+    display:flex;flex-direction:column;
+    min-height:300px;
+  }
+  @media(max-width:900px){.cal-detail-panel{border-left:none;border-top:1.5px solid var(--border)}}
+  .cal-detail-header{
+    padding:18px 18px 14px;
+    border-bottom:1.5px solid var(--border);
+  }
+  .cal-detail-date{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:2px}
+  .cal-detail-sub{font-size:.73rem;color:var(--text-muted)}
+  .cal-detail-body{padding:14px;flex:1;overflow-y:auto}
+  .cal-detail-empty{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    height:100%;min-height:140px;gap:8px;opacity:.45;
+    font-size:.78rem;color:var(--text-muted);text-align:center;
+  }
+  .cal-detail-empty svg{opacity:.4}
+  .cal-detail-card{
+    background:var(--surface);border:1.5px solid var(--border);
+    border-radius:var(--radius);padding:12px 13px;margin-bottom:8px;
+    transition:box-shadow .15s;
+  }
+  .cal-detail-card:last-child{margin-bottom:0}
+  .cal-detail-card.prova{border-left:3px solid var(--accent)}
+  .cal-detail-card.inscricao{border-left:3px solid var(--mention)}
+  .cal-detail-card-tag{
+    font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;
+    display:flex;align-items:center;gap:5px;
+  }
+  .cal-detail-card-tag.prova{color:var(--accent)}
+  .cal-detail-card-tag.inscricao{color:var(--mention)}
+  .cal-detail-card-nome{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
+  .cal-detail-card-info{font-size:.75rem;color:var(--text-muted);line-height:1.5}
+  .cal-detail-card-links{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .cal-detail-link{
+    font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:5px;
+    text-decoration:none;transition:all .15s;
+    background:var(--bg2);color:var(--text-dim);border:1px solid var(--border);
+  }
+  .cal-detail-link:hover{background:var(--accent);color:white;border-color:var(--accent)}
+
+  /* Popover overlay (mantido mas vazio — usamos painel agora) */
+  .cal-popover-overlay{display:none}
+  .cal-popover{display:none}
+
 </style>
 </head>
 <body>
@@ -1212,6 +1333,50 @@
           <button class="btn-action" onclick="navTo('tabCadastrarData',7)">➕ Nova Data de Prova</button>
         </div>
       </div>
+
+      <!-- ── CALENDÁRIO MENSAL ── -->
+      <div class="cal-outer">
+
+        <!-- Coluna principal -->
+        <div class="cal-wrap">
+          <div class="cal-header">
+            <div class="cal-header-left">
+              <div class="cal-nav">
+                <button class="cal-nav-btn" onclick="calNavMonth(-1)" title="Mês anterior">&#8249;</button>
+                <button class="cal-today-btn" onclick="calGoToday()">Hoje</button>
+                <button class="cal-nav-btn" onclick="calNavMonth(1)" title="Próximo mês">&#8250;</button>
+              </div>
+              <span class="cal-title" id="calTitle">—</span>
+            </div>
+            <div class="cal-legend">
+              <span class="cal-legend-item"><span class="cal-legend-dot prova"></span>Prova</span>
+              <span class="cal-legend-item"><span class="cal-legend-dot inscricao"></span>Inscrição</span>
+            </div>
+          </div>
+          <div class="cal-grid-wrap">
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+        </div>
+
+        <!-- Painel lateral de detalhes -->
+        <div class="cal-detail-panel" id="calDetailPanel">
+          <div class="cal-detail-header">
+            <div class="cal-detail-date" id="calDetailDate">Selecione um dia</div>
+            <div class="cal-detail-sub" id="calDetailSub">Clique em qualquer data para ver os eventos</div>
+          </div>
+          <div class="cal-detail-body" id="calDetailBody">
+            <div class="cal-detail-empty">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Nenhuma data selecionada</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Popover overlay (mantido para compatibilidade) -->
+      <div class="cal-popover-overlay" id="calPopoverOverlay"></div>
+      <div class="cal-popover" id="calPopover"></div>
 
       <!-- ── ALERTAS ── -->
       <div class="alertas-section">
@@ -1785,7 +1950,7 @@ window.switchTab=(id,idx)=>{
   if(navEl) navEl.classList.add('active');
   if(id==='tabDashboard') { populateDashFilters(); renderDashboard(); }
   if(id==='tabConfiguracoes') renderConfigLists();
-  if(id==='tabDatas') { renderDatasAdmin(); renderInscricoesAdmin(); renderAlertas(); }
+  if(id==='tabDatas') { renderDatasAdmin(); renderInscricoesAdmin(); renderAlertas(); renderCalendario(); }
   if(id==='tabCadastrarData' || id==='tabCadastrarInscricao') populateDatasSelects();
   if(id==='tabMedalhistas'){ populateMedalistasFilterSelects(); applyMedalistasFilters(); }
   if(id==='tabCadastrarMedalhista') populateMedalistaFormSelects();
@@ -1886,6 +2051,7 @@ async function loadAdminData() {
     renderDatasAdmin();
     renderInscricoesAdmin();
     renderAlertas();
+    renderCalendario();
   } catch(e) {
     showToast('Erro ao carregar dados: ' + e.message, 'error');
   }
@@ -3384,6 +3550,257 @@ function renderAlertas() {
 }
 
 // ══════════════════════════════════════════════
+// ── CALENDÁRIO MENSAL ─────────────────────────
+// ══════════════════════════════════════════════
+
+let calYear   = new Date().getFullYear();
+let calMonth  = new Date().getMonth(); // 0-based
+let calSelectedKey = null;
+
+const CAL_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                   'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const CAL_MESES_CURTOS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const CAL_DOWS  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+function calNavMonth(delta) {
+  calMonth += delta;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  calSelectedKey = null;
+  renderCalendario();
+}
+window.calNavMonth = calNavMonth;
+
+window.calGoToday = () => {
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  calSelectedKey = null;
+  renderCalendario();
+};
+
+// Mantido por compatibilidade mas não usado ativamente
+window.calClosePopover = () => {};
+
+function buildEventMap() {
+  const map = {};
+  const add = (key, tipo, obj) => {
+    if (!map[key]) map[key] = { provas: [], inscricoes: [] };
+    map[key][tipo === 'prova' ? 'provas' : 'inscricoes'].push(obj);
+  };
+  (allDatas || []).forEach(d => { if (d.data) add(d.data, 'prova', d); });
+  (allInscricoes || []).forEach(ins => {
+    if (!ins.dataInicio || !ins.dataFim) return;
+    const ini   = new Date(ins.dataInicio + 'T00:00:00');
+    const fim   = new Date(ins.dataFim    + 'T00:00:00');
+    const mIni  = new Date(calYear, calMonth, 1);
+    const mFim  = new Date(calYear, calMonth + 1, 0);
+    const start = ini < mIni ? mIni : ini;
+    const end   = fim > mFim ? mFim : fim;
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      add(d.toISOString().slice(0, 10), 'inscricao', ins);
+    }
+  });
+  return map;
+}
+
+function renderCalendario() {
+  const grid    = document.getElementById('calGrid');
+  const titleEl = document.getElementById('calTitle');
+  if (!grid) return;
+
+  titleEl.textContent = `${CAL_MESES[calMonth]} ${calYear}`;
+
+  const hoje     = new Date(); hoje.setHours(0, 0, 0, 0);
+  const eventMap = buildEventMap();
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const lastDate = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevLast = new Date(calYear, calMonth, 0).getDate();
+
+  const dow = CAL_DOWS.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  let cells = '';
+  let count = 0;
+
+  // Previous month days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const d = prevLast - i;
+    const m = calMonth === 0 ? 11 : calMonth - 1;
+    const y = calMonth === 0 ? calYear - 1 : calYear;
+    const k = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    cells += buildCalCell(d, k, eventMap, false, false);
+    count++;
+  }
+
+  // Current month days
+  for (let d = 1; d <= lastDate; d++) {
+    const k       = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = new Date(calYear, calMonth, d).getTime() === hoje.getTime();
+    cells += buildCalCell(d, k, eventMap, true, isToday);
+    count++;
+  }
+
+  // Next month filler
+  let next = 1;
+  while (count % 7 !== 0) {
+    const m = calMonth === 11 ? 0 : calMonth + 1;
+    const y = calMonth === 11 ? calYear + 1 : calYear;
+    const k = `${y}-${String(m+1).padStart(2,'0')}-${String(next).padStart(2,'0')}`;
+    cells += buildCalCell(next, k, eventMap, false, false);
+    count++; next++;
+  }
+
+  grid.innerHTML = dow + cells;
+
+  // Re-highlight selected if still valid
+  if (calSelectedKey) {
+    const cell = grid.querySelector(`[data-key="${calSelectedKey}"]`);
+    if (cell) cell.classList.add('selected');
+  }
+}
+
+function buildCalCell(dayNum, isoKey, eventMap, currentMonth, isToday) {
+  const evts   = eventMap[isoKey] || { provas: [], inscricoes: [] };
+  const hasP   = evts.provas.length > 0;
+  const hasI   = evts.inscricoes.length > 0;
+  const hasAny = hasP || hasI;
+
+  // Deduplica inscrições por olimpíada
+  const insUniq = {};
+  evts.inscricoes.forEach(i => { insUniq[i.olimpiadaId] = i; });
+  const insArr = Object.values(insUniq);
+
+  const MAX_PIPS = 3;
+  let pips = '';
+  let shown = 0;
+
+  evts.provas.forEach(p => {
+    if (shown >= MAX_PIPS) return;
+    const nome = (p.olimpiadaNome || '').replace(/olimpíada|olímpica/gi, '').trim();
+    pips += `<span class="cal-event-pip prova">${esc(nome || p.olimpiadaNome)}</span>`;
+    shown++;
+  });
+
+  insArr.forEach(i => {
+    if (shown >= MAX_PIPS) return;
+    const nome = (i.olimpiadaNome || '').replace(/olimpíada|olímpica/gi, '').trim();
+    pips += `<span class="cal-event-pip inscricao">${esc(nome || i.olimpiadaNome)}</span>`;
+    shown++;
+  });
+
+  const total = evts.provas.length + insArr.length;
+  if (total > MAX_PIPS) {
+    pips += `<span class="cal-event-pip more">+${total - MAX_PIPS} mais</span>`;
+  }
+
+  let cls = 'cal-cell';
+  if (!currentMonth) cls += ' other-month';
+  if (isToday)       cls += ' today';
+  if (hasAny)        cls += ' has-event';
+  if (calSelectedKey === isoKey) cls += ' selected';
+
+  const onclick = `onclick="calSelectDay('${isoKey}', event)"`;
+
+  return `<div class="${cls}" data-key="${isoKey}" ${onclick}>
+    <div class="cal-day-num">${dayNum}</div>
+    ${pips}
+  </div>`;
+}
+
+window.calSelectDay = (isoKey, ev) => {
+  // Atualiza seleção visual
+  document.querySelectorAll('.cal-cell.selected').forEach(c => c.classList.remove('selected'));
+  const cell = document.querySelector(`[data-key="${isoKey}"]`);
+  if (cell) cell.classList.add('selected');
+  calSelectedKey = isoKey;
+
+  // Busca eventos do dia
+  const provas     = (allDatas || []).filter(d => d.data === isoKey);
+  const inscricoes = (allInscricoes || []).filter(i => i.dataInicio <= isoKey && i.dataFim >= isoKey);
+
+  // Formata data para exibição
+  const [y, m, d] = isoKey.split('-');
+  const semanas = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  const dow = semanas[new Date(isoKey + 'T12:00:00').getDay()];
+
+  const dateEl = document.getElementById('calDetailDate');
+  const subEl  = document.getElementById('calDetailSub');
+  const body   = document.getElementById('calDetailBody');
+  if (!dateEl || !body) return;
+
+  dateEl.textContent = `${parseInt(d)} de ${CAL_MESES[parseInt(m)-1]} de ${y}`;
+  const totalEvts = provas.length + inscricoes.length;
+  subEl.textContent = totalEvts
+    ? `${totalEvts} evento${totalEvts > 1 ? 's' : ''} neste dia`
+    : 'Nenhum evento neste dia';
+
+  if (!totalEvts) {
+    body.innerHTML = `<div class="cal-detail-empty">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Sem eventos para este dia</span>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+
+  provas.forEach(p => {
+    const hor = p.horario ? `<div>🕐 ${esc(p.horario)}</div>` : '';
+    const loc = p.local   ? `<div>📍 ${esc(p.local)}</div>`   : '';
+    const inf = p.info    ? `<div style="font-style:italic;margin-top:3px">${esc(p.info)}</div>` : '';
+    html += `<div class="cal-detail-card prova">
+      <div class="cal-detail-card-tag prova">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Prova
+      </div>
+      <div class="cal-detail-card-nome">${esc(p.olimpiadaNome)}</div>
+      <div class="cal-detail-card-info">
+        <div>${esc(p.fase)}</div>
+        ${hor}${loc}${inf}
+      </div>
+    </div>`;
+  });
+
+  // Deduplica inscrições por olimpíada
+  const insUniq2 = {};
+  inscricoes.forEach(i => { insUniq2[i.olimpiadaId] = i; });
+  Object.values(insUniq2).forEach(ins => {
+    const links = [
+      ins.linkSite        ? `<a href="${esc(ins.linkSite)}"       target="_blank" class="cal-detail-link">🌐 Site</a>` : '',
+      ins.linkRegulamento ? `<a href="${esc(ins.linkRegulamento)}"target="_blank" class="cal-detail-link">📄 Regulamento</a>` : '',
+      ins.linkFormulario  ? `<a href="${esc(ins.linkFormulario)}" target="_blank" class="cal-detail-link">📋 Inscrição</a>` : '',
+      ins.linkFormulario2 ? `<a href="${esc(ins.linkFormulario2)}"target="_blank" class="cal-detail-link">📋 Inscrição 2</a>` : '',
+    ].filter(Boolean).join('');
+    html += `<div class="cal-detail-card inscricao">
+      <div class="cal-detail-card-tag inscricao">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Inscrições
+      </div>
+      <div class="cal-detail-card-nome">${esc(ins.olimpiadaNome)}</div>
+      <div class="cal-detail-card-info">
+        <div>De ${fmtData(ins.dataInicio)} até ${fmtData(ins.dataFim)}</div>
+      </div>
+      ${links ? `<div class="cal-detail-card-links">${links}</div>` : ''}
+    </div>`;
+  });
+
+  body.innerHTML = html;
+};
+
+// Chama renderCalendario sempre que a aba de Datas for aberta
+const _origSwitchTab = window.switchTab;
+window.switchTab = function(id, idx) {
+  _origSwitchTab && _origSwitchTab(id, idx);
+  if (id === 'tabDatas') setTimeout(renderCalendario, 0);
+};
+const _origNavTo = window.navTo;
+window.navTo = function(id, idx) {
+  _origNavTo && _origNavTo(id, idx);
+  if (id === 'tabDatas') setTimeout(renderCalendario, 0);
+};
+
+// ══════════════════════════════════════════════
 // ── MODAL DETALHES ────────────────────────────
 // ══════════════════════════════════════════════
 
@@ -3391,6 +3808,7 @@ function renderAlertas() {
 window.renderDatasAdmin        = renderDatasAdmin;
 window.renderInscricoesAdmin   = renderInscricoesAdmin;
 window.renderAlertas           = renderAlertas;
+window.renderCalendario        = renderCalendario;
 
 window.fecharDetalhe = () => document.getElementById('detalheModal').classList.remove('open');
 
