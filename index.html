@@ -660,6 +660,8 @@
   .rank-pos.bronze{color:var(--bronzet)}
   .rank-avatar{width:30px;height:30px;border-radius:50%;background:var(--accentl);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:var(--accent);flex-shrink:0}
   .rank-name{flex:1;font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rank-name-link{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:2px;transition:color .15s,text-decoration-color .15s}
+  .rank-name-link:hover{color:var(--accent);text-decoration-color:var(--accent)}
   .rank-medals{display:flex;gap:3px;font-size:.75rem;flex-shrink:0}
   .rank-medal-badge{padding:2px 6px;border-radius:5px;font-weight:700}
   .rank-medal-badge.o{background:var(--goldl);color:var(--goldt)}
@@ -840,9 +842,45 @@
   }
   .cal-detail-link:hover{background:var(--accent);color:white;border-color:var(--accent)}
 
-  /* Popover overlay (mantido mas vazio — usamos painel agora) */
-  .cal-popover-overlay{display:none}
-  .cal-popover{display:none}
+  /* ── MODAL ALUNO MEDALHISTA ── */
+  .aluno-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);z-index:1200;align-items:center;justify-content:center;padding:20px}
+  .aluno-modal-overlay.open{display:flex}
+  .aluno-modal{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-xl);width:100%;max-width:600px;max-height:88vh;display:flex;flex-direction:column;animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;box-shadow:var(--shadow-lg);overflow:hidden}
+  .aluno-modal-head{padding:24px 26px 20px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:16px;flex-shrink:0}
+  .aluno-modal-avatar{width:52px;height:52px;border-radius:50%;background:var(--accentl);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:var(--accent);flex-shrink:0;border:2px solid rgba(13,148,136,.2)}
+  .aluno-modal-info{flex:1;min-width:0}
+  .aluno-modal-nome{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .aluno-modal-stats{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+  .aluno-modal-stat{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:20px}
+  .aluno-modal-stat.o{background:var(--goldl);color:var(--goldt)}
+  .aluno-modal-stat.p{background:var(--silverl);color:var(--silvert)}
+  .aluno-modal-stat.b{background:var(--bronzel);color:var(--bronzet)}
+  .aluno-modal-stat.m{background:var(--mentionl);color:var(--mentiont)}
+  .aluno-modal-close{background:none;border:1.5px solid var(--border);border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:.95rem;transition:all .15s;flex-shrink:0}
+  .aluno-modal-close:hover{background:var(--dangerl);border-color:var(--danger);color:var(--danger)}
+  .aluno-modal-body{overflow-y:auto;padding:20px 26px 24px;flex:1}
+  .aluno-modal-section-title{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;margin-top:20px}
+  .aluno-modal-section-title:first-child{margin-top:0}
+  .aluno-medal-card{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:8px;transition:box-shadow .15s,border-color .15s;background:var(--surface)}
+  .aluno-medal-card:last-child{margin-bottom:0}
+  .aluno-medal-card:hover{box-shadow:var(--shadow-md)}
+  .aluno-medal-card.ouro  {border-left:3px solid var(--gold);  background:linear-gradient(90deg,var(--goldl) 0%,transparent 60%)}
+  .aluno-medal-card.prata {border-left:3px solid var(--silver);background:linear-gradient(90deg,var(--silverl) 0%,transparent 60%)}
+  .aluno-medal-card.bronze{border-left:3px solid var(--bronze);background:linear-gradient(90deg,var(--bronzel) 0%,transparent 60%)}
+  .aluno-medal-card.mencao{border-left:3px solid var(--mention);background:linear-gradient(90deg,var(--mentionl) 0%,transparent 60%)}
+  .aluno-medal-card-icon{font-size:1.6rem;line-height:1;flex-shrink:0;margin-top:1px}
+  .aluno-medal-card-content{flex:1;min-width:0}
+  .aluno-medal-card-olimpiada{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:var(--text);margin-bottom:4px}
+  .aluno-medal-card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:5px}
+  .aluno-medal-tag{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--bg2);color:var(--text-muted);border:1px solid var(--border)}
+  .aluno-medal-card-obs{font-size:.78rem;color:var(--text-dim);font-style:italic;margin-top:4px;line-height:1.4}
+  .aluno-medal-card-medal{flex-shrink:0;text-align:right}
+  .aluno-medal-label{font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .aluno-medal-label.ouro  {color:var(--goldt)}
+  .aluno-medal-label.prata {color:var(--silvert)}
+  .aluno-medal-label.bronze{color:var(--bronzet)}
+  .aluno-medal-label.mencao{color:var(--mentiont)}
+  .aluno-modal-empty{text-align:center;padding:40px 0;color:var(--text-muted);font-size:.85rem}
 
 </style>
 </head>
@@ -1498,12 +1536,6 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Fase *</label>
-          <select class="filter-select" id="mfFase" onchange="applyMedalistasFilters()">
-            <option value="">Selecione a fase...</option>
-          </select>
-        </div>
-        <div class="filter-group">
           <label>Buscar aluno</label>
           <input type="text" class="filter-input" id="mfSearch" placeholder="Nome do aluno..." oninput="applyMedalistasFilters()">
         </div>
@@ -1511,7 +1543,7 @@
       <div id="medalistasResult">
         <div class="awaiting-filter">
           <div class="icon">🏅</div>
-          <p>Selecione a olimpíada, o ano e a fase para ver os medalhistas.</p>
+          <p>Selecione a olimpíada e o ano para ver os medalhistas.</p>
         </div>
       </div>
     </div>
@@ -2720,6 +2752,9 @@ function renderTopAlunos(data) {
 
   const ranked = Object.entries(map).sort((a,b) => b[1].pts - a[1].pts).slice(0,10);
 
+  // Guarda os nomes num array global para acesso seguro por índice
+  window._rankNomes = ranked.map(([nome]) => nome);
+
   el.innerHTML = ranked.map(([nome, v], i) => {
     const pos = i + 1;
     const cls = pos===1?'gold':pos===2?'silver':pos===3?'bronze':'';
@@ -2733,7 +2768,7 @@ function renderTopAlunos(data) {
     return `<div class="rank-row">
       <div class="rank-pos ${cls}">${pos<=3?['🥇','🥈','🥉'][pos-1]:pos}</div>
       <div class="rank-avatar">${initials}</div>
-      <div class="rank-name" title="${esc(nome)}">${esc(nome)}</div>
+      <div class="rank-name rank-name-link" title="Ver medalhas de ${esc(nome)}" onclick="abrirModalAluno(window._rankNomes[${i}])">${esc(nome)}</div>
       <div class="rank-medals">${badges}</div>
     </div>`;
   }).join('');
@@ -3810,6 +3845,141 @@ window.renderInscricoesAdmin   = renderInscricoesAdmin;
 window.renderAlertas           = renderAlertas;
 window.renderCalendario        = renderCalendario;
 
+// ══════════════════════════════════════════════
+// ── MODAL ALUNO MEDALHISTA ────────────────────
+// ══════════════════════════════════════════════
+window.abrirModalAluno = function(nomeAluno) {
+  const medalhaIcon   = { 'Ouro':'🥇', 'Prata':'🥈', 'Bronze':'🥉', 'Menção Honrosa':'🎖️' };
+  const ordemMedalha  = { 'Ouro':0, 'Prata':1, 'Bronze':2, 'Menção Honrosa':3 };
+
+  const medalhas = allMedalhistas
+    .filter(m => (m.nome || '') === nomeAluno)
+    .sort((a,b) => {
+      const od = (ordemMedalha[a.medalha] ?? 9) - (ordemMedalha[b.medalha] ?? 9);
+      return od !== 0 ? od : (b.ano || 0) - (a.ano || 0);
+    });
+
+  const cnt = { ouro:0, prata:0, bronze:0, mencao:0 };
+  medalhas.forEach(m => {
+    if      (m.medalha === 'Ouro')           cnt.ouro++;
+    else if (m.medalha === 'Prata')          cnt.prata++;
+    else if (m.medalha === 'Bronze')         cnt.bronze++;
+    else if (m.medalha === 'Menção Honrosa') cnt.mencao++;
+  });
+
+  const initials   = nomeAluno.split(' ').slice(0,2).map(w => w[0]||'').join('').toUpperCase();
+  const statsBadges = [
+    cnt.ouro   ? `<span class="aluno-modal-stat o">🥇 ${cnt.ouro} Ouro${cnt.ouro>1?'s':''}</span>`         : '',
+    cnt.prata  ? `<span class="aluno-modal-stat p">🥈 ${cnt.prata} Prata${cnt.prata>1?'s':''}</span>`       : '',
+    cnt.bronze ? `<span class="aluno-modal-stat b">🥉 ${cnt.bronze} Bronze${cnt.bronze>1?'s':''}</span>`    : '',
+    cnt.mencao ? `<span class="aluno-modal-stat m">🎖️ ${cnt.mencao} Menção${cnt.mencao>1?'s':''}</span>`   : '',
+  ].filter(Boolean).join('');
+
+  const grupos = [
+    { key:'Ouro',           label:'Medalhas de Ouro',   cls:'ouro'   },
+    { key:'Prata',          label:'Medalhas de Prata',  cls:'prata'  },
+    { key:'Bronze',         label:'Medalhas de Bronze', cls:'bronze' },
+    { key:'Menção Honrosa', label:'Menções Honrosas',   cls:'mencao' },
+  ];
+
+  let bodyHtml = '';
+  grupos.forEach(g => {
+    const lista = medalhas.filter(m => m.medalha === g.key);
+    if (!lista.length) return;
+    bodyHtml += `<div class="aluno-modal-section-title">${g.label}</div>`;
+    lista.forEach(m => {
+      const tags = [
+        m.ano    ? `<span class="aluno-medal-tag">📅 ${esc(m.ano)}</span>`    : '',
+        m.fase   ? `<span class="aluno-medal-tag">🔖 ${esc(m.fase)}</span>`   : '',
+        m.nivel  ? `<span class="aluno-medal-tag">📊 ${esc(m.nivel)}</span>`  : '',
+        m.turma  ? `<span class="aluno-medal-tag">🏫 ${esc(m.turma)}</span>`  : '',
+        m.escola ? `<span class="aluno-medal-tag">🏛️ ${esc(m.escola)}</span>` : '',
+      ].filter(Boolean).join('');
+      const obs = m.obs ? `<div class="aluno-medal-card-obs">${esc(m.obs)}</div>` : '';
+      bodyHtml += `<div class="aluno-medal-card ${g.cls}">
+        <div class="aluno-medal-card-icon">${medalhaIcon[g.key]||'🏅'}</div>
+        <div class="aluno-medal-card-content">
+          <div class="aluno-medal-card-olimpiada">${esc(m.olimpiadaNome||'Olimpíada não identificada')}</div>
+          ${tags ? `<div class="aluno-medal-card-tags">${tags}</div>` : ''}
+          ${obs}
+        </div>
+        <div class="aluno-medal-card-medal">
+          <div class="aluno-medal-label ${g.cls}">${g.key}</div>
+        </div>
+      </div>`;
+    });
+  });
+
+  if (!medalhas.length) bodyHtml = `<div class="aluno-modal-empty">Nenhuma medalha encontrada para este aluno.</div>`;
+
+  document.getElementById('alunoModalAvatar').textContent = initials;
+  document.getElementById('alunoModalNome').textContent   = nomeAluno;
+  document.getElementById('alunoModalStats').innerHTML    = statsBadges;
+  document.getElementById('alunoModalBody').innerHTML     = bodyHtml;
+  document.getElementById('alunoModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.fecharModalAluno = function() {
+  document.getElementById('alunoModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+window.imprimirMedalhistas = () => {
+  const oid = document.getElementById('mfOlimpiada')?.value || '';
+  const ano = document.getElementById('mfAno')?.value || '';
+  if (!oid || !ano) { showToast('Selecione olimpíada e ano antes de imprimir', 'error'); return; }
+  const ol    = allOlimpiadas.find(o => o.id === oid);
+  const lista = allMedalhistas.filter(m => m.olimpiadaId === oid && String(m.ano) === String(ano));
+  if (!lista.length) { showToast('Nenhum medalhista para imprimir', 'error'); return; }
+
+  const MP = { 'Ouro':{emoji:'🥇',cls:'ouro',label:'Ouro'}, 'Prata':{emoji:'🥈',cls:'prata',label:'Prata'}, 'Bronze':{emoji:'🥉',cls:'bronze',label:'Bronze'}, 'Menção Honrosa':{emoji:'🎖️',cls:'mencao',label:'Menção Honrosa'} };
+  const MO = ['Ouro','Prata','Bronze','Menção Honrosa'];
+  const summaryHTML = MO.map(medal => { const n=lista.filter(m=>m.medalha===medal).length; if(!n)return''; const mc=MP[medal]; return `<span class="s ${mc.cls}">${mc.emoji} ${n} ${mc.label}</span>`; }).join('');
+  const gruposHTML  = MO.map(medal => { const grupo=lista.filter(m=>m.medalha===medal).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')); if(!grupo.length)return''; const mc=MP[medal]; const rows=grupo.map((m,i)=>`<tr><td class="n">${i+1}.</td><td class="nome">${m.nome}</td><td class="fase">${m.fase||''}</td><td class="obs">${m.obs||''}</td></tr>`).join(''); return `<div class="grupo"><div class="gtitle ${mc.cls}">${mc.emoji} ${mc.label} <small>(${grupo.length} aluno${grupo.length!==1?'s':''})</small></div><table><tbody>${rows}</tbody></table></div>`; }).join('');
+  const now = new Date().toLocaleDateString('pt-BR');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Medalhistas</title><style>
+    @page{size:A4 portrait;margin:12mm 14mm}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,sans-serif;font-size:11pt;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    h1{font-size:17pt;font-weight:900;color:#0a3d3a;margin-bottom:3px}
+    .sub{font-size:10pt;color:#444;margin-bottom:10px}
+    hr{border:none;border-top:2.5px solid #0d9488;margin-bottom:10px}
+    .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .s{font-size:9pt;font-weight:700;padding:3px 12px;border-radius:20px;border:1.5px solid #ccc}
+    .s.ouro{border-color:#f59e0b;background:#fef3c7;color:#78350f}
+    .s.prata{border-color:#94a3b8;background:#f1f5f9;color:#334155}
+    .s.bronze{border-color:#b45309;background:#fef9c3;color:#78350f}
+    .s.mencao{border-color:#7c3aed;background:#ede9fe;color:#4c1d95}
+    .grupo{margin-bottom:10px;break-inside:avoid}
+    .gtitle{font-size:11pt;font-weight:800;padding:4px 10px;border-radius:6px;margin-bottom:3px}
+    .gtitle.ouro{background:#fef3c7;color:#78350f} .gtitle.prata{background:#f1f5f9;color:#334155}
+    .gtitle.bronze{background:#fef9c3;color:#78350f} .gtitle.mencao{background:#ede9fe;color:#4c1d95}
+    .gtitle small{font-size:9pt;font-weight:400}
+    table{width:100%;border-collapse:collapse}
+    tr{break-inside:avoid}
+    td{padding:3px 8px;font-size:11pt;border-bottom:1px solid #e5e7eb;vertical-align:middle}
+    td.n{width:26px;color:#999;font-size:9pt;text-align:right;padding-right:6px}
+    td.nome{font-weight:600} td.fase{font-size:9pt;color:#555;width:100px} td.obs{font-size:9pt;color:#555;font-style:italic}
+    .footer{margin-top:14px;padding-top:6px;border-top:1px solid #ccc;font-size:8pt;color:#888;text-align:center}
+  </style></head><body>
+    <h1>&#127942; ${ol?.nome||''} &mdash; Medalhistas</h1>
+    <div class="sub">${ano} &nbsp;|&nbsp; ${lista.length} aluno${lista.length!==1?'s':''}</div>
+    <hr><div class="summary">${summaryHTML}</div>${gruposHTML}
+    <div class="footer">Gerado em ${now} &middot; Arena Ol&iacute;mpica</div>
+    <script>window.onload=function(){window.print()}<\/script>
+  </body></html>`;
+
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+};
+
+
 window.fecharDetalhe = () => document.getElementById('detalheModal').classList.remove('open');
 
 // Delegated click handler for data-admin-row and alerta-card (avoids onclick inline ID escaping issues)
@@ -3934,21 +4104,13 @@ function populateMedalistasFilterSelects() {
       allOlimpiadas.map(o => `<option value="${o.id}">${esc(o.nome)}</option>`).join('');
     if (val) selOl.value = val;
   }
-  const anos = [...new Set(allMedalhistas.map(m => m.ano))].sort((a,b) => b-a);
+  const anos = [...new Set(allMedalhistas.map(m => m.ano))].filter(Boolean).sort((a,b) => b-a);
   const selAno = document.getElementById('mfAno');
   if (selAno) {
     const val = selAno.value;
     selAno.innerHTML = '<option value="">Selecione o ano...</option>' +
-      anos.map(a => `<option>${a}</option>`).join('');
+      anos.map(a => `<option value="${a}">${a}</option>`).join('');
     if (val) selAno.value = val;
-  }
-  const cfg = configCache || { fases: ['Única','1ª Fase','2ª Fase','3ª Fase','Final','Regional','Nacional'] };
-  const selFase = document.getElementById('mfFase');
-  if (selFase) {
-    const val = selFase.value;
-    selFase.innerHTML = '<option value="">Selecione a fase...</option>' +
-      (cfg.fases || []).map(f => `<option>${esc(f)}</option>`).join('');
-    if (val) selFase.value = val;
   }
 }
 
@@ -3956,7 +4118,6 @@ function populateMedalistasFilterSelects() {
 window.applyMedalistasFilters = () => {
   const oid  = document.getElementById('mfOlimpiada')?.value || '';
   const ano  = document.getElementById('mfAno')?.value || '';
-  const fase = document.getElementById('mfFase')?.value || '';
   const s    = (document.getElementById('mfSearch')?.value || '').toLowerCase();
   const el   = document.getElementById('medalistasResult');
   const countEl = document.getElementById('medalistasCount');
@@ -3964,25 +4125,26 @@ window.applyMedalistasFilters = () => {
 
   // Atualiza anos dinamicamente ao selecionar olimpíada
   if (oid) {
-    const anosOl = [...new Set(allMedalhistas.filter(m => m.olimpiadaId === oid).map(m => m.ano))].sort((a,b)=>b-a);
+    const anosOl = [...new Set(allMedalhistas.filter(m => m.olimpiadaId === oid).map(m => m.ano))].filter(Boolean).sort((a,b)=>b-a);
     const selAno = document.getElementById('mfAno');
     if (selAno) {
       const vAno = selAno.value;
       selAno.innerHTML = '<option value="">Selecione o ano...</option>' +
-        anosOl.map(a=>`<option>${a}</option>`).join('');
-      if (anosOl.map(String).includes(vAno)) selAno.value = vAno;
+        anosOl.map(a=>`<option value="${a}">${a}</option>`).join('');
+      // Restaura seleção anterior se ainda for válida
+      if (vAno && anosOl.map(String).includes(String(vAno))) selAno.value = vAno;
     }
   }
 
   if (!oid) {
-    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🏅</div><p>Selecione a olimpíada, o ano e a fase para ver os medalhistas.</p></div>`;
+    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🏅</div><p>Selecione a olimpíada e o ano para ver os medalhistas.</p></div>`;
     if (countEl) countEl.textContent = '–';
     const btnPrint = document.getElementById('btnImprimirMedalhistas');
     if (btnPrint) btnPrint.style.display = 'none';
     return;
   }
-  if (!ano || !fase) {
-    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🔎</div><p>Selecione também o <strong>ano</strong> e a <strong>fase</strong> para ver os medalhistas.</p></div>`;
+  if (!ano) {
+    el.innerHTML = `<div class="awaiting-filter"><div class="icon">🔎</div><p>Selecione também o <strong>ano</strong> para ver os medalhistas.</p></div>`;
     if (countEl) countEl.textContent = '–';
     const btnPrint2 = document.getElementById('btnImprimirMedalhistas');
     if (btnPrint2) btnPrint2.style.display = 'none';
@@ -3990,10 +4152,9 @@ window.applyMedalistasFilters = () => {
   }
 
   const lista = allMedalhistas.filter(m => {
-    if (m.olimpiadaId !== oid)        return false;
-    if (m.ano !== parseInt(ano))      return false;
-    if (m.fase !== fase)              return false;
-    if (s && !m.nome.toLowerCase().includes(s)) return false;
+    if (m.olimpiadaId !== oid)                          return false;
+    if (String(m.ano) !== String(ano))                  return false;
+    if (s && !m.nome.toLowerCase().includes(s))         return false;
     return true;
   });
 
@@ -4049,7 +4210,7 @@ window.applyMedalistasFilters = () => {
   el.innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <span class="prova-row-tag olimpiada-tag-${olColor}">${esc(ol?.nome||'')}</span>
-      <span style="font-size:.85rem;color:var(--text-muted)">${esc(fase)} · ${esc(ano)}</span>
+      <span style="font-size:.85rem;color:var(--text-muted)">${esc(ano)}</span>
     </div>
     <div class="medal-summary">${summaryHTML}</div>
     ${gruposHTML}
@@ -4291,107 +4452,37 @@ window.confirmMdImport = async () => {
 };
 </script>
 <script>
-window.imprimirMedalhistas = () => {
-  const oid  = document.getElementById('mfOlimpiada')?.value || '';
-  const ano  = document.getElementById('mfAno')?.value || '';
-  const fase = document.getElementById('mfFase')?.value || '';
-  if (!oid || !ano || !fase) { showToast('Selecione olimpíada, ano e fase antes de imprimir', 'error'); return; }
+// ── MODAL ALUNO MEDALHISTA ────────────────────
+// Fecha com Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const ov = document.getElementById('alunoModalOverlay');
+    if (ov && ov.classList.contains('open')) window.fecharModalAluno();
+  }
+});
+</script>
 
-  const ol = allOlimpiadas.find(o => o.id === oid);
-  const lista = allMedalhistas.filter(m =>
-    m.olimpiadaId === oid && m.ano === parseInt(ano) && m.fase === fase
-  );
-  if (!lista.length) { showToast('Nenhum medalhista para imprimir', 'error'); return; }
-
-  const MEDAL_PRINT = {
-    'Ouro':           { emoji:'🥇', cls:'ouro',   label:'Ouro' },
-    'Prata':          { emoji:'🥈', cls:'prata',  label:'Prata' },
-    'Bronze':         { emoji:'🥉', cls:'bronze', label:'Bronze' },
-    'Menção Honrosa': { emoji:'🎖️', cls:'mencao', label:'Menção Honrosa' }
-  };
-  const MEDAL_ORDER_P = ['Ouro','Prata','Bronze','Menção Honrosa'];
-
-  const summaryHTML = MEDAL_ORDER_P.map(medal => {
-    const n = lista.filter(m => m.medalha === medal).length;
-    if (!n) return '';
-    const mc = MEDAL_PRINT[medal];
-    return `<span class="s ${mc.cls}">${mc.emoji} ${n} ${mc.label}</span>`;
-  }).join('');
-
-  const gruposHTML = MEDAL_ORDER_P.map(medal => {
-    const grupo = lista.filter(m => m.medalha === medal).sort((a,b) => a.nome.localeCompare(b.nome,'pt-BR'));
-    if (!grupo.length) return '';
-    const mc = MEDAL_PRINT[medal];
-    const rows = grupo.map((m, i) =>
-      `<tr><td class="n">${i+1}.</td><td class="nome">${m.nome}</td><td class="obs">${m.obs||''}</td></tr>`
-    ).join('');
-    return `<div class="grupo">
-      <div class="gtitle ${mc.cls}">${mc.emoji} ${mc.label} <small>(${grupo.length} aluno${grupo.length!==1?'s':''})</small></div>
-      <table><tbody>${rows}</tbody></table>
-    </div>`;
-  }).join('');
-
-  const now = new Date().toLocaleDateString('pt-BR');
-
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Medalhistas</title><style>
-    @page{size:A4 portrait;margin:12mm 14mm}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:Arial,sans-serif;font-size:11pt;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    h1{font-size:17pt;font-weight:900;color:#0a3d3a;margin-bottom:3px}
-    .sub{font-size:10pt;color:#444;margin-bottom:10px}
-    hr{border:none;border-top:2.5px solid #0d9488;margin-bottom:10px}
-    .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-    .s{font-size:9pt;font-weight:700;padding:3px 12px;border-radius:20px;border:1.5px solid #ccc}
-    .s.ouro{border-color:#f59e0b;background:#fef3c7;color:#78350f}
-    .s.prata{border-color:#94a3b8;background:#f1f5f9;color:#334155}
-    .s.bronze{border-color:#b45309;background:#fef9c3;color:#78350f}
-    .s.mencao{border-color:#7c3aed;background:#ede9fe;color:#4c1d95}
-    .grupo{margin-bottom:10px;break-inside:avoid}
-    .gtitle{font-size:11pt;font-weight:800;padding:4px 10px;border-radius:6px;margin-bottom:3px}
-    .gtitle.ouro{background:#fef3c7;color:#78350f}
-    .gtitle.prata{background:#f1f5f9;color:#334155}
-    .gtitle.bronze{background:#fef9c3;color:#78350f}
-    .gtitle.mencao{background:#ede9fe;color:#4c1d95}
-    .gtitle small{font-size:9pt;font-weight:400}
-    table{width:100%;border-collapse:collapse}
-    tr{break-inside:avoid}
-    td{padding:3px 8px;font-size:11pt;border-bottom:1px solid #e5e7eb;vertical-align:middle}
-    td.n{width:26px;color:#999;font-size:9pt;text-align:right;padding-right:6px}
-    td.nome{font-weight:600}
-    td.obs{font-size:9pt;color:#555;font-style:italic}
-    .footer{margin-top:14px;padding-top:6px;border-top:1px solid #ccc;font-size:8pt;color:#888;text-align:center}
-  </style></head><body>
-    <h1>&#127942; ${ol?.nome||''} &mdash; Medalhistas</h1>
-    <div class="sub">${fase} &middot; ${ano} &nbsp;|&nbsp; ${lista.length} aluno${lista.length!==1?'s':''}</div>
-    <hr>
-    <div class="summary">${summaryHTML}</div>
-    ${gruposHTML}
-    <div class="footer">Gerado em ${now} &middot; Arena Ol&iacute;mpica</div>
-    <script>window.onload=function(){window.print()}<\/script>
-  
-<!-- MODAL DETALHE: DATA DE PROVA / INSCRIÇÃO -->
-<div class="detalhe-modal-overlay" id="detalheModal">
-  <div class="detalhe-modal">
-    <button class="detalhe-modal-close" onclick="fecharDetalhe()" title="Fechar">✕</button>
-    <div class="detalhe-badge-row" id="detalheBadgeRow"></div>
-    <div class="detalhe-title" id="detalheTitulo"></div>
-    <div class="detalhe-subtitle" id="detalheSubtitulo"></div>
-    <div class="detalhe-grid" id="detalheGrid"></div>
-    <div class="detalhe-links" id="detalheLinks"></div>
+<!-- MODAL ALUNO MEDALHISTA -->
+<div class="aluno-modal-overlay" id="alunoModalOverlay">
+  <div class="aluno-modal" role="dialog" aria-modal="true" aria-labelledby="alunoModalNome">
+    <div class="aluno-modal-head">
+      <div class="aluno-modal-avatar" id="alunoModalAvatar">AB</div>
+      <div class="aluno-modal-info">
+        <div class="aluno-modal-nome" id="alunoModalNome">—</div>
+        <div class="aluno-modal-stats" id="alunoModalStats"></div>
+      </div>
+      <button class="aluno-modal-close" onclick="fecharModalAluno()" title="Fechar">✕</button>
+    </div>
+    <div class="aluno-modal-body" id="alunoModalBody"></div>
   </div>
 </div>
 
-</body></html>`;
-
-  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.target = '_blank'; a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
-};
+<script>
+// Registra listener de clique fora após o DOM existir
+document.getElementById('alunoModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) window.fecharModalAluno();
+});
 </script>
+
 </body>
 </html>
